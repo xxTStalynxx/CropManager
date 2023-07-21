@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchRegistro = exports.deleteRegistro = exports.postRegistro = exports.getRegistro = exports.getRegistros = void 0;
+exports.countRegistros = exports.searchRegistro = exports.deleteRegistro = exports.postRegistro = exports.getRegistro = exports.getRegistros = void 0;
 const registro_1 = __importDefault(require("../models/registro"));
 const getRegistros = () => __awaiter(void 0, void 0, void 0, function* () {
     const registros = yield registro_1.default.findAll();
@@ -61,4 +61,9 @@ const searchRegistro = (campo) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.searchRegistro = searchRegistro;
+const countRegistros = () => __awaiter(void 0, void 0, void 0, function* () {
+    const nr = registro_1.default.count();
+    return nr;
+});
+exports.countRegistros = countRegistros;
 //# sourceMappingURL=registros_dta.js.map

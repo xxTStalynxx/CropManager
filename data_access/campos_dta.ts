@@ -14,6 +14,11 @@ export const getCampos = async (idencargado: string) => {
     return campos;
 }
 
+export const getAllCampos = async () => {
+    const campos = await Campo.findAll();
+    return campos;
+}
+
 export const getCampo = async (id: string) => {
     const campo = await Campo.findByPk(id);
     if (campo) {
@@ -40,7 +45,7 @@ export const putCampo = async (req: Request) => {
     const { body } = req;
     const { id } = req.params;
     const campo = await Campo.findByPk(id);
-    if (campo){
+    if (campo) {
         await campo.update(body);
     }
 }
@@ -48,6 +53,47 @@ export const putCampo = async (req: Request) => {
 export const deleteCampo = async (id: string) => {
     const campo = await Campo.findByPk(id);
     if (campo) {
-        await campo.update({ activo: false });
-    } 
+        await campo.destroy();
+    }
+}
+
+export const countCampos = async (id: string) => {
+    const nc = Campo.count({
+        where: { encargado: id }
+    });
+    return nc;
+}
+
+export const countAllCampos =async () => {
+    const nc = Campo.count()
+    return nc;
+}
+
+export const getNumAllCamposByEstado = async (estado: string) => {
+    const num = Campo.findAll({
+        where: {
+            estado: estado,
+        }
+    });
+    return (await num).length;
+}
+
+export const getNumCamposByEstado = async (estado: string, id: string) => {
+    const num = Campo.findAll({
+        where: {
+            estado: estado,
+            encargado: id,
+        }
+    });
+    return (await num).length;
+}
+
+export const changeEstado = async (id: string) => {
+    const nuevoE = {
+        estado: 2,
+    }
+    const campo = await Campo.findByPk(id);
+    if (campo) {
+        await campo.update(nuevoE);
+    }
 }

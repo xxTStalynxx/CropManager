@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeRol = exports.searchByEmail = exports.restoreUsuario = exports.deleteUsuario = exports.putNombreUsuario = exports.putUsuario = exports.postUsuario = exports.getUsuario = exports.getUsuarios = void 0;
+exports.countUsuarios = exports.changeRol = exports.getNombreUsuario = exports.searchByEmail = exports.restoreUsuario = exports.deleteUsuario = exports.putNombreUsuario = exports.putUsuario = exports.postUsuario = exports.getUsuario = exports.getUsuarios = void 0;
 const usuario_1 = __importDefault(require("../models/usuario"));
 const sequelize_1 = require("sequelize");
 const getUsuarios = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -90,6 +90,13 @@ const searchByEmail = (correo) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.searchByEmail = searchByEmail;
+const getNombreUsuario = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const usuario = yield usuario_1.default.findByPk(id);
+    if (usuario) {
+        return usuario.dataValues.nombre;
+    }
+});
+exports.getNombreUsuario = getNombreUsuario;
 const changeRol = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, rol } = req.params;
     const nuevoRU = {
@@ -101,4 +108,9 @@ const changeRol = (req) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.changeRol = changeRol;
+const countUsuarios = () => __awaiter(void 0, void 0, void 0, function* () {
+    const nu = usuario_1.default.count();
+    return nu;
+});
+exports.countUsuarios = countUsuarios;
 //# sourceMappingURL=usuarios_dta.js.map

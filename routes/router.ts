@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { agregarCampo, buscarCampo, editarCampo, eliminarCampo, listarCampos,mostrarCampos,mostrarTrazado } from '../business_logic/controllers/campos_controller';
+import { agregarCampo, buscarCampo, editarCampo, eliminarCampo, listarCampos,mostrarCampos,mostrarListaCampos,mostrarTrazado } from '../business_logic/controllers/campos_controller';
 import { agregarRol, buscarRol, cancelarEditarRol, editarRol, eliminarRol, listarRoles, restaurarRol } from "../business_logic/controllers/roles_controller";
 import { agregarCultivo, buscarCultivo, cancelarEditarCultivo, editarCultivo, eliminarCultivo, listarCultivos, restaurarCultivo } from "../business_logic/controllers/cultivos_controller";
 import { agregarCultivo_salida, buscarCultivo_salida, listarCultivo_salidas } from "../business_logic/controllers/cultivos_salida_controller";
@@ -11,7 +11,7 @@ import { agregarSiembra, buscarSiembra, eliminarSiembra, listarSiembras } from "
 import { agregarUsuario, buscarUsuario, cambiarRol, cancelarEditarUsuario, editarUsuario, eliminarUsuario, listarUsuarios, mostrarPerfil, restaurarUsuario } from "../business_logic/controllers/usuarios_controller";
 import { cerrarSesion, enviarEmail, iniciarSesion, inicioSesion, restaurarContrasena, showRegistro, showRestaurar } from "../business_logic/processes/login_controller";
 import { showForgot, showMain } from "../business_logic/processes/main_controller";
-import { showDashboard } from "../business_logic/controllers/panel_controller";
+import { getCamposStatsChart, showDashboard } from "../business_logic/controllers/panel_controller";
 
 const router = Router();
 
@@ -30,6 +30,7 @@ router.post('/restaurarContrasena/:token/:id', restaurarContrasena);
 
 //Rutas para el panel de control
 router.get('/inicio', showDashboard);
+router.get('/camposChart', getCamposStatsChart);
 
 //Rutas para usuarios
 router.get('/usuarios', listarUsuarios);
@@ -71,10 +72,11 @@ router.get('/cultivos/restore/:id', restaurarCultivo);
 
 //Rutas para campos
 router.get('/campos', mostrarCampos);
+router.get('/campos/list', listarCampos);
 router.get('/campos/:id', buscarCampo);
 router.post('/campos/add', agregarCampo);
 router.put('/campos/edit/:id', editarCampo);
-router.delete('/campos/delete/:id', eliminarCampo);
+router.get('/campos/delete/:id', eliminarCampo);
 router.get('/trazado', mostrarTrazado);
 
 //Rutas para siembras

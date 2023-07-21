@@ -9,18 +9,48 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mostrarTrazado = exports.eliminarCampo = exports.editarCampo = exports.agregarCampo = exports.buscarCampo = exports.mostrarCampos = void 0;
+exports.mostrarTrazado = exports.eliminarCampo = exports.editarCampo = exports.agregarCampo = exports.buscarCampo = exports.listarCampos = exports.mostrarCampos = void 0;
 const campos_dta_1 = require("../../data_access/campos_dta");
 const parameters_1 = require("../validations/parameters");
 const date_controller_1 = require("../processes/date_controller");
 const usuarios_dta_1 = require("../../data_access/usuarios_dta");
 const roles_dta_1 = require("../../data_access/roles_dta");
 const cultivos_dta_1 = require("../../data_access/cultivos_dta");
+const estados_dta_1 = require("../../data_access/estados_dta");
 const mostrarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const campos = yield (0, campos_dta_1.getCampos)(req.session.user);
     res.json(campos);
 });
 exports.mostrarCampos = mostrarCampos;
+const listarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.session.user) {
+        const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
+        const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
+        let campos;
+        let encargado;
+        if ((usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario) != 1) {
+            campos = yield (0, campos_dta_1.getCampos)(req.session.user);
+        }
+        else {
+            campos = yield (0, campos_dta_1.getAllCampos)();
+            for (let i = 0; i < campos.length; i++) {
+                encargado = yield (0, usuarios_dta_1.getNombreUsuario)(campos[i].dataValues.encargado);
+                campos[i].dataValues.nomEncargado = encargado;
+            }
+        }
+        const date = (0, date_controller_1.getDate)();
+        let estado;
+        for (let i = 0; i < campos.length; i++) {
+            estado = yield (0, estados_dta_1.getNombreEstado)(campos[i].dataValues.estado);
+            campos[i].dataValues.nomEstado = estado;
+        }
+        res.render('fields', { campos, date, usuario, rol });
+    }
+    else {
+        res.render('login', { error: '' });
+    }
+});
+exports.listarCampos = listarCampos;
 const buscarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const campo = yield (0, campos_dta_1.getCampo)(id);
@@ -66,7 +96,7 @@ const eliminarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const campo = yield (0, campos_dta_1.getCampo)(id);
     if (campo !== null) {
         yield (0, campos_dta_1.deleteCampo)(id);
-        res.status(200).json({ message: 'Campo eliminado correctamente' });
+        res.redirect('/campos/list');
     }
     else {
         res.status(404).json({ message: 'No existe el campo' });

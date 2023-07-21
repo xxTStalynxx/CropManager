@@ -8,10 +8,10 @@ const Siembra = db.define('siembras',{
     id_cultivo:{
         type:DataTypes.INTEGER
     },
-    estado:{
-        type:DataTypes.STRING
+    fecha_siembra:{
+        type:DataTypes.DATE
     },
-    stock_estimado:{
+    produccion_estimada:{
         type:DataTypes.DECIMAL
     },
     fecha_cosecha_est:{

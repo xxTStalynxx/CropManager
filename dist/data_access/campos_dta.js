@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getCampos = void 0;
+exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getAllCampos = exports.getCampos = void 0;
 const campo_1 = __importDefault(require("../models/campo"));
 const sequelize_1 = require("sequelize");
 const getCampos = (idencargado) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,6 +27,11 @@ const getCampos = (idencargado) => __awaiter(void 0, void 0, void 0, function* (
     return campos;
 });
 exports.getCampos = getCampos;
+const getAllCampos = () => __awaiter(void 0, void 0, void 0, function* () {
+    const campos = yield campo_1.default.findAll();
+    return campos;
+});
+exports.getAllCampos = getAllCampos;
 const getCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const campo = yield campo_1.default.findByPk(id);
     if (campo) {
@@ -62,8 +67,49 @@ exports.putCampo = putCampo;
 const deleteCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const campo = yield campo_1.default.findByPk(id);
     if (campo) {
-        yield campo.update({ activo: false });
+        yield campo.destroy();
     }
 });
 exports.deleteCampo = deleteCampo;
+const countCampos = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const nc = campo_1.default.count({
+        where: { encargado: id }
+    });
+    return nc;
+});
+exports.countCampos = countCampos;
+const countAllCampos = () => __awaiter(void 0, void 0, void 0, function* () {
+    const nc = campo_1.default.count();
+    return nc;
+});
+exports.countAllCampos = countAllCampos;
+const getNumAllCamposByEstado = (estado) => __awaiter(void 0, void 0, void 0, function* () {
+    const num = campo_1.default.findAll({
+        where: {
+            estado: estado,
+        }
+    });
+    return (yield num).length;
+});
+exports.getNumAllCamposByEstado = getNumAllCamposByEstado;
+const getNumCamposByEstado = (estado, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const num = campo_1.default.findAll({
+        where: {
+            estado: estado,
+            encargado: id,
+        }
+    });
+    return (yield num).length;
+});
+exports.getNumCamposByEstado = getNumCamposByEstado;
+const changeEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const nuevoE = {
+        estado: 2,
+    };
+    const campo = yield campo_1.default.findByPk(id);
+    if (campo) {
+        yield campo.update(nuevoE);
+    }
+});
+exports.changeEstado = changeEstado;
 //# sourceMappingURL=campos_dta.js.map

@@ -27,6 +27,7 @@ router.get('/showRestaurar/:token/:id', login_controller_1.showRestaurar);
 router.post('/restaurarContrasena/:token/:id', login_controller_1.restaurarContrasena);
 //Rutas para el panel de control
 router.get('/inicio', panel_controller_1.showDashboard);
+router.get('/camposChart', panel_controller_1.getCamposStatsChart);
 //Rutas para usuarios
 router.get('/usuarios', usuarios_controller_1.listarUsuarios);
 router.get('/usuarios/:id', usuarios_controller_1.buscarUsuario);
@@ -63,10 +64,11 @@ router.get('/cancelEditCultivo', cultivos_controller_1.cancelarEditarCultivo);
 router.get('/cultivos/restore/:id', cultivos_controller_1.restaurarCultivo);
 //Rutas para campos
 router.get('/campos', campos_controller_1.mostrarCampos);
+router.get('/campos/list', campos_controller_1.listarCampos);
 router.get('/campos/:id', campos_controller_1.buscarCampo);
 router.post('/campos/add', campos_controller_1.agregarCampo);
 router.put('/campos/edit/:id', campos_controller_1.editarCampo);
-router.delete('/campos/delete/:id', campos_controller_1.eliminarCampo);
+router.get('/campos/delete/:id', campos_controller_1.eliminarCampo);
 router.get('/trazado', campos_controller_1.mostrarTrazado);
 //Rutas para siembras
 router.get('/siembras', siembras_controller_1.listarSiembras);

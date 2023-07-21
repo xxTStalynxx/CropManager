@@ -12,10 +12,10 @@ const Siembra = connect_1.default.define('siembras', {
     id_cultivo: {
         type: sequelize_1.DataTypes.INTEGER
     },
-    estado: {
-        type: sequelize_1.DataTypes.STRING
+    fecha_siembra: {
+        type: sequelize_1.DataTypes.DATE
     },
-    stock_estimado: {
+    produccion_estimada: {
         type: sequelize_1.DataTypes.DECIMAL
     },
     fecha_cosecha_est: {

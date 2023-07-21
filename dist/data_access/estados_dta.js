@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchEstado = exports.restoreEstado = exports.deleteEstado = exports.putEstado = exports.postEstado = exports.getEstado = exports.getEstados = void 0;
+exports.getNombreEstado = exports.searchEstado = exports.restoreEstado = exports.deleteEstado = exports.putEstado = exports.postEstado = exports.getEstado = exports.getEstados = void 0;
 const estado_1 = __importDefault(require("../models/estado"));
 const getEstados = () => __awaiter(void 0, void 0, void 0, function* () {
     const estados = yield estado_1.default.findAll();
@@ -73,4 +73,11 @@ const searchEstado = (nombre) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.searchEstado = searchEstado;
+const getNombreEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const rol = yield estado_1.default.findByPk(id);
+    if (rol) {
+        return rol.dataValues.nombre;
+    }
+});
+exports.getNombreEstado = getNombreEstado;
 //# sourceMappingURL=estados_dta.js.map

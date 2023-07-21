@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembra = exports.getSiembras = void 0;
+exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembras = void 0;
 const siembra_1 = __importDefault(require("../models/siembra"));
 const getSiembras = () => __awaiter(void 0, void 0, void 0, function* () {
     const siembras = yield siembra_1.default.findAll();
@@ -29,14 +29,25 @@ const getSiembra = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getSiembra = getSiembra;
-const postSiembra = (req) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body } = req;
+const getSiembraByCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const siembra = yield siembra_1.default.findOne({
+        where: { id_campo: id }
+    });
+    if (siembra) {
+        return siembra;
+    }
+    else {
+        return null;
+    }
+});
+exports.getSiembraByCampo = getSiembraByCampo;
+const postSiembra = (newSiembra) => __awaiter(void 0, void 0, void 0, function* () {
     const siembra = yield siembra_1.default.create({
-        id_campo: body.id_campo,
-        id_cultivo: body.id_cultivo,
-        estado: body.estado,
-        stock_estimado: body.stock_estimado,
-        fecha_cosecha_est: body.fecha_cosecha_est,
+        id_campo: newSiembra.id_campo,
+        id_cultivo: newSiembra.id_cultivo,
+        fecha_siembra: newSiembra.fecha_siembra,
+        produccion_estimada: newSiembra.produccion_estimada,
+        fecha_cosecha_est: newSiembra.fecha_cosecha_est,
     });
     yield siembra.save();
 });
@@ -50,7 +61,7 @@ const deleteSiembra = (id) => __awaiter(void 0, void 0, void 0, function* () {
 exports.deleteSiembra = deleteSiembra;
 const searchSiembra = (campo) => __awaiter(void 0, void 0, void 0, function* () {
     const siembra = yield siembra_1.default.findOne({
-        where: { campo: campo },
+        where: { id_campo: campo },
     });
     if (siembra) {
         return true;

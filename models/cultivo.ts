@@ -8,8 +8,14 @@ const Cultivo = db.define('cultivos',{
     descripcion:{
         type:DataTypes.STRING
     },
-    stock:{
+    productividad:{
         type:DataTypes.DECIMAL
+    },
+    precio:{
+        type:DataTypes.DECIMAL
+    },
+    crecimiento:{
+        type:DataTypes.INTEGER
     },
     activo:{
         type:DataTypes.BOOLEAN

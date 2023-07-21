@@ -80,6 +80,7 @@
         let oDrawingManager;
         let mListaCampo = []
         let oContainerAddCampo
+        let elemento
         let oPolygon = null
 
         let mListaPolygons = []
@@ -129,7 +130,7 @@
                 }
 
                 if (mListaCampo.length > 0) {
-                    oDrawingManager.setMap(null)
+                    //oDrawingManager.setMap(null)
                     oPolygon = poligono
                     oContainerAddCampo = document.getElementById("ContainerAddCampo");
                     oContainerAddCampo.classList.remove("hideContainer");
@@ -180,18 +181,54 @@
                 },
                 success: function (response) {
                     // La respuesta exitosa de la API
-                    console.log(response);
                     oContainerAddCampo.classList.add("hideContainer")
                     oIdtxtDetalle.value = ""
                     oIdtxtArea.value = ""
                     oIdtxtNombre.value = ""
                     txtError.style.display = "none"
+                    oPolygon.setMap(null)
+                    readAllCamposApi()
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    console.error(error)
+                    txtError.style.display = "block"
+                }
+            });
+        }
+
+        function saveSiembra() {
+            let txtCultivo = document.getElementById("selectedCultivo")
+            let txtFecha = document.getElementById("fechaSiembra")
+            let idCampo = document.getElementById("idCampo")
+
+            let objSiembra = {
+                id_campo: idCampo.title,
+                id_cultivo: txtCultivo.value,
+                fecha_siembra: txtFecha.value
+            }
+
+            console.log(objSiembra)
+
+            $.ajax({
+                url: 'http://localhost:8000/siembras/add',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    // Aquí se pasan los datos que se envian en el cuerpo de la solicitud
+                    id_campo: objSiembra.id_campo,
+                    id_cultivo: objSiembra.id_cultivo,
+                    fecha_siembra: objSiembra.fecha_siembra,
+                },
+                success: function (response) {
+                    // La respuesta exitosa de la API
+                    elemento.classList.add("hideContainerAddCultivo")
+                    oPolygon.setMap(null)
                     readAllCamposApi()
                 },
                 error: function (xhr, status, error) {
                     // Ocurrió un error al hacer la solicitud
                     console.error(error);
-                    txtError.style.display = "block"
                 }
             });
         }
@@ -259,8 +296,8 @@
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Container">Rendimiento</div>
+                                <a href="/campos/list" class="menu-link">
+                                    <div data-i18n="Container">Lista de campos</div>
                                 </a>
                             </li>
                         </ul>
@@ -393,7 +430,7 @@
                                             class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1000">
+                                <ul class="dropdown-menu dropdown-menu-end" style="z-index: 10000">
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="d-flex">
@@ -463,7 +500,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Área</label>
+                            <label class="form-label" for="basic-icon-default-fullname">Área (m<sup>2</sup>)</label>
                             <div class="input-group input-group-merge">
                                 <span id="basic-icon-default-fullname2" class="input-group-text"><i
                                         class="bx bx-square"></i></span>
@@ -485,27 +522,91 @@
                         <p id="error" class="mb-n1 py-2" style="color:#ff5c5c; font-size: small; display: none;">* El
                             área del campo es muy pequeña</p>
                     </div>
+                    <div id="ContainerSiembra" class="container_siembra hideContainerSiembra">
+                        <h5 class="mb-2 py-2">Campo</h5>
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-icon-default-fullname">Nombre</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                        class="bx bx-pencil"></i></span>
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre del campo"
+                                    name="nombre" aria-describedby="basic-icon-default-fullname2" readonly />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-icon-default-fullname">Estado</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                        class="bx bx-square"></i></span>
+                                <input type="number" class="form-control" id="estado" placeholder="Área del campo"
+                                    name="area" aria-describedby="basic-icon-default-fullname2" readonly />
+                            </div>
+                        </div>
+                        <h5 class="mb-2 py-2">Cultivo</h5>
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-icon-default-fullname">Cultivo</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                        class="bx bx-pencil"></i></span>
+                                <input type="text" class="form-control" id="cultivo" placeholder="Nombre del campo"
+                                    name="nombre" aria-describedby="basic-icon-default-fullname2" readonly />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-icon-default-fullname">Fecha de sembrado</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                        class="bx bx-square"></i></span>
+                                <input type="number" class="form-control" id="fecha_siembra"
+                                    placeholder="Área del campo" name="area"
+                                    aria-describedby="basic-icon-default-fullname2" readonly />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-icon-default-fullname">Producción estimada</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                        class="bx bx-square"></i></span>
+                                <input type="number" class="form-control" id="stock_estimado"
+                                    placeholder="Área del campo" name="area"
+                                    aria-describedby="basic-icon-default-fullname2" readonly />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-icon-default-fullname">Fecha de cosecha
+                                estimada</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                        class="bx bx-square"></i></span>
+                                <input type="number" class="form-control" id="fecha_cosecha_est"
+                                    placeholder="Área del campo" name="area"
+                                    aria-describedby="basic-icon-default-fullname2" readonly />
+                            </div>
+                        </div>
+                    </div>
                     <div id="ContainerCultivoAdd" class="container_datos_cultivo hideContainerAddCultivo">
+                        <h5 class="mb-2 py-2">Sembrar cultivo</h5>
                         <form>
                             <div class="mb-3">
+                                <small id="idCampo"></small>
                                 <label for="exampleFormControlSelect1" class="form-label">Cultivo</label>
-                                <select class="form-select" id="exampleFormControlSelect1"
-                                    aria-label="Seleccionar el cultivo">
+                                <select class="form-select" id="selectedCultivo" aria-label="Seleccionar el cultivo">
                                     <% if (cultivos) {%>
                                         <% for (var i=0; i < cultivos.length; i++) { %>
-                                        <option value="<%= cultivos[i].id %>"><%= cultivos[i].nombre %></option>
-                                        <% } %>
-                                    <% } %>
+                                            <option value="<%= cultivos[i].id %>">
+                                                <%= cultivos[i].nombre %>
+                                            </option>
+                                            <% } %>
+                                                <% } %>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="html5-date-input" class="form-label">Fecha de siembra</label>
                                 <div class="col-md-10" style="width: 100%">
-                                    <input class="form-control" style="width: 100%;" type="date"
-                                        id="html5-date-input" />
+                                    <input class="form-control" style="width: 100%;" type="date" id="fechaSiembra" />
                                 </div>
                             </div>
-                            <button id="btnSaveCampo" class="btn btn-primary">
+                            <button id="btnSaveCampo" onclick="saveSiembra()" class="btn btn-primary">
                                 <span class="tf-icons bx bx-plus-circle"></span> Sembrar cultivo</button>
                         </form>
                     </div>
@@ -557,8 +658,8 @@
                     // Respuesta exitosa de la API
                     if (response.length > 0) {
                         for (var i = 0; i < response.length; i++) {
-                            var list = response[i].coordenadas.split(';')
-                            var listaPol = []
+                            let list = response[i].coordenadas.split(';')
+                            let listaPol = []
                             for (var j = 0; j < list.length; j++) {
                                 var list2 = list[j].split(',')
                                 var obj = { lat: parseFloat(list2[0]), lng: parseFloat(list2[1]) }
@@ -566,15 +667,29 @@
                             }
 
                             if (listaPol.length > 0) {
-                                var bermudaTriangle = new google.maps.Polygon({
+                                let color;
+
+                                if (response[i].estado != 1) {
+                                    color = "#FF5C5C"
+                                } else {
+                                    color = "#27AE60"
+                                }
+
+                                const newPolygon = new google.maps.Polygon({
                                     paths: listaPol,
                                     strokeOpacity: 0.8,
                                     strokeWeight: 3,
-                                    fillColor: "#27AE60",
+                                    fillColor: color,
                                     fillOpacity: 0.4,
+                                    id: response[i].id,
+                                    campo: response[i].nombre,
+                                    estado: response[i].estado
                                 });
-                                bermudaTriangle.setMap(oMapaGoogle);
-                                bermudaTriangle.addListener("click", showPolygon)
+
+                                newPolygon.setMap(oMapaGoogle);
+                                newPolygon.addListener("click", function () {
+                                    showPolygon(newPolygon.id, newPolygon.campo, newPolygon.estado);
+                                });
                             }
                         }
                     }
@@ -586,9 +701,47 @@
             });
         }
 
-        function showPolygon() {
-            var elemento = document.getElementById('ContainerCultivoAdd')
-            elemento.classList.remove('hideContainerAddCultivo');
+        function showPolygon(id, campo, estado) {
+            if (estado == 1) {
+                elemento = document.getElementById('ContainerCultivoAdd')
+                elemento.classList.remove('hideContainerAddCultivo')
+                let idCampo = document.getElementById("idCampo")
+                idCampo.title = id
+            } else {
+                showSiembra(id, campo, estado)
+            }
+        }
+
+        function showSiembra(id, campo, estado) {
+            $.ajax({
+                url: 'http://localhost:8000/siembras/' + id,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Respuesta exitosa de la API
+                    const campo = document.getElementById("nombre")
+                    const estado = document.getElementById("estado")
+                    const cultivo = document.getElementById("cultivo")
+                    const fecha_siembra = document.getElementById("fecha_siembra")
+                    const stock_estimado = document.getElementById("stock_estimado")
+                    const fecha_cosecha_est = document.getElementById("fecha_cosecha_est")
+                    console.log(response)
+                    /*if (response != null) {
+                        campo.value = response[0].id_campo
+                        estado.value = 'Sembrado'
+                        cultivo.value = response[0].id_cultivo
+                        fecha_siembra.value = response[0].fecha_siembra
+                        stock_estimado.value = response[0].stock_estimado
+                        fecha_cosecha_est.value = response[0].fecha_cosecha_est
+                    }
+                    elemento = document.getElementById('ContainerSiembra')
+                    elemento.classList.remove('hideContainerSiembra');*/
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    console.error(error);
+                }
+            });
         }
     </script>
 
@@ -604,10 +757,14 @@
             background-color: white;
             position: absolute;
             right: 0;
-            z-index: 999;
+            z-index: 9999;
         }
 
         .hideContainer {
+            display: none;
+        }
+
+        .hideContainerSiembra {
             display: none;
         }
 
@@ -627,6 +784,20 @@
             position: absolute;
             right: 0;
             z-index: 999;
+        }
+
+        .container_siembra {
+            width: 16rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-right: 1rem;
+            border-style: solid;
+            border-width: 0;
+            border-radius: 10px;
+            background-color: white;
+            position: absolute;
+            right: 0;
+            z-index: 9999;
         }
     </style>
 </body>

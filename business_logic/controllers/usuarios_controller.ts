@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { changeRol, deleteUsuario, getUsuario, getUsuarios, postUsuario, putNombreUsuario, putUsuario, restoreUsuario, searchByEmail } from "../../data_access/usuarios_dta";
 import { validarEmail, validarPassword } from "../validations/validations";
-import { getNombre, getRol, getRoles, getRolesforUsers } from "../../data_access/roles_dta";
+import { getNombre, getRol, getRolesforUsers } from "../../data_access/roles_dta";
 import { getDate } from "../processes/date_controller";
 
 export const listarUsuarios = async (req: Request, res: Response) => {

@@ -12,8 +12,14 @@ const Cultivo = connect_1.default.define('cultivos', {
     descripcion: {
         type: sequelize_1.DataTypes.STRING
     },
-    stock: {
+    productividad: {
         type: sequelize_1.DataTypes.DECIMAL
+    },
+    precio: {
+        type: sequelize_1.DataTypes.DECIMAL
+    },
+    crecimiento: {
+        type: sequelize_1.DataTypes.INTEGER
     },
     activo: {
         type: sequelize_1.DataTypes.BOOLEAN

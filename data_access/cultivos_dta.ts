@@ -27,7 +27,9 @@ export const postCultivo = async (req: Request) => {
     const cultivo = await Cultivo.create({
         nombre: body.nombre,
         descripcion: body.descripcion,
-        stock: body.stock,
+        productividad: body.productividad,
+        precio: body.precio,
+        crecimiento: body.crecimiento
     })
     await cultivo.save();
 }
@@ -64,4 +66,9 @@ export const searchCultivo = async (nombre: string) => {
     } else {
         return false;
     }
+}
+
+export const countCultivos = async () => {
+    const nc = Cultivo.count();
+    return nc;
 }

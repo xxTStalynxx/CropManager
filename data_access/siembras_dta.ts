@@ -15,14 +15,24 @@ export const getSiembra = async (id: string) => {
     }
 }
 
-export const postSiembra = async (req: Request) => {
-    const { body } = req;
+export const getSiembraByCampo = async (id: string) => {
+    const siembra = await Siembra.findOne({
+        where:{ id_campo: id }
+    })
+    if (siembra) {
+        return siembra;
+    } else {
+        return null;
+    }
+}
+
+export const postSiembra = async (newSiembra: any) => {
     const siembra = await Siembra.create({
-        id_campo: body.id_campo,
-        id_cultivo: body.id_cultivo,
-        estado: body.estado,
-        stock_estimado: body.stock_estimado,
-        fecha_cosecha_est: body.fecha_cosecha_est,
+        id_campo: newSiembra.id_campo,
+        id_cultivo: newSiembra.id_cultivo,
+        fecha_siembra: newSiembra.fecha_siembra,
+        produccion_estimada: newSiembra.produccion_estimada,
+        fecha_cosecha_est: newSiembra.fecha_cosecha_est,
     });
     await siembra.save();
 }
@@ -36,7 +46,7 @@ export const deleteSiembra = async (id: string) => {
 
 export const searchSiembra = async (campo: number) => {
     const siembra = await Siembra.findOne({
-        where: { campo: campo },
+        where: { id_campo: campo },
     });
     if (siembra) {
         return true;

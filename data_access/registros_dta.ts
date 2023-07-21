@@ -45,3 +45,8 @@ export const searchRegistro = async (campo: number) => {
         return false;
     }
 }
+
+export const countRegistros = async () => {
+    const nr = Registro.count();
+    return nr;
+}

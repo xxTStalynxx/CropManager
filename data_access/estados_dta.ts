@@ -1,5 +1,7 @@
 import { Request } from "express";
 import Estado from "../models/estado";
+import sequelize from "sequelize";
+import Campo from "../models/campo";
 
 export const getEstados = async () => {
     const estados = await Estado.findAll();
@@ -28,7 +30,7 @@ export const putEstado = async (req: Request) => {
     const { body } = req;
     const { id } = req.params;
     const estado = await Estado.findByPk(id);
-    if (estado){
+    if (estado) {
         await estado.update(body);
     }
 }
@@ -37,14 +39,14 @@ export const deleteEstado = async (id: string) => {
     const estado = await Estado.findByPk(id);
     if (estado) {
         await estado.update({ activo: false });
-    } 
+    }
 }
 
 export const restoreEstado = async (id: string) => {
     const estado = await Estado.findByPk(id);
     if (estado) {
         await estado.update({ activo: true });
-    } 
+    }
 }
 
 export const searchEstado = async (nombre: string) => {
@@ -55,5 +57,12 @@ export const searchEstado = async (nombre: string) => {
         return true;
     } else {
         return false;
+    }
+}
+
+export const getNombreEstado = async (id: string) => {
+    const rol = await Estado.findByPk(id);
+    if (rol) {
+        return rol.dataValues.nombre;
     }
 }

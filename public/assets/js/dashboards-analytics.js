@@ -428,7 +428,7 @@
         type: 'donut'
       },
       labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
-      series: [85, 15, 50, 50],
+      series: [85, 15, 25, 25],
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {
         width: 5,
@@ -494,7 +494,7 @@
     incomeChartConfig = {
       series: [
         {
-          data: [24, 21, 30, 22, 42, 26, 35, 29]
+          data: [1, 3, 2, 1]
         }
       ],
       chart: {
@@ -504,7 +504,7 @@
         toolbar: {
           show: false
         },
-        type: 'area'
+        type: 'bar'
       },
       dataLabels: {
         enabled: false
@@ -558,7 +558,7 @@
         }
       },
       xaxis: {
-        categories: ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: ['Cebolla', 'Tomate', 'Maiz', 'Fresa'],
         axisBorder: {
           show: false
         },
@@ -577,9 +577,9 @@
         labels: {
           show: false
         },
-        min: 10,
-        max: 50,
-        tickAmount: 4
+        min: 0,
+        max: 10,
+        tickAmount: 2
       }
     };
   if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
