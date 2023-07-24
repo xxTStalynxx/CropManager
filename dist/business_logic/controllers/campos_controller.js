@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mostrarTrazado = exports.eliminarCampo = exports.editarCampo = exports.agregarCampo = exports.buscarCampo = exports.listarCampos = exports.mostrarCampos = void 0;
+exports.cancelarEditarCampo = exports.mostrarTrazado = exports.eliminarCampo = exports.editarCampo = exports.agregarCampo = exports.buscarCampo = exports.listarCampos = exports.mostrarCampos = void 0;
 const campos_dta_1 = require("../../data_access/campos_dta");
-const parameters_1 = require("../validations/parameters");
 const date_controller_1 = require("../processes/date_controller");
 const usuarios_dta_1 = require("../../data_access/usuarios_dta");
 const roles_dta_1 = require("../../data_access/roles_dta");
 const cultivos_dta_1 = require("../../data_access/cultivos_dta");
 const estados_dta_1 = require("../../data_access/estados_dta");
+const configuracion_dta_1 = require("../../data_access/configuracion_dta");
 const mostrarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const campos = yield (0, campos_dta_1.getCampos)(req.session.user);
     res.json(campos);
@@ -55,7 +55,11 @@ const buscarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { id } = req.params;
     const campo = yield (0, campos_dta_1.getCampo)(id);
     if (campo !== null) {
-        res.json(campo);
+        const date = (0, date_controller_1.getDate)();
+        const estados = yield (0, estados_dta_1.getEstadosForCampos)();
+        const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
+        const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
+        res.render('fields_edit', { campo, date, usuario, rol, estados, error: '' });
     }
     else {
         res.status(404).json({ message: 'No existe el campo' });
@@ -64,7 +68,8 @@ const buscarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.buscarCampo = buscarCampo;
 const agregarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    if (body.area >= (0, parameters_1.getArea)()) {
+    const conf = yield (0, configuracion_dta_1.getConfig)();
+    if (body.area >= conf[0].dataValues.area_minima) {
         yield (0, campos_dta_1.postCampo)(req);
         res.status(200).json({ message: 'Campo agregado correctamente' });
     }
@@ -77,13 +82,18 @@ const editarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { body } = req;
     const { id } = req.params;
     const campo = yield (0, campos_dta_1.getCampo)(id);
+    const conf = yield (0, configuracion_dta_1.getConfig)();
     if (campo !== null) {
-        if (body.area >= (0, parameters_1.getArea)()) {
+        if (body.area >= conf[0].dataValues.area_minima) {
             yield (0, campos_dta_1.putCampo)(req);
-            res.status(200).json({ message: 'Campo actualizado correctamente' });
+            res.redirect('/campos/list');
         }
         else {
-            res.status(404).json({ message: 'El área del campo no cumple con los requisitos' });
+            const estados = yield (0, estados_dta_1.getEstadosForCampos)();
+            const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
+            const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
+            const date = (0, date_controller_1.getDate)();
+            res.render('fields_edit', { campo, date, usuario, rol, estados, error: '* El área del campo es muy pequeña' });
         }
     }
     else {
@@ -116,4 +126,8 @@ const mostrarTrazado = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.mostrarTrazado = mostrarTrazado;
+const cancelarEditarCampo = (req, res) => {
+    res.redirect('/campos/list');
+};
+exports.cancelarEditarCampo = cancelarEditarCampo;
 //# sourceMappingURL=campos_controller.js.map

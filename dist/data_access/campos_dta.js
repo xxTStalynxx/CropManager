@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getAllCampos = exports.getCampos = void 0;
+exports.getNombreCampo = exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getAllCampos = exports.getCampos = void 0;
 const campo_1 = __importDefault(require("../models/campo"));
 const sequelize_1 = require("sequelize");
 const getCampos = (idencargado) => __awaiter(void 0, void 0, void 0, function* () {
@@ -102,9 +102,9 @@ const getNumCamposByEstado = (estado, id) => __awaiter(void 0, void 0, void 0, f
     return (yield num).length;
 });
 exports.getNumCamposByEstado = getNumCamposByEstado;
-const changeEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const changeEstado = (id, newestado) => __awaiter(void 0, void 0, void 0, function* () {
     const nuevoE = {
-        estado: 2,
+        estado: newestado,
     };
     const campo = yield campo_1.default.findByPk(id);
     if (campo) {
@@ -112,4 +112,11 @@ const changeEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.changeEstado = changeEstado;
+const getNombreCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const campo = yield campo_1.default.findByPk(id);
+    if (campo) {
+        return campo.dataValues.nombre;
+    }
+});
+exports.getNombreCampo = getNombreCampo;
 //# sourceMappingURL=campos_dta.js.map

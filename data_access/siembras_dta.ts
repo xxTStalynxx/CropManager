@@ -6,6 +6,13 @@ export const getSiembras = async () => {
     return siembras;
 }
 
+export const getSiembrasbyUsuario = async (id_camp: string) => {
+    const siembras = await Siembra.findAll({
+        where: { id_campo: id_camp }
+    });
+    return siembras;
+}
+
 export const getSiembra = async (id: string) => {
     const siembra = await Siembra.findByPk(id);
     if (siembra) {

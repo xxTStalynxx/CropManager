@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { deleteCampo, getAllCampos, getCampo, getCampos, postCampo, putCampo } from "../../data_access/campos_dta";
-import { getArea } from "../validations/parameters";
 import { getDate } from "../processes/date_controller";
 import { getNombreUsuario, getUsuario } from "../../data_access/usuarios_dta";
 import { getNombre } from "../../data_access/roles_dta";
 import { getCultivosforCampos } from "../../data_access/cultivos_dta";
-import { getNombreEstado } from "../../data_access/estados_dta";
+import { getEstadosForCampos, getNombreEstado } from "../../data_access/estados_dta";
+import { getConfig } from "../../data_access/configuracion_dta";
 
 export const mostrarCampos = async (req: Request, res: Response) => {
     const campos = await getCampos(req.session.user);
@@ -43,7 +43,11 @@ export const buscarCampo = async (req: Request, res: Response) => {
     const { id } = req.params;
     const campo = await getCampo(id);
     if (campo !== null) {
-        res.json(campo);
+        const date = getDate();
+        const estados = await getEstadosForCampos();
+        const usuario = await getUsuario(req.session.user);
+        const rol = await getNombre(usuario?.dataValues.rol_usuario);
+        res.render('fields_edit', { campo, date, usuario, rol, estados, error: '' });
     } else {
         res.status(404).json({ message: 'No existe el campo' });
     }
@@ -51,7 +55,8 @@ export const buscarCampo = async (req: Request, res: Response) => {
 
 export const agregarCampo = async (req: Request, res: Response) => {
     const { body } = req;
-    if (body.area >= getArea()){
+    const conf = await getConfig();
+    if (body.area >= conf[0].dataValues.area_minima){
         await postCampo(req);
         res.status(200).json({ message: 'Campo agregado correctamente' });
     } else {
@@ -63,12 +68,17 @@ export const editarCampo = async (req: Request, res: Response) => {
     const { body } = req;
     const { id } = req.params;
     const campo = await getCampo(id);
+    const conf = await getConfig();
     if (campo !== null) {
-        if (body.area >= getArea()) {
+        if (body.area >= conf[0].dataValues.area_minima) {
             await putCampo(req);
-            res.status(200).json({ message: 'Campo actualizado correctamente' });
+            res.redirect('/campos/list');
         } else {
-            res.status(404).json({ message: 'El área del campo no cumple con los requisitos' });
+            const estados = await getEstadosForCampos();
+            const usuario = await getUsuario(req.session.user);
+            const rol = await getNombre(usuario?.dataValues.rol_usuario);
+            const date = getDate();
+            res.render('fields_edit', { campo, date, usuario, rol, estados, error: '* El área del campo es muy pequeña' });
         }
     } else {
         res.status(404).json({ message: 'No existe el campo' });
@@ -97,3 +107,7 @@ export const mostrarTrazado = async (req: Request, res: Response) => {
         res.render('login', { error: '' });
     }
 }
+
+export const cancelarEditarCampo = (req: Request, res: Response) => {
+    res.redirect('/campos/list');
+};

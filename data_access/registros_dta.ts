@@ -1,8 +1,16 @@
 import { Request } from "express";
 import Registro from "../models/registro";
+import { Op, where } from "sequelize";
 
-export const getRegistros = async () => {
+export const getAllRegistros = async () => {
     const registros = await Registro.findAll();
+    return registros;
+}
+
+export const getRegistros = async (campo: string) => {
+    const registros = await Registro.findAll({
+        where: { campo: campo }
+    });
     return registros;
 }
 
@@ -15,8 +23,7 @@ export const getRegistro = async (id: string) => {
     }
 }
 
-export const postRegistro = async (req: Request) => {
-    const { body } = req;
+export const postRegistro = async (body: any) => {
     const registro = await Registro.create({
         campo: body.campo,
         cultivo: body.cultivo,
@@ -31,7 +38,7 @@ export const postRegistro = async (req: Request) => {
 export const deleteRegistro = async (id: string) => {
     const registro = await Registro.findByPk(id);
     if (registro) {
-        await registro.update({ activo: false });
+        await registro.destroy();
     } 
 }
 
@@ -46,7 +53,39 @@ export const searchRegistro = async (campo: number) => {
     }
 }
 
-export const countRegistros = async () => {
+export const countAllRegistros = async () => {
     const nr = Registro.count();
     return nr;
+}
+
+export const countRegistros = async (id: string) => {
+    const nc = Registro.count({
+        where: { campo: id }
+    });
+    return nc;
+}
+
+export const getAllSumaProduccion = async (id: string, year: number) => {
+    const suma = await Registro.sum('cantidad', {
+        where: {
+          cultivo: id,
+          fecha_cosecha: {
+            [Op.between]: [new Date(`${year}-01-01`), new Date(`${year}-12-31`)]
+          }
+        }
+      })
+    return suma;
+}
+
+export const getSumaProduccion = async (cultivo: string, year: number, campo: string) => {
+    const suma = await Registro.sum('cantidad', {
+        where: {
+          cultivo: cultivo,
+          campo: campo,
+          fecha_cosecha: {
+            [Op.between]: [new Date(`${year}-01-01`), new Date(`${year}-12-31`)]
+          }
+        }
+      })
+    return suma;
 }

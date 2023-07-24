@@ -3,6 +3,8 @@ import { deleteSiembra, getSiembra, getSiembraByCampo, getSiembras, postSiembra,
 import { changeEstado, getCampo } from "../../data_access/campos_dta";
 import { getCultivo } from "../../data_access/cultivos_dta";
 import { fechaEstimada } from "../processes/date_controller";
+import { getNombreEstado } from "../../data_access/estados_dta";
+import { getConfig } from "../../data_access/configuracion_dta";
 
 export const listarSiembras = async (req: Request, res: Response) => {
     const siembras = await getSiembras();
@@ -12,8 +14,21 @@ export const listarSiembras = async (req: Request, res: Response) => {
 export const buscarSiembra = async (req: Request, res: Response) => {
     const { id } = req.params;
     const siembra = await getSiembraByCampo(id);
+    const campo = await getCampo(id);
+    const estado = await getNombreEstado(campo?.dataValues.estado);
+    const cultivo = await getCultivo(siembra?.dataValues.id_cultivo);
+    const data = {
+        id: siembra?.dataValues.id,
+        campo: campo?.dataValues.nombre,
+        estado: estado,
+        cultivo: cultivo?.dataValues.nombre,
+        fecha_siembra: siembra?.dataValues.fecha_siembra,
+        produccion_estimada: siembra?.dataValues.produccion_estimada,
+        fecha_cosecha_est: siembra?.dataValues.fecha_cosecha_est
+    }
+
     if (siembra !== null) {
-        res.json(siembra);
+        res.json(data);
     } else {
         res.status(404).json({ message: 'No existe la siembra' });
     }
@@ -35,7 +50,8 @@ export const agregarSiembra = async (req: Request, res: Response) => {
             fecha_cosecha_est: fecha_est
         }
         await postSiembra(newSimbra);
-        await changeEstado(body.id_campo);
+        const conf = await getConfig();
+        await changeEstado(body.id_campo, conf[0].dataValues.campo_sembrado);
         res.status(200).json({ message: 'Siembra agregada correctamente' });
     }
 }
@@ -44,8 +60,10 @@ export const eliminarSiembra = async (req: Request, res: Response) => {
     const { id } = req.params;
     const siembra = await getSiembra(id);
     if (siembra !== null) {
+        const conf = await getConfig();
+        await changeEstado(siembra.dataValues.id_campo, conf[0].dataValues.campo_vacio);
         await deleteSiembra(id);
-        res.status(200).json({ message: 'Siembra eliminada correctamente' });
+        res.redirect('/trazado');
     } else {
         res.status(404).json({ message: 'No existe la siembra' });
     }

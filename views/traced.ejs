@@ -270,7 +270,7 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="/calendario" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-calendar"></i>
                             <div data-i18n="Basic">Calendario</div>
                         </a>
@@ -374,7 +374,7 @@
                                                         <span class="menu-header-text">Configuración</span>
                                                     </li>
                                                     <li class="menu-item">
-                                                        <a href="#" class="menu-link">
+                                                        <a href="/configuracion" class="menu-link">
                                                             <i class="menu-icon tf-icons bx bx-cog"></i>
                                                             <div data-i18n="Analytics">Configuraciones</div>
                                                         </a>
@@ -461,7 +461,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="/configuracion">
                                             <i class="bx bx-cog me-2"></i>
                                             <span class="align-middle">Configuraciones</span>
                                         </a>
@@ -522,75 +522,103 @@
                         <p id="error" class="mb-n1 py-2" style="color:#ff5c5c; font-size: small; display: none;">* El
                             área del campo es muy pequeña</p>
                     </div>
+
                     <div id="ContainerSiembra" class="container_siembra hideContainerSiembra">
-                        <h5 class="mb-2 py-2">Campo</h5>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Nombre</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-pencil"></i></span>
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre del campo"
-                                    name="nombre" aria-describedby="basic-icon-default-fullname2" readonly />
-                            </div>
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 class="mb-n2 py-2 flex-shrink-0">Información</h5>
+                            <button id="btnCerrar2" onclick="cerrarDataSiembra()" class="btn" title="Cerrar">
+                                <span class="tf-icons bx bx-x-circle"></span></button>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Estado</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-square"></i></span>
-                                <input type="number" class="form-control" id="estado" placeholder="Área del campo"
-                                    name="area" aria-describedby="basic-icon-default-fullname2" readonly />
-                            </div>
+                        <small id="idSiembra"></small>
+                        <h5 class="mb-2 py-0">Campo</h5>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-pencil"></i><label class="px-2" for="basic-icon-default-fullname">Nombre:</label><small class="flex-shrink-0" id="nombre"></small></span>
                         </div>
-                        <h5 class="mb-2 py-2">Cultivo</h5>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Cultivo</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-pencil"></i></span>
-                                <input type="text" class="form-control" id="cultivo" placeholder="Nombre del campo"
-                                    name="nombre" aria-describedby="basic-icon-default-fullname2" readonly />
-                            </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-collection"></i><label class="px-2" for="basic-icon-default-fullname">Estado:</label><small class="flex-shrink-0" id="estado"></small></span>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Fecha de sembrado</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-square"></i></span>
-                                <input type="number" class="form-control" id="fecha_siembra"
-                                    placeholder="Área del campo" name="area"
-                                    aria-describedby="basic-icon-default-fullname2" readonly />
-                            </div>
+                        <h5 class="mb-2 py-1">Siembra</h5>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-spa"></i><label class="px-2" for="basic-icon-default-fullname">Cultivo:</label><small class="flex-shrink-0" id="cultivo"></small></span>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Producción estimada</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-square"></i></span>
-                                <input type="number" class="form-control" id="stock_estimado"
-                                    placeholder="Área del campo" name="area"
-                                    aria-describedby="basic-icon-default-fullname2" readonly />
-                            </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-calendar"></i><label class="px-2" for="basic-icon-default-fullname">Fecha de sembrado:</label><small class="flex-shrink-0" id="fecha_siembra"></small></span>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Fecha de cosecha
-                                estimada</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-square"></i></span>
-                                <input type="number" class="form-control" id="fecha_cosecha_est"
-                                    placeholder="Área del campo" name="area"
-                                    aria-describedby="basic-icon-default-fullname2" readonly />
-                            </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-stats"></i><label class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small class="flex-shrink-0" id="stock_estimado"></small></span>
                         </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-calendar"></i><label class="px-2" for="basic-icon-default-fullname">Fecha de cosecha estimada:</label><small class="flex-shrink-0" id="fecha_cosecha_est"></small></span>
+                        </div>
+                        <button id="btnSaveCampo" onclick="procesoCosecha()" class="btn btn-primary">
+                            <span class="tf-icons bx bx-check-circle"></span> Cosechar</button>
+                            <a class="btn btn-outline-danger" onclick="eliminarSiembra()"
+                                title="Cancelar siembra"><i
+                                    class="bx bx-trash idred"></i></a>
                     </div>
+
+                    <div id="ContainerCosechar" class="container_cosechar hideContainerCosechar">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 class="mb-n2 py-2 flex-shrink-0">Registro de la Cosecha</h5>
+                            <button id="btnCerrar2" onclick="cerrarCosecha()" class="btn" title="Cancelar">
+                                <span class="tf-icons bx bx-x-circle"></span></button>
+                        </div>
+                        <form action="/registros/add" method="post">
+                            <div class="mb-2">
+                                <label class="form-label" for="basic-icon-default-fullname">Número</label>
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                            class="bx bx-stats"></i></span>
+                                    <input type="number" class="form-control" id="identificadorSiembra"
+                                        name="id" aria-describedby="basic-icon-default-fullname2" readonly />
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="basic-icon-default-fullname">Producción obtenida (Kg)</label>
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                            class="bx bx-stats"></i></span>
+                                    <input type="number" class="form-control" id="produccionObtenida" placeholder="Producción obtenida"
+                                        name="produccion" aria-describedby="basic-icon-default-fullname2" required />
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="html5-date-input" class="form-label">Fecha de cosecha</label>
+                                <div class="col-md-10" style="width: 100%">
+                                    <input class="form-control" name="fecha_cosecha" style="width: 100%;" type="date" min="<%= date %>" value="<%= date %>" required/>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="basic-icon-default-message">Novedades</label>
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-message2" class="input-group-text"><i
+                                            class="bx bx-detail"></i></span>
+                                    <textarea class="form-control" placeholder="Novedades de la cosecha"
+                                        name="novedades" aria-describedby="basic-icon-default-message2"></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit">
+                                <span class="tf-icons bx bx-save"></span> Guardar</button>
+                        </form>
+                    </div>
+
                     <div id="ContainerCultivoAdd" class="container_datos_cultivo hideContainerAddCultivo">
-                        <h5 class="mb-2 py-2">Sembrar cultivo</h5>
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 class="mb-1 py-2 flex-shrink-0">Sembrar cultivo</h5>
+                            <button id="btnCerrar" onclick="cerrarSiembra()" class="btn" title="Cancelar">
+                                <span class="tf-icons bx bx-x-circle"></span></button>
+                        </div>
                         <form>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <small id="idCampo"></small>
                                 <label for="exampleFormControlSelect1" class="form-label">Cultivo</label>
-                                <select class="form-select" id="selectedCultivo" aria-label="Seleccionar el cultivo">
+                                <select class="form-select" id="selectedCultivo" aria-label="Seleccionar el cultivo" onchange="doPrediccion()">
                                     <% if (cultivos) {%>
                                         <% for (var i=0; i < cultivos.length; i++) { %>
                                             <option value="<%= cultivos[i].id %>">
@@ -600,15 +628,33 @@
                                                 <% } %>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="html5-date-input" class="form-label">Fecha de siembra</label>
                                 <div class="col-md-10" style="width: 100%">
-                                    <input class="form-control" style="width: 100%;" type="date" id="fechaSiembra" />
+                                    <input class="form-control" style="width: 100%;" type="date" id="fechaSiembra" min="<%= date %>" value="<%= date %>"/>
                                 </div>
                             </div>
                             <button id="btnSaveCampo" onclick="saveSiembra()" class="btn btn-primary">
-                                <span class="tf-icons bx bx-plus-circle"></span> Sembrar cultivo</button>
+                                <span class="tf-icons bx bx-plus-circle"></span> Sembrar</button>
                         </form>
+                    </div>
+
+                    <div id="ContainerPrediccion" class="container_prediccion hideContainerPrediccion">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 class="mb-n2 py-2 flex-shrink-0">Predicción</h5>
+                        </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-spa"></i><label class="px-2" for="basic-icon-default-fullname">Cultivo:</label><small class="flex-shrink-0" id="nomcultivo"></small></span>
+                        </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-stats"></i><label class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small class="flex-shrink-0" id="prediccion_estimada"></small></span>
+                        </div>
+                        <div class="mb-2">
+                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                class="bx bx-money"></i><label class="px-2" for="basic-icon-default-fullname">Ganancia estimada:</label><small class="flex-shrink-0" id="ganancia_estimada"></small></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -647,7 +693,7 @@
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <script>
         function readAllCamposApi() {
             $.ajax({
@@ -682,13 +728,12 @@
                                     fillColor: color,
                                     fillOpacity: 0.4,
                                     id: response[i].id,
-                                    campo: response[i].nombre,
                                     estado: response[i].estado
                                 });
 
                                 newPolygon.setMap(oMapaGoogle);
                                 newPolygon.addListener("click", function () {
-                                    showPolygon(newPolygon.id, newPolygon.campo, newPolygon.estado);
+                                    showPolygon(newPolygon.id, newPolygon.estado);
                                 });
                             }
                         }
@@ -701,18 +746,32 @@
             });
         }
 
-        function showPolygon(id, campo, estado) {
+        function showPolygon(id, estado) {
             if (estado == 1) {
                 elemento = document.getElementById('ContainerCultivoAdd')
                 elemento.classList.remove('hideContainerAddCultivo')
+                elemento = document.getElementById('ContainerPrediccion')
+                elemento.classList.remove('hideContainerPrediccion')
                 let idCampo = document.getElementById("idCampo")
                 idCampo.title = id
+                cerrarDataSiembra()
+                doPrediccion()
+                cerrarCosecha()
             } else {
-                showSiembra(id, campo, estado)
+                showSiembra(id)
             }
         }
 
-        function showSiembra(id, campo, estado) {
+        function cerrarSiembra(){
+            elemento = document.getElementById('ContainerCultivoAdd')
+            elemento.classList.add('hideContainerAddCultivo')
+            elemento = document.getElementById('ContainerPrediccion')
+            elemento.classList.add('hideContainerPrediccion')
+            let idCampo = document.getElementById("idCampo")
+            idCampo.title = ""
+        }
+
+        function showSiembra(id) {
             $.ajax({
                 url: 'http://localhost:8000/siembras/' + id,
                 method: 'GET',
@@ -725,17 +784,83 @@
                     const fecha_siembra = document.getElementById("fecha_siembra")
                     const stock_estimado = document.getElementById("stock_estimado")
                     const fecha_cosecha_est = document.getElementById("fecha_cosecha_est")
-                    console.log(response)
-                    /*if (response != null) {
-                        campo.value = response[0].id_campo
-                        estado.value = 'Sembrado'
-                        cultivo.value = response[0].id_cultivo
-                        fecha_siembra.value = response[0].fecha_siembra
-                        stock_estimado.value = response[0].stock_estimado
-                        fecha_cosecha_est.value = response[0].fecha_cosecha_est
+                    const produccion = document.getElementById("produccionObtenida")
+                    const siembra = document.getElementById("idSiembra")
+                    const idsiembra = document.getElementById("identificadorSiembra")
+
+                    if (response != null) {
+                        siembra.title = response.id
+                        idsiembra.value = response.id
+                        campo.textContent = response.campo
+                        estado.textContent = response.estado
+                        cultivo.textContent = response.cultivo
+                        fecha_siembra.textContent = response.fecha_siembra
+                        stock_estimado.textContent = response.produccion_estimada + ' Kg'
+                        fecha_cosecha_est.textContent = response.fecha_cosecha_est
+                        produccion.value = response.produccion_estimada
                     }
                     elemento = document.getElementById('ContainerSiembra')
-                    elemento.classList.remove('hideContainerSiembra');*/
+                    elemento.classList.remove('hideContainerSiembra')
+                    cerrarSiembra()
+                    cerrarCosecha()
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    console.error(error);
+                }
+            });
+        }
+
+        function cerrarDataSiembra(){
+            elemento = document.getElementById('ContainerSiembra')
+            elemento.classList.add('hideContainerSiembra')
+        }
+
+        function procesoCosecha(){
+            elemento = document.getElementById('ContainerCosechar')
+            elemento.classList.remove('hideContainerCosechar')
+            cerrarDataSiembra()
+        }
+
+        function cerrarCosecha(){
+            elemento = document.getElementById('ContainerCosechar')
+            elemento.classList.add('hideContainerCosechar')
+        }
+
+        function eliminarSiembra(){
+            const siembra = document.getElementById("idSiembra").title
+            Swal.fire({
+                title: '¿Desea cancelar la siembra de este campo?',
+                text: "La siembra se eliminará permanentemente",
+                icon: 'warning',
+                backdrop: false,
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = '/siembras/delete/' + siembra;
+                }
+            })
+        }
+
+        function doPrediccion(){
+            const id_cult= document.getElementById("selectedCultivo").value
+            const id_camp = document.getElementById("idCampo").title
+            $.ajax({
+                url: 'http://localhost:8000/trazado/'+id_camp +'/'+id_cult,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Respuesta exitosa de la API
+                    const cultivo = document.getElementById("nomcultivo")
+                    const prediccion_estimada = document.getElementById("prediccion_estimada")
+                    const ganancia_estimada = document.getElementById("ganancia_estimada")
+
+                    if (response != null) {
+                        cultivo.textContent = response.cultivo
+                        prediccion_estimada.textContent = response.produccion_estimada + ' Kg'
+                        ganancia_estimada.textContent = '$' + response.ganancia_estimada
+                    }
                 },
                 error: function (xhr, status, error) {
                     // Ocurrió un error al hacer la solicitud
@@ -746,6 +871,10 @@
     </script>
 
     <style>
+        .idred {
+            color: #FF4C4C;
+        }
+
         .container_datos {
             width: 16rem;
             padding: 1rem;
@@ -757,7 +886,7 @@
             background-color: white;
             position: absolute;
             right: 0;
-            z-index: 9999;
+            z-index: 999;
         }
 
         .hideContainer {
@@ -772,8 +901,16 @@
             display: none;
         }
 
+        .hideContainerPrediccion {
+            display: none;
+        }
+
+        .hideContainerCosechar {
+            display: none;
+        }
+
         .container_datos_cultivo {
-            width: 15rem;
+            width: 16rem;
             padding: 1rem;
             margin-top: 1rem;
             margin-right: 1rem;
@@ -787,7 +924,7 @@
         }
 
         .container_siembra {
-            width: 16rem;
+            width: 18rem;
             padding: 1rem;
             margin-top: 1rem;
             margin-right: 1rem;
@@ -797,7 +934,36 @@
             background-color: white;
             position: absolute;
             right: 0;
-            z-index: 9999;
+            z-index: 999;
+        }
+
+        .container_prediccion {
+            width: 18rem;
+            padding: 1rem;
+            margin-right: 1rem;
+            margin-bottom: 2rem;
+            border-style: solid;
+            border-width: 0;
+            border-radius: 10px;
+            background-color: white;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+        }
+
+        .container_cosechar {
+            width: 18rem;
+            padding: 1rem;
+            margin-right: 1rem;
+            margin-top: 1rem;
+            border-style: solid;
+            border-width: 0;
+            border-radius: 10px;
+            background-color: white;
+            position: absolute;
+            right: 0;
+            z-index: 999;
         }
     </style>
 </body>

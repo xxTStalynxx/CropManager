@@ -18,7 +18,7 @@ const cultivos_dta_1 = require("../../data_access/cultivos_dta");
 const getDate = () => {
     const timeElapsed = Date.now();
     const date = new Date(timeElapsed);
-    const formatDate = ((0, moment_1.default)(date)).format('DD-MM-YYYY');
+    const formatDate = ((0, moment_1.default)(date)).format('YYYY-MM-DD');
     return formatDate;
 };
 exports.getDate = getDate;

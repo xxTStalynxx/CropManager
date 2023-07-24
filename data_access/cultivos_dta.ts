@@ -72,3 +72,10 @@ export const countCultivos = async () => {
     const nc = Cultivo.count();
     return nc;
 }
+
+export const getNombreCultivo = async (id: string) => {
+    const cultivo = await Cultivo.findByPk(id);
+    if (cultivo) {
+        return cultivo.dataValues.nombre;
+    }
+}

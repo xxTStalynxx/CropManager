@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import { deleteCampo, getCampo, getCampos, postCampo, putCampo } from "../../data_access/campos_dta";
-import { getArea } from "../validations/parameters";
 import { getCultivo_salida, getCultivo_salidas, postCultivo_salida } from "../../data_access/cultivos_salida_dta";
-import { postCultivo } from "../../data_access/cultivos_dta";
 
 export const listarCultivo_salidas = async (req: Request, res: Response) => {
     const cultivo_salidas = await getCultivo_salidas();

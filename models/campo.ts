@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import db from "../database/connect";
-import Estado from "./estado";
 
 const Campo = db.define('campos',{
     encargado:{

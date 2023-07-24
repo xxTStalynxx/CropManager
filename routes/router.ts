@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { agregarCampo, buscarCampo, editarCampo, eliminarCampo, listarCampos,mostrarCampos,mostrarListaCampos,mostrarTrazado } from '../business_logic/controllers/campos_controller';
+import { agregarCampo, buscarCampo, cancelarEditarCampo, editarCampo, eliminarCampo, listarCampos,mostrarCampos, mostrarTrazado } from '../business_logic/controllers/campos_controller';
 import { agregarRol, buscarRol, cancelarEditarRol, editarRol, eliminarRol, listarRoles, restaurarRol } from "../business_logic/controllers/roles_controller";
 import { agregarCultivo, buscarCultivo, cancelarEditarCultivo, editarCultivo, eliminarCultivo, listarCultivos, restaurarCultivo } from "../business_logic/controllers/cultivos_controller";
 import { agregarCultivo_salida, buscarCultivo_salida, listarCultivo_salidas } from "../business_logic/controllers/cultivos_salida_controller";
@@ -10,8 +10,11 @@ import { agregarSalida, buscarSalida, eliminarSalida, listarSalidas } from "../b
 import { agregarSiembra, buscarSiembra, eliminarSiembra, listarSiembras } from "../business_logic/controllers/siembras_controller";
 import { agregarUsuario, buscarUsuario, cambiarRol, cancelarEditarUsuario, editarUsuario, eliminarUsuario, listarUsuarios, mostrarPerfil, restaurarUsuario } from "../business_logic/controllers/usuarios_controller";
 import { cerrarSesion, enviarEmail, iniciarSesion, inicioSesion, restaurarContrasena, showRegistro, showRestaurar } from "../business_logic/processes/login_controller";
-import { showForgot, showMain } from "../business_logic/processes/main_controller";
-import { getCamposStatsChart, showDashboard } from "../business_logic/controllers/panel_controller";
+import { showCropManager, showForgot, showMain, showNosotros } from "../business_logic/processes/main_controller";
+import { getCamposStatsChart, getProduccionStats, showDashboard } from "../business_logic/controllers/panel_controller";
+import { doPrediccion } from "../business_logic/processes/prediccion_controller";
+import { dataCalendar, showCalendar } from "../business_logic/controllers/calendar_controller";
+import { editarConfig, guardarConfig, mostrarConfig } from "../business_logic/processes/config_controller";
 
 const router = Router();
 
@@ -21,6 +24,8 @@ router.get('/login', inicioSesion);
 router.post('/iniciarSesion', iniciarSesion);
 router.get('/logout', cerrarSesion);
 router.get('/registro', showRegistro);
+router.get('/nosotros', showNosotros);
+router.get('/cropmanager', showCropManager);
 
 //Rutas para recuperar contraseña
 router.get('/forgot', showForgot);
@@ -31,6 +36,16 @@ router.post('/restaurarContrasena/:token/:id', restaurarContrasena);
 //Rutas para el panel de control
 router.get('/inicio', showDashboard);
 router.get('/camposChart', getCamposStatsChart);
+router.get('/produccionChart', getProduccionStats);
+
+//Rutas para el calendario
+router.get('/calendario', showCalendar);
+router.get('/dataCalendar', dataCalendar);
+
+//Rutas para la configuracion
+router.get('/configuracion', mostrarConfig);
+router.post('/configuracion', guardarConfig);
+router.post('/configuracion/edit', editarConfig);
 
 //Rutas para usuarios
 router.get('/usuarios', listarUsuarios);
@@ -75,21 +90,23 @@ router.get('/campos', mostrarCampos);
 router.get('/campos/list', listarCampos);
 router.get('/campos/:id', buscarCampo);
 router.post('/campos/add', agregarCampo);
-router.put('/campos/edit/:id', editarCampo);
+router.post('/campos/edit/:id', editarCampo);
 router.get('/campos/delete/:id', eliminarCampo);
 router.get('/trazado', mostrarTrazado);
+router.get('/trazado/:id_camp/:id_cult', doPrediccion);
+router.get('/cancelEditCampo', cancelarEditarCampo);
 
 //Rutas para siembras
 router.get('/siembras', listarSiembras);
 router.get('/siembras/:id', buscarSiembra);
 router.post('/siembras/add', agregarSiembra);
-router.delete('/siembras/delete/:id', eliminarSiembra);
+router.get('/siembras/delete/:id', eliminarSiembra);
 
 //Rutas para registros
 router.get('/registros', listarRegistros);
 router.get('/registros/:id', buscarRegistro);
 router.post('/registros/add', agregarRegistro);
-router.delete('/registros/delete/:id', eliminarRegistro);
+router.get('/registros/delete/:id', eliminarRegistro);
 
 //Rutas para salidas
 router.get('/salidas', listarSalidas);

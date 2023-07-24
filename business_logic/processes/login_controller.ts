@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import { generarToken, sendEmail } from "./mail_controller";
 import { getEmailTemplate } from "../../views/template";
 import { validarPassword } from "../validations/validations";
-import Swal from 'sweetalert2';
 
 export const inicioSesion = async (req: Request, res: Response) => {
     if (req.session.user) {

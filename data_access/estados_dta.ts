@@ -1,10 +1,16 @@
 import { Request } from "express";
 import Estado from "../models/estado";
-import sequelize from "sequelize";
-import Campo from "../models/campo";
+import { Op } from "sequelize";
 
 export const getEstados = async () => {
     const estados = await Estado.findAll();
+    return estados;
+}
+
+export const getEstadosForCampos = async () => {
+    const estados = await Estado.findAll({
+        where: { id: { [Op.ne]: 2 } }
+    });
     return estados;
 }
 

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.countCultivos = exports.searchCultivo = exports.restoreCultivo = exports.deleteCultivo = exports.putCultivo = exports.postCultivo = exports.getCultivo = exports.getCultivosforCampos = exports.getCultivos = void 0;
+exports.getNombreCultivo = exports.countCultivos = exports.searchCultivo = exports.restoreCultivo = exports.deleteCultivo = exports.putCultivo = exports.postCultivo = exports.getCultivo = exports.getCultivosforCampos = exports.getCultivos = void 0;
 const cultivo_1 = __importDefault(require("../models/cultivo"));
 const getCultivos = () => __awaiter(void 0, void 0, void 0, function* () {
     const cultivos = yield cultivo_1.default.findAll();
@@ -88,4 +88,11 @@ const countCultivos = () => __awaiter(void 0, void 0, void 0, function* () {
     return nc;
 });
 exports.countCultivos = countCultivos;
+const getNombreCultivo = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const cultivo = yield cultivo_1.default.findByPk(id);
+    if (cultivo) {
+        return cultivo.dataValues.nombre;
+    }
+});
+exports.getNombreCultivo = getNombreCultivo;
 //# sourceMappingURL=cultivos_dta.js.map

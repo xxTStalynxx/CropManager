@@ -13,6 +13,9 @@ const usuarios_controller_1 = require("../business_logic/controllers/usuarios_co
 const login_controller_1 = require("../business_logic/processes/login_controller");
 const main_controller_1 = require("../business_logic/processes/main_controller");
 const panel_controller_1 = require("../business_logic/controllers/panel_controller");
+const prediccion_controller_1 = require("../business_logic/processes/prediccion_controller");
+const calendar_controller_1 = require("../business_logic/controllers/calendar_controller");
+const config_controller_1 = require("../business_logic/processes/config_controller");
 const router = (0, express_1.Router)();
 //Rutas generales
 router.get('/', main_controller_1.showMain);
@@ -20,6 +23,8 @@ router.get('/login', login_controller_1.inicioSesion);
 router.post('/iniciarSesion', login_controller_1.iniciarSesion);
 router.get('/logout', login_controller_1.cerrarSesion);
 router.get('/registro', login_controller_1.showRegistro);
+router.get('/nosotros', main_controller_1.showNosotros);
+router.get('/cropmanager', main_controller_1.showCropManager);
 //Rutas para recuperar contraseña
 router.get('/forgot', main_controller_1.showForgot);
 router.post('/enviarEmail', login_controller_1.enviarEmail);
@@ -28,6 +33,14 @@ router.post('/restaurarContrasena/:token/:id', login_controller_1.restaurarContr
 //Rutas para el panel de control
 router.get('/inicio', panel_controller_1.showDashboard);
 router.get('/camposChart', panel_controller_1.getCamposStatsChart);
+router.get('/produccionChart', panel_controller_1.getProduccionStats);
+//Rutas para el calendario
+router.get('/calendario', calendar_controller_1.showCalendar);
+router.get('/dataCalendar', calendar_controller_1.dataCalendar);
+//Rutas para la configuracion
+router.get('/configuracion', config_controller_1.mostrarConfig);
+router.post('/configuracion', config_controller_1.guardarConfig);
+router.post('/configuracion/edit', config_controller_1.editarConfig);
 //Rutas para usuarios
 router.get('/usuarios', usuarios_controller_1.listarUsuarios);
 router.get('/usuarios/:id', usuarios_controller_1.buscarUsuario);
@@ -67,19 +80,21 @@ router.get('/campos', campos_controller_1.mostrarCampos);
 router.get('/campos/list', campos_controller_1.listarCampos);
 router.get('/campos/:id', campos_controller_1.buscarCampo);
 router.post('/campos/add', campos_controller_1.agregarCampo);
-router.put('/campos/edit/:id', campos_controller_1.editarCampo);
+router.post('/campos/edit/:id', campos_controller_1.editarCampo);
 router.get('/campos/delete/:id', campos_controller_1.eliminarCampo);
 router.get('/trazado', campos_controller_1.mostrarTrazado);
+router.get('/trazado/:id_camp/:id_cult', prediccion_controller_1.doPrediccion);
+router.get('/cancelEditCampo', campos_controller_1.cancelarEditarCampo);
 //Rutas para siembras
 router.get('/siembras', siembras_controller_1.listarSiembras);
 router.get('/siembras/:id', siembras_controller_1.buscarSiembra);
 router.post('/siembras/add', siembras_controller_1.agregarSiembra);
-router.delete('/siembras/delete/:id', siembras_controller_1.eliminarSiembra);
+router.get('/siembras/delete/:id', siembras_controller_1.eliminarSiembra);
 //Rutas para registros
 router.get('/registros', registros_controller_1.listarRegistros);
 router.get('/registros/:id', registros_controller_1.buscarRegistro);
 router.post('/registros/add', registros_controller_1.agregarRegistro);
-router.delete('/registros/delete/:id', registros_controller_1.eliminarRegistro);
+router.get('/registros/delete/:id', registros_controller_1.eliminarRegistro);
 //Rutas para salidas
 router.get('/salidas', salidas_controller_1.listarSalidas);
 router.get('/salidas/:id', salidas_controller_1.buscarSalida);

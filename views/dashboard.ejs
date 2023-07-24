@@ -79,7 +79,7 @@
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="/calendario" class="menu-link">
               <i class="menu-icon tf-icons bx bx-calendar"></i>
               <div data-i18n="Basic">Calendario</div>
             </a>
@@ -182,7 +182,7 @@
                             <span class="menu-header-text">Configuración</span>
                           </li>
                           <li class="menu-item">
-                            <a href="#" class="menu-link">
+                            <a href="/configuracion" class="menu-link">
                               <i class="menu-icon tf-icons bx bx-cog"></i>
                               <div data-i18n="Analytics">Configuraciones</div>
                             </a>
@@ -267,7 +267,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="/configuracion">
                       <i class="bx bx-cog me-2"></i>
                       <span class="align-middle">Configuraciones</span>
                     </a>
@@ -298,112 +298,113 @@
               <div class="col-lg-12 col-md-12 order-1">
                 <div class="row">
                   <% if (usuario.rol_usuario==1) {%>
-                  <div class="col-lg-3 col-md-4 col-6 mb-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                          <div class="avatar flex-shrink-0">
-                            <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-group"></i></span>
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                              <a class="dropdown-item" href="/usuarios">Ver más</a>
+                    <div class="col-lg-3 col-md-4 col-6 mb-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="card-title d-flex align-items-start justify-content-between">
+                            <div class="avatar flex-shrink-0">
+                              <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-group"></i></span>
+                            </div>
+                            <div class="dropdown">
+                              <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                <a class="dropdown-item" href="/usuarios">Ver más</a>
+                              </div>
                             </div>
                           </div>
+                          <span>Usuarios</span>
+                          <h3 class="card-title mb-2">
+                            <%= stats[0].numUsuarios %>
+                          </h3>
+                          <small class="text-success fw-semibold"><i class="bx bx-chevron-up"></i></small>
+                          <small> Total de usuarios</small>
                         </div>
-                        <span>Usuarios</span>
-                        <h3 class="card-title mb-2">
-                          <%= stats[0].numUsuarios %>
-                        </h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>+4</small>
-                        <small> El día de hoy</small>
                       </div>
                     </div>
-                  </div>
-                  <% } %>
-                  <div class="col-lg-3 col-md-4 col-6 mb-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                          <div class="avatar flex-shrink-0">
-                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-spa"></i></span>
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                              <a class="dropdown-item" href="/cultivos">Ver más</a>
+                    <% } %>
+                      <div class="col-lg-3 col-md-4 col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <span class="avatar-initial rounded bg-label-success"><i class="bx bx-spa"></i></span>
+                              </div>
+                              <div class="dropdown">
+                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                  <a class="dropdown-item" href="/cultivos">Ver más</a>
+                                </div>
+                              </div>
                             </div>
+                            <span>Cultivos</span>
+                            <h3 class="card-title mb-2">
+                              <%= stats[1].numCultivos %>
+                            </h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-chevron-up"></i></small>
+                            <small> Total de cultivos</small>
                           </div>
                         </div>
-                        <span>Cultivos</span>
-                        <h3 class="card-title mb-2">
-                          <%= stats[1].numCultivos %>
-                        </h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>+1</small>
-                        <small> Nuevo</small>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-4 col-6 mb-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                          <div class="avatar flex-shrink-0">
-                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-layout"></i></span>
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                              <a class="dropdown-item" href="/trazado">Ver mapa</a>
-                              <a class="dropdown-item" href="/campos/list">Lista de campos</a>
+                      <div class="col-lg-3 col-md-4 col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <span class="avatar-initial rounded bg-label-info"><i class="bx bx-layout"></i></span>
+                              </div>
+                              <div class="dropdown">
+                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                  <a class="dropdown-item" href="/trazado">Ver mapa</a>
+                                  <a class="dropdown-item" href="/campos/list">Lista de campos</a>
+                                </div>
+                              </div>
                             </div>
+                            <span>Campos</span>
+                            <h3 class="card-title mb-2">
+                              <%= stats[2].numCampos %>
+                            </h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-chevron-up"></i></small>
+                            <small> Total de campos</small>
                           </div>
                         </div>
-                        <span>Campos</span>
-                        <h3 class="card-title mb-2">
-                          <%= stats[2].numCampos %>
-                        </h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>+0</small>
-                        <small> Este mes</small>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-4 col-6 mb-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                          <div class="avatar flex-shrink-0">
-                            <span class="avatar-initial rounded bg-label-warning"><i class="bx bxs-layout"></i></span>
-                          </div>
-                          <div class="dropdown">
-                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                              <a class="dropdown-item" href="/registros">Ver más</a>
+                      <div class="col-lg-3 col-md-4 col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <span class="avatar-initial rounded bg-label-warning"><i
+                                    class="bx bxs-layout"></i></span>
+                              </div>
+                              <div class="dropdown">
+                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                  <a class="dropdown-item" href="/registros">Ver más</a>
+                                </div>
+                              </div>
                             </div>
+                            <span>Cosechas</span>
+                            <h3 class="card-title mb-2">
+                              <%= stats[3].numRegistros %>
+                            </h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-chevron-up"></i></small>
+                            <small> Total de cosechas</small>
                           </div>
                         </div>
-                        <span>Cosechas</span>
-                        <h3 class="card-title mb-2">
-                          <%= stats[3].numRegistros %>
-                        </h3>
-                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>+1</small>
-                        <small> Este mes</small>
                       </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -433,87 +434,84 @@
                   </div>
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                      <div style="padding-left: 28%;" id="camposStatisticsChart"></div>
+                      <div style="padding-left: 26%;" id="camposStatisticsChart"></div>
                     </div>
                     <ul class="p-0 m-0">
                       <% if (estados) {%>
-                      <% for (var i=0; i < estados.length; i++) { %>
-                      <li class="d-flex mb-3 pb-1">
-                        <div class="avatar flex-shrink-0 me-3">
-                          <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-collection"></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                          <div class="me-2">
-                            <h6 class="mb-0"><%= estados[i].nombre %></h6>
-                            <small class="text-muted"><%= estados[i].descripcion %></small>
-                          </div>
-                          <div class="user-progress">
-                            <small class="fw-semibold"><%= estados[i].dataValues.numCampos %></small>
-                          </div>
-                        </div>
-                      </li>
-                      <% } %>
-                      <% } %>
+                        <% for (var i=0; i < estados.length; i++) { %>
+                          <li class="d-flex mb-3 pb-1">
+                            <div class="avatar flex-shrink-0 me-3">
+                              <span class="avatar-initial rounded bg-label-primary"><i
+                                  class="bx bx-collection"></i></span>
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                              <div class="me-2">
+                                <h6 class="mb-0">
+                                  <%= estados[i].nombre %>
+                                </h6>
+                                <small class="text-muted">
+                                  <%= estados[i].descripcion %>
+                                </small>
+                              </div>
+                              <div class="user-progress">
+                                <small class="fw-semibold">
+                                  <%= estados[i].dataValues.numCampos %>
+                                </small>
+                              </div>
+                            </div>
+                          </li>
+                          <% } %>
+                            <% } %>
                     </ul>
                   </div>
                 </div>
               </div>
               <!-- /Estadísticas de Campos  -->
 
-              <!-- Expense Overview -->
+              <!-- Estadisticas de la produccion-->
               <div class="col-md-6 col-lg-5 order-1 mb-4">
                 <div class="card h-auto">
-                  <div class="card-header">
-                    <ul class="nav nav-pills" role="tablist">
-                      <li class="nav-item">
-                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                          data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income"
-                          aria-selected="true">
-                          Cultivos
-                        </button>
-                      </li>
-                      <li class="nav-item">
-                        <button type="button" class="nav-link" role="tab">Ver más</button>
-                      </li>
-                    </ul>
+                  <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                      <h5 class="m-0 me-2">Producción anual</h5>
+                    </div>
+                    <div class="dropdown">
+                      <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="">Ver rendimiento</a>
+                      </div>
+                    </div>
                   </div>
                   <div class="card-body px-0">
                     <div class="tab-content p-0">
                       <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
-                        <!--<div class="d-flex p-4 pt-3">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="/assets/img/icons/unicons/wallet.png" alt="User" />
+                        <div class="d-flex p-3 pt-3">
+                          <div class="avatar flex-shrink-0">
+                            <span class="avatar-initial rounded bg-label-info me-1"><i class="bx bx-stats"></i></span>
                           </div>
                           <div>
-                            <small class="text-muted d-block">Total Balance</small>
+                            <small class="text-muted d-block"> Producción total del año</small>
                             <div class="d-flex align-items-center">
-                              <h6 class="mb-0 me-1">$459.10</h6>
+                              <h6 class="mb-0 me-1"> <%= stats[4].totalProduccion %> Kg</h6>
                               <small class="text-success fw-semibold">
                                 <i class="bx bx-chevron-up"></i>
-                                42.9%
                               </small>
                             </div>
-                          </div>-->
+                          </div>
                         </div>
-                        <div id="incomeChart"></div>
-                        <!--<div class="d-flex justify-content-center pt-4 gap-2">
-                          <div class="flex-shrink-0">
-                            <div id="expensesOfWeek"></div>
-                          </div>
-                          <div>
-                            <p class="mb-n1 mt-1">Expenses This Week</p>
-                            <small class="text-muted">$39 less than last week</small>
-                          </div>
-                        </div>-->
-                        <div style="padding-left: 32%;">
-                          <p class="mb-n1 mt-1">Cultivos sembrados</p>
+                        <div id="produccionChart"></div>
+                        <div style="padding-left: 42%;">
+                          <p class="mb-n1 mt-1">Cultivos</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- Expense Overview -->
+              <!-- Estadisticas de la produccion -->
             </div>
             <!-- / Contenido -->
 
@@ -653,6 +651,132 @@
             if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
               const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
               statisticsChart.render();
+            }
+          },
+          error: function (xhr, status, error) {
+            // Ocurrió un error al hacer la solicitud
+            console.error(error);
+          }
+        });
+
+        $.ajax({
+          url: 'http://localhost:8000/produccionChart',
+          method: 'GET',
+          dataType: 'json',
+          success: function (response) {
+            let cardColor, headingColor, axisColor, shadeColor, borderColor;
+
+            cardColor = config.colors.white;
+            headingColor = config.colors.headingColor;
+            axisColor = config.colors.axisColor;
+            borderColor = config.colors.borderColor;
+
+            let labels = [];
+            let datos = [];
+            let mayor;
+            if (response.length > 0) {
+              for (let i = 0; i < response.length; i++) {
+                labels[i] = response[i].nombre;
+                datos[i] = response[i].prodAnual;
+                mayor = datos.max;
+              }
+            }
+
+            const incomeChartEl = document.querySelector('#produccionChart'),
+              incomeChartConfig = {
+                series: [
+                  {
+                    data: datos
+                  }
+                ],
+                chart: {
+                  height: 215,
+                  parentHeightOffset: 0,
+                  parentWidthOffset: 0,
+                  toolbar: {
+                    show: false
+                  },
+                  type: 'bar'
+                },
+                dataLabels: {
+                  enabled: false
+                },
+                stroke: {
+                  width: 2,
+                  curve: 'smooth'
+                },
+                legend: {
+                  show: false
+                },
+                markers: {
+                  size: 6,
+                  colors: 'transparent',
+                  strokeColors: 'transparent',
+                  strokeWidth: 4,
+                  discrete: [
+                    {
+                      fillColor: config.colors.white,
+                      seriesIndex: 0,
+                      dataPointIndex: 7,
+                      strokeColor: config.colors.primary,
+                      strokeWidth: 2,
+                      size: 6,
+                      radius: 8
+                    }
+                  ],
+                  hover: {
+                    size: 7
+                  }
+                },
+                colors: [config.colors.primary],
+                fill: {
+                  type: 'gradient',
+                  gradient: {
+                    shade: shadeColor,
+                    shadeIntensity: 0.6,
+                    opacityFrom: 0.5,
+                    opacityTo: 0.25,
+                    stops: [0, 95, 100]
+                  }
+                },
+                grid: {
+                  borderColor: borderColor,
+                  strokeDashArray: 3,
+                  padding: {
+                    top: -20,
+                    bottom: -8,
+                    left: -10,
+                    right: 8
+                  }
+                },
+                xaxis: {
+                  categories: labels,
+                  axisBorder: {
+                    show: false
+                  },
+                  axisTicks: {
+                    show: false
+                  },
+                  labels: {
+                    show: true,
+                    style: {
+                      fontSize: '13px',
+                      colors: axisColor
+                    }
+                  }
+                },
+                yaxis: {
+                  labels: {
+                    show: false
+                  },
+                  min: 0,
+                  max: mayor,
+                  tickAmount: 10
+                }
+              };
+            if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
+              const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
+              incomeChart.render();
             }
           },
           error: function (xhr, status, error) {

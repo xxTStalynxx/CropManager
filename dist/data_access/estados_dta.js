@@ -12,13 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNombreEstado = exports.searchEstado = exports.restoreEstado = exports.deleteEstado = exports.putEstado = exports.postEstado = exports.getEstado = exports.getEstados = void 0;
+exports.getNombreEstado = exports.searchEstado = exports.restoreEstado = exports.deleteEstado = exports.putEstado = exports.postEstado = exports.getEstado = exports.getEstadosForCampos = exports.getEstados = void 0;
 const estado_1 = __importDefault(require("../models/estado"));
+const sequelize_1 = require("sequelize");
 const getEstados = () => __awaiter(void 0, void 0, void 0, function* () {
     const estados = yield estado_1.default.findAll();
     return estados;
 });
 exports.getEstados = getEstados;
+const getEstadosForCampos = () => __awaiter(void 0, void 0, void 0, function* () {
+    const estados = yield estado_1.default.findAll({
+        where: { id: { [sequelize_1.Op.ne]: 2 } }
+    });
+    return estados;
+});
+exports.getEstadosForCampos = getEstadosForCampos;
 const getEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const estado = yield estado_1.default.findByPk(id);
     if (estado) {

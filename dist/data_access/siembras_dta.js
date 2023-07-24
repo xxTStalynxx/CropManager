@@ -12,13 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembras = void 0;
+exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembrasbyUsuario = exports.getSiembras = void 0;
 const siembra_1 = __importDefault(require("../models/siembra"));
 const getSiembras = () => __awaiter(void 0, void 0, void 0, function* () {
     const siembras = yield siembra_1.default.findAll();
     return siembras;
 });
 exports.getSiembras = getSiembras;
+const getSiembrasbyUsuario = (id_camp) => __awaiter(void 0, void 0, void 0, function* () {
+    const siembras = yield siembra_1.default.findAll({
+        where: { id_campo: id_camp }
+    });
+    return siembras;
+});
+exports.getSiembrasbyUsuario = getSiembrasbyUsuario;
 const getSiembra = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const siembra = yield siembra_1.default.findByPk(id);
     if (siembra) {

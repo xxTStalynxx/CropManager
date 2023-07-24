@@ -88,12 +88,19 @@ export const getNumCamposByEstado = async (estado: string, id: string) => {
     return (await num).length;
 }
 
-export const changeEstado = async (id: string) => {
+export const changeEstado = async (id: string, newestado: number) => {
     const nuevoE = {
-        estado: 2,
+        estado: newestado,
     }
     const campo = await Campo.findByPk(id);
     if (campo) {
         await campo.update(nuevoE);
+    }
+}
+
+export const getNombreCampo = async (id: string) => {
+    const campo = await Campo.findByPk(id);
+    if (campo) {
+        return campo.dataValues.nombre;
     }
 }
