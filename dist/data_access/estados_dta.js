@@ -41,7 +41,8 @@ const postEstado = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const estado = yield estado_1.default.create({
         nombre: body.nombre,
-        descripcion: body.descripcion,
+        actividad: body.actividad,
+        color: body.color,
     });
     yield estado.save();
 });

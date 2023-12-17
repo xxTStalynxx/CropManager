@@ -4,42 +4,7 @@
   data-template="vertical-menu-template-free">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-  <title>CropManager</title>
-
-  <meta name="description" content="" />
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
-
-  <!-- Fuentes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet" />
-
-  <!-- Iconos -->
-  <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
-
-  <!-- Core CSS -->
-  <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
-  <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-  <link rel="stylesheet" href="/assets/css/demo.css" />
-
-  <!-- Vendors CSS -->
-  <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-  <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
-
-  <!-- Helpers -->
-  <script src="/assets/vendor/js/helpers.js"></script>
-
-  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-  <script src="/assets/js/config.js"></script>
+  <%- include('includes/header') %>
 </head>
 
 <body>
@@ -101,7 +66,7 @@
               </li>
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Container">Rotación de cultivos</div>
+                  <div data-i18n="Container">Rendimiento</div>
                 </a>
               </li>
               <li class="menu-item">
@@ -111,6 +76,27 @@
               </li>
             </ul>
           </li>
+
+          <!-- Planificación -->
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-notepad"></i>
+              <div data-i18n="Basic">Planificación</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="#" class="menu-link">
+                  <div data-i18n="Container">Rotación de cultivos</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="menu-link">
+                  <div data-i18n="Container">Actividades</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <% if (usuario.rol_usuario==1) {%>
             <li class="menu-item">
               <a href="/estados" class="menu-link">
@@ -126,26 +112,24 @@
                 </a>
               </li>
 
-              <!-- Productos -->
+              <!-- Cultivos -->
               <% if (usuario.rol_usuario==1) {%>
-                <li class="menu-header small text-uppercase"><span class="menu-header-text">Productos</span></li>
-                <li class="menu-item">
-                  <a href="/cultivos" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-spa"></i>
-                    <div data-i18n="Basic">Cultivos</div>
-                  </a>
+                <li class="menu-header small text-uppercase"><span
+                        class="menu-header-text">Cultivos</span>
                 </li>
-                <% } %>
-                  <!-- Registros
-          <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Registros</span>
-          </li>
-          <li class="menu-item">
-            <a href="/salidas" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-archive-out"></i>
-              <div data-i18n="Analytics">Salidas</div>
-            </a>
-          </li> -->
+                <li class="menu-item">
+                    <a href="/familias" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-category"></i>
+                        <div data-i18n="Basic">Familias</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/cultivos" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-spa"></i>
+                        <div data-i18n="Basic">Cultivos</div>
+                    </a>
+                </li>
+            <% } %>
 
                   <!-- Usuarios -->
                   <% if (usuario.rol_usuario==1) {%>
@@ -441,8 +425,8 @@
                         <% for (var i=0; i < estados.length; i++) { %>
                           <li class="d-flex mb-3 pb-1">
                             <div class="avatar flex-shrink-0 me-3">
-                              <span class="avatar-initial rounded bg-label-primary"><i
-                                  class="bx bx-collection"></i></span>
+                              <span class="avatar-initial rounded bg-label-success"><i
+                                  class="bx bx-check"></i></span>
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                               <div class="me-2">
@@ -493,19 +477,15 @@
                             <span class="avatar-initial rounded bg-label-info me-1"><i class="bx bx-stats"></i></span>
                           </div>
                           <div>
-                            <small class="text-muted d-block"> Producción total del año</small>
+                            <small class="text-muted d-block"> Producción total del año en Kilogramos (Kg)</small>
                             <div class="d-flex align-items-center">
-                              <h6 class="mb-0 me-1"> <%= stats[4].totalProduccion %> Kg</h6>
-                              <small class="text-success fw-semibold">
-                                <i class="bx bx-chevron-up"></i>
-                              </small>
+                              <h6 class="mb-0 me-1">
+                                <%= stats[4].totalProduccion %> Kg
+                              </h6>
                             </div>
                           </div>
                         </div>
                         <div id="produccionChart"></div>
-                        <div style="padding-left: 42%;">
-                          <p class="mb-n1 mt-1">Cultivos</p>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -516,19 +496,10 @@
             <!-- / Contenido -->
 
             <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                  CropManager ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                </div>
-              </div>
-            </footer>
-            <!-- / Footer -->
+            <%- include('includes/footer') %>
+              <!-- / Footer -->
 
-            <div class="content-backdrop fade"></div>
+              <div class="content-backdrop fade"></div>
           </div>
           <!-- Content wrapper -->
         </div>
@@ -744,15 +715,15 @@
                   strokeDashArray: 3,
                   padding: {
                     top: -20,
-                    bottom: -8,
-                    left: -10,
+                    bottom: 0,
+                    left: 0,
                     right: 8
                   }
                 },
                 xaxis: {
                   categories: labels,
                   axisBorder: {
-                    show: false
+                    show: true
                   },
                   axisTicks: {
                     show: false
@@ -763,15 +734,35 @@
                       fontSize: '13px',
                       colors: axisColor
                     }
+                  },
+                  title: {
+                    text: 'Cultivos',
+                    style: {
+                      fontSize: '14px',
+                      color: axisColor,
+                      fontFamily: 'segoe'
+                    }
                   }
                 },
                 yaxis: {
                   labels: {
-                    show: false
+                    show: true,
+                    style: {
+                      fontSize: '13px',
+                      colors: axisColor,
+                    }
                   },
                   min: 0,
                   max: mayor,
-                  tickAmount: 10
+                  tickAmount: 6,
+                  title: {
+                    text: 'Kg',
+                    style: {
+                      fontSize: '14px',
+                      color: axisColor,
+                      fontFamily: 'segoe'
+                    }
+                  }
                 }
               };
             if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {

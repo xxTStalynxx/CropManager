@@ -41,7 +41,6 @@ export const dataCalendar = async (req: Request, res: Response) => {
         "start": ''
     };
     let data: { start: string, title: string }[] = [];
-    let data2: { start: string, title: string }[] = [];
     if (actividades.length > 0) {
         for (let i = 0; i < actividades.length; i++) {
             const campo = await getNombreCampo(actividades[i].dataValues.id_campo);

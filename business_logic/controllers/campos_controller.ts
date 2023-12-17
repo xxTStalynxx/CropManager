@@ -4,11 +4,15 @@ import { getDate } from "../processes/date_controller";
 import { getNombreUsuario, getUsuario } from "../../data_access/usuarios_dta";
 import { getNombre } from "../../data_access/roles_dta";
 import { getCultivosforCampos } from "../../data_access/cultivos_dta";
-import { getEstadosForCampos, getNombreEstado } from "../../data_access/estados_dta";
+import { getEstado, getEstadosForCampos, getNombreEstado } from "../../data_access/estados_dta";
 import { getConfig } from "../../data_access/configuracion_dta";
 
 export const mostrarCampos = async (req: Request, res: Response) => {
-    const campos = await getCampos(req.session.user);
+    let campos = await getCampos(req.session.user);
+    for (let i=0; i<campos.length; i++){
+        const estado = await getEstado(campos[i].dataValues.estado);
+        campos[i].dataValues.color = estado?.dataValues.color;
+    }
     res.json(campos);
 }
 

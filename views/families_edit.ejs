@@ -53,11 +53,12 @@
 
                     <!-- Campos -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Campos</span></li>
-                    <li class="menu-item active open">
+                    <li class="menu-item">
                         <a href="#" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-layout"></i>
                             <div data-i18n="Basic">Campos</div>
                         </a>
+
                         <ul class="menu-sub">
                             <li class="menu-item">
                                 <a href="/trazado" class="menu-link">
@@ -69,7 +70,7 @@
                                     <div data-i18n="Container">Rendimiento</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
+                            <li class="menu-item">
                                 <a href="/campos/list" class="menu-link">
                                     <div data-i18n="Container">Lista de campos</div>
                                 </a>
@@ -116,7 +117,7 @@
                                 <li class="menu-header small text-uppercase"><span
                                         class="menu-header-text">Cultivos</span>
                                 </li>
-                                <li class="menu-item">
+                                <li class="menu-item active">
                                     <a href="/familias" class="menu-link">
                                         <i class="menu-icon tf-icons bx bx-category"></i>
                                         <div data-i18n="Basic">Familias</div>
@@ -274,71 +275,68 @@
                 </nav>
                 <!-- / Navbar -->
 
-                <!-- Contenido de Campos -->
+                <!-- Contenido de Cultivos -->
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <h5 class="card-header mb-n1">Campos</h5>
-                                    <div class="table-responsive text-nowrap px-2 mb-2">
-                                        <table class="table mb-1" id="tb_fields">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <% if (usuario.rol_usuario==1) {%>
-                                                        <th>Dueño</th>
-                                                        <% } %>
-                                                            <th>Estado</th>
-                                                            <th>Área</th>
-                                                            <th>Descripción</th>
-                                                            <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-border-bottom-0">
-                                                <% if (campos) {%>
-                                                    <% for (var i=0; i < campos.length; i++) { %>
-                                                        <tr>
-                                                            <td><i class="fab fa-angular fa-lg text-danger"></i>
-                                                                <strong>
-                                                                    <%= campos[i].nombre %>
-                                                                </strong>
-                                                            </td>
-                                                            <% if (usuario.rol_usuario==1) {%>
-                                                                <td>
-                                                                    <%= campos[i].dataValues.nomEncargado %>
-                                                                </td>
-                                                                <% } %>
-                                                                    <td><i
-                                                                            class="fab fa-angular fa-lg text-danger"></i>
-                                                                        <strong>
-                                                                            <%= campos[i].dataValues.nomEstado %>
-                                                                        </strong>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= campos[i].area %> m<sup>2</sup>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= campos[i].descripcion %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <% if(campos[i].estado !=2) {%>
-                                                                            <a class="btn btn-outline-primary"
-                                                                                href="/campos/<%= campos[i].id %>"
-                                                                                title="Editar"><i
-                                                                                    class="bx bx-edit-alt"></i></a>
-                                                                            <a class="btn btn-outline-danger"
-                                                                                onclick="confirmar(<%= campos[i].id %>)"
-                                                                                onmouseenter="entra(<%= campos[i].id %>)" onmouseleave="sale(<%= campos[i].id %>)"
-                                                                                title="Eliminar"><i id="btnDelete<%= campos[i].id %>"
-                                                                                    class="bx bx-trash idred"></i></a>
-                                                                            <% } %>
-                                                                    </td>
-                                                        </tr>
-                                                        <% } %>
-                                                            <% } %>
-                                            </tbody>
-                                        </table>
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Editar familia</h5>
+                                        <small class="text-muted float-end">Llene los campos</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="/familias/edit/<%= familia.id %>" method="post">
+                                            <div class="mb-3">
+                                                <label class="form-label"
+                                                    for="basic-icon-default-fullname">Nombre</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                            class="bx bx-pencil"></i></span>
+                                                    <input type="text" class="form-control"
+                                                        id="basic-icon-default-fullname"
+                                                        placeholder="Nombre de la familia" name="nombre"
+                                                        value="<%= familia.nombre %>"
+                                                        aria-describedby="basic-icon-default-fullname2" required />
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-icon-default-fullname">Exigencia orgánica</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                            class="bx bx-time"></i></span>
+                                                    <input type="number" class="form-control"
+                                                        id="basic-icon-default-fullname"
+                                                        placeholder="Exigencia orgánica de la familia" name="exigencia_organica" min="0"
+                                                        value="<%= familia.exigencia_organica %>"
+                                                        aria-describedby="basic-icon-default-fullname2" required />
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label"
+                                                    for="basic-icon-default-message">Descripción</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-message2" class="input-group-text"><i
+                                                            class="bx bx-detail"></i></span>
+                                                    <textarea id="id_descripcion" class="form-control"
+                                                        placeholder="Describa la familia" name="descripcion"
+                                                        aria-describedby="basic-icon-default-message2"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input id="contenido" type="hidden" class="form-control" name="contenido" value="<%= familia.descripcion %>"
+                                                    placeholder="Contenido de la descripcion"/>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <span class="tf-icons bx bx-edit-alt"></span> Editar</button>
+                                            <a href="/cancelEditFamilia" class="btn btn-danger">
+                                                <span class="tf-icons bx bx-window-close"></span> Cancelar</a>
+                                        </form>
+                                        <% if (error) {%>
+                                            <p class="mb-n2 py-1" style="color:#ff5c5c">
+                                                <%= error %>
+                                            </p>
+                                            <% } %>
                                     </div>
                                 </div>
                             </div>
@@ -367,9 +365,7 @@
     <script src="/assets/vendor/libs/popper/popper.js"></script>
     <script src="/assets/vendor/js/bootstrap.js"></script>
     <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"
-        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+
     <script src="/assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
@@ -384,47 +380,12 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#tb_fields').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json',
-                },
-                lengthMenu: [[5, 10, 20], [5, 10, 20]],
-                info: false,
-            });
-        });
-
-        function confirmar(id) {
-            Swal.fire({
-                title: '¿Desea eliminar este campo?',
-                text: "El campo se eliminará permanentemente",
-                icon: 'warning',
-                backdrop: false,
-                showCancelButton: true,
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location = '/campos/delete/' + id;
-                }
-            })
-        }
-
-        function entra(id){
-            document.getElementById("btnDelete"+id).style.color = 'white';
-        }
-
-        function sale(id){
-            document.getElementById("btnDelete"+id).style.color = '#ff3e1d';
-        }
+        (function ( ) {
+            let contenido = document.getElementById("contenido").value;
+            document.getElementById("id_descripcion").innerHTML = contenido;
+        }) ( );
     </script>
-    <style>
-        .idred {
-            color: #ff3e1d;
-        }
-    </style>
 </body>
 
 </html>

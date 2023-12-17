@@ -18,7 +18,11 @@ const cultivos_dta_1 = require("../../data_access/cultivos_dta");
 const estados_dta_1 = require("../../data_access/estados_dta");
 const configuracion_dta_1 = require("../../data_access/configuracion_dta");
 const mostrarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const campos = yield (0, campos_dta_1.getCampos)(req.session.user);
+    let campos = yield (0, campos_dta_1.getCampos)(req.session.user);
+    for (let i = 0; i < campos.length; i++) {
+        const estado = yield (0, estados_dta_1.getEstado)(campos[i].dataValues.estado);
+        campos[i].dataValues.color = estado === null || estado === void 0 ? void 0 : estado.dataValues.color;
+    }
     res.json(campos);
 });
 exports.mostrarCampos = mostrarCampos;

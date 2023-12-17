@@ -3,11 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const campos_controller_1 = require("../business_logic/controllers/campos_controller");
 const roles_controller_1 = require("../business_logic/controllers/roles_controller");
+const familias_controller_1 = require("../business_logic/controllers/familias_controller");
 const cultivos_controller_1 = require("../business_logic/controllers/cultivos_controller");
-const cultivos_salida_controller_1 = require("../business_logic/controllers/cultivos_salida_controller");
 const estados_controller_1 = require("../business_logic/controllers/estados_controller");
 const registros_controller_1 = require("../business_logic/controllers/registros_controller");
-const salidas_controller_1 = require("../business_logic/controllers/salidas_controller");
 const siembras_controller_1 = require("../business_logic/controllers/siembras_controller");
 const usuarios_controller_1 = require("../business_logic/controllers/usuarios_controller");
 const login_controller_1 = require("../business_logic/processes/login_controller");
@@ -67,6 +66,14 @@ router.post('/estados/edit/:id', estados_controller_1.editarEstado);
 router.get('/estados/delete/:id', estados_controller_1.eliminarEstado);
 router.get('/cancelEditEstado', estados_controller_1.cancelarEditarEstado);
 router.get('/estados/restore/:id', estados_controller_1.restaurarEstado);
+//Rutas para familias de cultivos
+router.get('/familias', familias_controller_1.listarFamilias);
+router.get('/familias/:id', familias_controller_1.buscarFamilia);
+router.post('/familias/add', familias_controller_1.agregarFamilia);
+router.post('/familias/edit/:id', familias_controller_1.editarFamilia);
+router.get('/familias/delete/:id', familias_controller_1.eliminarFamilia);
+router.get('/cancelEditFamilia', familias_controller_1.cancelarEditarFamilia);
+router.get('/familias/restore/:id', familias_controller_1.restaurarFamilia);
 //Rutas para cultivos
 router.get('/cultivos', cultivos_controller_1.listarCultivos);
 router.get('/cultivos/:id', cultivos_controller_1.buscarCultivo);
@@ -95,14 +102,5 @@ router.get('/registros', registros_controller_1.listarRegistros);
 router.get('/registros/:id', registros_controller_1.buscarRegistro);
 router.post('/registros/add', registros_controller_1.agregarRegistro);
 router.get('/registros/delete/:id', registros_controller_1.eliminarRegistro);
-//Rutas para salidas
-router.get('/salidas', salidas_controller_1.listarSalidas);
-router.get('/salidas/:id', salidas_controller_1.buscarSalida);
-router.post('/salidas/add', salidas_controller_1.agregarSalida);
-router.delete('/salidas/delete/:id', salidas_controller_1.eliminarSalida);
-//Rutas para cultivos_salida
-router.get('/cultivos_salida', cultivos_salida_controller_1.listarCultivo_salidas);
-router.get('/cultivos_salida/:id', cultivos_salida_controller_1.buscarCultivo_salida);
-router.post('/cultivos_salida/add', cultivos_salida_controller_1.agregarCultivo_salida);
 exports.default = router;
 //# sourceMappingURL=router.js.map

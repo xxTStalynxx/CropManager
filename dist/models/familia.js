@@ -5,19 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connect_1 = __importDefault(require("../database/connect"));
-const Estado = connect_1.default.define('estados', {
+const Familia = connect_1.default.define('familias', {
     nombre: {
         type: sequelize_1.DataTypes.STRING
     },
-    actividad: {
-        type: sequelize_1.DataTypes.STRING
+    exigencia_organica: {
+        type: sequelize_1.DataTypes.INTEGER
     },
-    color: {
+    descripcion: {
         type: sequelize_1.DataTypes.STRING
     },
     activo: {
         type: sequelize_1.DataTypes.BOOLEAN
-    },
+    }
 });
-exports.default = Estado;
-//# sourceMappingURL=estado.js.map
+exports.default = Familia;
+//# sourceMappingURL=familia.js.map

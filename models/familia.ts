@@ -1,20 +1,19 @@
 import { DataTypes } from "sequelize";
 import db from "../database/connect";
-import Campo from "./campo";
 
-const Estado = db.define('estados',{
+const Familia = db.define('familias',{
     nombre:{
         type:DataTypes.STRING
     },
-    actividad:{
-        type:DataTypes.STRING
+    exigencia_organica:{
+        type:DataTypes.INTEGER
     },
-    color:{
+    descripcion:{
         type:DataTypes.STRING
     },
     activo:{
         type:DataTypes.BOOLEAN
-    },
+    }
 });
 
-export default Estado;
+export default Familia;

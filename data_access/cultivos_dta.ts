@@ -26,9 +26,9 @@ export const postCultivo = async (req: Request) => {
     const { body } = req;
     const cultivo = await Cultivo.create({
         nombre: body.nombre,
+        familia: body.familia,
         descripcion: body.descripcion,
         productividad: body.productividad,
-        precio: body.precio,
         crecimiento: body.crecimiento
     })
     await cultivo.save();

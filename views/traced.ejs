@@ -25,9 +25,10 @@
     <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/assets/css/demo.css" />
+    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/assets/css/demo.css"/>
+    <link rel="stylesheet" href="/assets/css/trazado.css"/>
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -292,12 +293,32 @@
                             </li>
                             <li class="menu-item">
                                 <a href="#" class="menu-link">
-                                    <div data-i18n="Container">Rotación de cultivos</div>
+                                    <div data-i18n="Container">Rendimiento</div>
                                 </a>
                             </li>
                             <li class="menu-item">
                                 <a href="/campos/list" class="menu-link">
                                     <div data-i18n="Container">Lista de campos</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Planificación -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-notepad"></i>
+                            <div data-i18n="Basic">Planificación</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="#" class="menu-link">
+                                    <div data-i18n="Container">Rotación de cultivos</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="#" class="menu-link">
+                                    <div data-i18n="Container">Actividades</div>
                                 </a>
                             </li>
                         </ul>
@@ -317,27 +338,24 @@
                                 </a>
                             </li>
 
-                            <!-- Productos -->
+                            <!-- Cultivos -->
                             <% if (usuario.rol_usuario==1) {%>
                                 <li class="menu-header small text-uppercase"><span
-                                        class="menu-header-text">Productos</span></li>
+                                        class="menu-header-text">Cultivos</span>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="/familias" class="menu-link">
+                                        <i class="menu-icon tf-icons bx bx-category"></i>
+                                        <div data-i18n="Basic">Familias</div>
+                                    </a>
+                                </li>
                                 <li class="menu-item">
                                     <a href="/cultivos" class="menu-link">
                                         <i class="menu-icon tf-icons bx bx-spa"></i>
                                         <div data-i18n="Basic">Cultivos</div>
                                     </a>
                                 </li>
-                                <% } %>
-                                    <!-- Registros
-                      <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Registros</span>
-                      </li>
-                      <li class="menu-item">
-                        <a href="/salidas" class="menu-link">
-                          <i class="menu-icon tf-icons bx bx-archive-out"></i>
-                          <div data-i18n="Analytics">Salidas</div>
-                        </a>
-                      </li> -->
+                            <% } %>
 
                                     <!-- Usuarios -->
                                     <% if (usuario.rol_usuario==1) {%>
@@ -608,6 +626,7 @@
                         </form>
                     </div>
 
+                    <!-- Ventana Sembrar cultivo -->
                     <div id="ContainerCultivoAdd" class="container_datos_cultivo hideContainerAddCultivo">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <h5 class="mb-1 py-2 flex-shrink-0">Sembrar cultivo</h5>
@@ -650,10 +669,6 @@
                         <div class="mb-2">
                             <span id="basic-icon-default-fullname2" class="py-2"><i
                                 class="bx bx-stats"></i><label class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small class="flex-shrink-0" id="prediccion_estimada"></small></span>
-                        </div>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-money"></i><label class="px-2" for="basic-icon-default-fullname">Ganancia estimada:</label><small class="flex-shrink-0" id="ganancia_estimada"></small></span>
                         </div>
                     </div>
                 </div>
@@ -713,19 +728,11 @@
                             }
 
                             if (listaPol.length > 0) {
-                                let color;
-
-                                if (response[i].estado != 1) {
-                                    color = "#FF5C5C"
-                                } else {
-                                    color = "#27AE60"
-                                }
-
                                 const newPolygon = new google.maps.Polygon({
                                     paths: listaPol,
                                     strokeOpacity: 0.8,
                                     strokeWeight: 3,
-                                    fillColor: color,
+                                    fillColor: response[i].color,
                                     fillOpacity: 0.4,
                                     id: response[i].id,
                                     estado: response[i].estado
@@ -847,19 +854,17 @@
             const id_cult= document.getElementById("selectedCultivo").value
             const id_camp = document.getElementById("idCampo").title
             $.ajax({
-                url: 'http://localhost:8000/trazado/'+id_camp +'/'+id_cult,
+                url: '/trazado/'+id_camp +'/'+id_cult,
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
                     // Respuesta exitosa de la API
                     const cultivo = document.getElementById("nomcultivo")
                     const prediccion_estimada = document.getElementById("prediccion_estimada")
-                    const ganancia_estimada = document.getElementById("ganancia_estimada")
 
                     if (response != null) {
                         cultivo.textContent = response.cultivo
                         prediccion_estimada.textContent = response.produccion_estimada + ' Kg'
-                        ganancia_estimada.textContent = '$' + response.ganancia_estimada
                     }
                 },
                 error: function (xhr, status, error) {
@@ -869,103 +874,6 @@
             });
         }
     </script>
-
-    <style>
-        .idred {
-            color: #FF4C4C;
-        }
-
-        .container_datos {
-            width: 16rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            margin-right: 1rem;
-            border-style: solid;
-            border-width: 0;
-            border-radius: 10px;
-            background-color: white;
-            position: absolute;
-            right: 0;
-            z-index: 999;
-        }
-
-        .hideContainer {
-            display: none;
-        }
-
-        .hideContainerSiembra {
-            display: none;
-        }
-
-        .hideContainerAddCultivo {
-            display: none;
-        }
-
-        .hideContainerPrediccion {
-            display: none;
-        }
-
-        .hideContainerCosechar {
-            display: none;
-        }
-
-        .container_datos_cultivo {
-            width: 16rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            margin-right: 1rem;
-            border-style: solid;
-            border-width: 0;
-            border-radius: 10px;
-            background-color: white;
-            position: absolute;
-            right: 0;
-            z-index: 999;
-        }
-
-        .container_siembra {
-            width: 18rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            margin-right: 1rem;
-            border-style: solid;
-            border-width: 0;
-            border-radius: 10px;
-            background-color: white;
-            position: absolute;
-            right: 0;
-            z-index: 999;
-        }
-
-        .container_prediccion {
-            width: 18rem;
-            padding: 1rem;
-            margin-right: 1rem;
-            margin-bottom: 2rem;
-            border-style: solid;
-            border-width: 0;
-            border-radius: 10px;
-            background-color: white;
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            z-index: 999;
-        }
-
-        .container_cosechar {
-            width: 18rem;
-            padding: 1rem;
-            margin-right: 1rem;
-            margin-top: 1rem;
-            border-style: solid;
-            border-width: 0;
-            border-radius: 10px;
-            background-color: white;
-            position: absolute;
-            right: 0;
-            z-index: 999;
-        }
-    </style>
 </body>
 
 </html>

@@ -53,11 +53,12 @@
 
                     <!-- Campos -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Campos</span></li>
-                    <li class="menu-item active open">
+                    <li class="menu-item">
                         <a href="#" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-layout"></i>
                             <div data-i18n="Basic">Campos</div>
                         </a>
+
                         <ul class="menu-sub">
                             <li class="menu-item">
                                 <a href="/trazado" class="menu-link">
@@ -69,7 +70,7 @@
                                     <div data-i18n="Container">Rendimiento</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
+                            <li class="menu-item">
                                 <a href="/campos/list" class="menu-link">
                                     <div data-i18n="Container">Lista de campos</div>
                                 </a>
@@ -97,26 +98,26 @@
                         </ul>
                     </li>
                     <% if (usuario.rol_usuario==1) {%>
+                    <li class="menu-item">
+                        <a href="/estados" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-collection"></i>
+                            <div data-i18n="Basic">Estados</div>
+                        </a>
+                    </li>
+                    <% } %>
                         <li class="menu-item">
-                            <a href="/estados" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-collection"></i>
-                                <div data-i18n="Basic">Estados</div>
+                            <a href="/registros" class="menu-link">
+                                <i class="menu-icon tf-icons bx bxs-layout"></i>
+                                <div data-i18n="Analytics">Cosechas</div>
                             </a>
                         </li>
-                        <% } %>
-                            <li class="menu-item">
-                                <a href="/registros" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bxs-layout"></i>
-                                    <div data-i18n="Analytics">Cosechas</div>
-                                </a>
-                            </li>
 
                             <!-- Cultivos -->
                             <% if (usuario.rol_usuario==1) {%>
                                 <li class="menu-header small text-uppercase"><span
                                         class="menu-header-text">Cultivos</span>
                                 </li>
-                                <li class="menu-item">
+                                <li class="menu-item active">
                                     <a href="/familias" class="menu-link">
                                         <i class="menu-icon tf-icons bx bx-category"></i>
                                         <div data-i18n="Basic">Familias</div>
@@ -171,12 +172,12 @@
                                                         </a>
                                                     </li>
                                                     <% } %>
-                                                        <li class="menu-item">
-                                                            <a href="/logout" class="menu-link">
-                                                                <i class="menu-icon tf-icons bx bx-log-out"></i>
-                                                                <div data-i18n="Analytics">Cerrar sesión</div>
-                                                            </a>
-                                                        </li>
+                                                    <li class="menu-item">
+                                                        <a href="/logout" class="menu-link">
+                                                            <i class="menu-icon tf-icons bx bx-log-out"></i>
+                                                            <div data-i18n="Analytics">Cerrar sesión</div>
+                                                        </a>
+                                                    </li>
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -274,69 +275,119 @@
                 </nav>
                 <!-- / Navbar -->
 
-                <!-- Contenido de Campos -->
+                <!-- Contenido de Familias -->
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Nueva familia</h5>
+                                        <small class="text-muted float-end">Llene los campos</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="/familias/add" method="post">
+                                            <div class="mb-3">
+                                                <label class="form-label"
+                                                    for="basic-icon-default-fullname">Nombre</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                            class="bx bx-pencil"></i></span>
+                                                    <input type="text" class="form-control"
+                                                        id="basic-icon-default-fullname"
+                                                        placeholder="Nombre de la familia" name="nombre"
+                                                        aria-describedby="basic-icon-default-fullname2" required />
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-icon-default-fullname">Exigencia orgánica</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                            class="bx bx-time"></i></span>
+                                                    <input type="number" class="form-control"
+                                                        id="basic-icon-default-fullname"
+                                                        placeholder="Exigencia orgánica de la familia" name="exigencia_organica" min="1" max="5"
+                                                        aria-describedby="basic-icon-default-fullname2" required />
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label"
+                                                    for="basic-icon-default-message">Descripción</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span id="basic-icon-default-message2" class="input-group-text"><i
+                                                            class="bx bx-detail"></i></span>
+                                                    <textarea id="basic-icon-default-message" class="form-control"
+                                                        placeholder="Describa la familia" name="descripcion"
+                                                        aria-describedby="basic-icon-default-message2"></textarea>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <span class="tf-icons bx bx-plus-circle"></span> Agregar</button>
+                                        </form>
+                                        <% if (error) {%>
+                                            <p class="mb-n2 py-1" style="color:#ff5c5c">
+                                                <%= error %>
+                                            </p>
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
                                 <div class="card">
-                                    <h5 class="card-header mb-n1">Campos</h5>
+                                    <h5 class="card-header mb-n1">Familias</h5>
                                     <div class="table-responsive text-nowrap px-2 mb-2">
-                                        <table class="table mb-1" id="tb_fields">
+                                        <table class="table mb-1" id="tb_families">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
-                                                    <% if (usuario.rol_usuario==1) {%>
-                                                        <th>Dueño</th>
-                                                        <% } %>
-                                                            <th>Estado</th>
-                                                            <th>Área</th>
-                                                            <th>Descripción</th>
-                                                            <th>Acciones</th>
+                                                    <th>Exigencia</th>
+                                                    <th>Descripción</th>
+                                                    <th>Estado</th>
+                                                    <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
-                                                <% if (campos) {%>
-                                                    <% for (var i=0; i < campos.length; i++) { %>
+                                                <% if (familias) {%>
+                                                    <% for (var i=0; i < familias.length; i++) { %>
                                                         <tr>
                                                             <td><i class="fab fa-angular fa-lg text-danger"></i>
                                                                 <strong>
-                                                                    <%= campos[i].nombre %>
+                                                                    <%= familias[i].nombre %>
                                                                 </strong>
                                                             </td>
-                                                            <% if (usuario.rol_usuario==1) {%>
-                                                                <td>
-                                                                    <%= campos[i].dataValues.nomEncargado %>
+                                                            <td>
+                                                                <%= familias[i].exigencia_organica %>
+                                                            </td>
+                                                            <td>
+                                                                <%= familias[i].descripcion %>
+                                                            </td>
+                                                            <% if (familias[i].activo==1) {%>
+                                                                <td><span
+                                                                        class="badge bg-label-success">Activo</span>
                                                                 </td>
-                                                                <% } %>
-                                                                    <td><i
-                                                                            class="fab fa-angular fa-lg text-danger"></i>
-                                                                        <strong>
-                                                                            <%= campos[i].dataValues.nomEstado %>
-                                                                        </strong>
+                                                                <td>
+                                                                    <a class="btn btn-outline-primary"
+                                                                        href="/familias/<%= familias[i].id %>"
+                                                                        title="Editar"><i
+                                                                            class="bx bx-edit-alt"></i></a>
+                                                                    <a class="btn btn-outline-danger"
+                                                                        href="/familias/delete/<%= familias[i].id %>"
+                                                                        title="Eliminar"><i class="bx bx-trash"></i></a>
+                                                                </td>
+                                                                <%} else {%>
+                                                                    <td><span
+                                                                            class="badge bg-label-danger">Inactivo</span>
                                                                     </td>
                                                                     <td>
-                                                                        <%= campos[i].area %> m<sup>2</sup>
+                                                                        <a class="btn btn-outline-secondary"
+                                                                            href="/familias/restore/<%= familias[i].id %>"
+                                                                            title="Restaurar"><i
+                                                                                class="bx bx-redo"></i></a>
                                                                     </td>
-                                                                    <td>
-                                                                        <%= campos[i].descripcion %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <% if(campos[i].estado !=2) {%>
-                                                                            <a class="btn btn-outline-primary"
-                                                                                href="/campos/<%= campos[i].id %>"
-                                                                                title="Editar"><i
-                                                                                    class="bx bx-edit-alt"></i></a>
-                                                                            <a class="btn btn-outline-danger"
-                                                                                onclick="confirmar(<%= campos[i].id %>)"
-                                                                                onmouseenter="entra(<%= campos[i].id %>)" onmouseleave="sale(<%= campos[i].id %>)"
-                                                                                title="Eliminar"><i id="btnDelete<%= campos[i].id %>"
-                                                                                    class="bx bx-trash idred"></i></a>
-                                                                            <% } %>
-                                                                    </td>
+                                                                    <%} %>
                                                         </tr>
                                                         <% } %>
-                                                            <% } %>
+                                                        <% } %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -385,46 +436,17 @@
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#tb_fields').DataTable({
+            $('#tb_families').DataTable({
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json',
                 },
-                lengthMenu: [[5, 10, 20], [5, 10, 20]],
+                lengthMenu: [[5, 10, 15], [5, 10, 15]],
                 info: false,
             });
         });
-
-        function confirmar(id) {
-            Swal.fire({
-                title: '¿Desea eliminar este campo?',
-                text: "El campo se eliminará permanentemente",
-                icon: 'warning',
-                backdrop: false,
-                showCancelButton: true,
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location = '/campos/delete/' + id;
-                }
-            })
-        }
-
-        function entra(id){
-            document.getElementById("btnDelete"+id).style.color = 'white';
-        }
-
-        function sale(id){
-            document.getElementById("btnDelete"+id).style.color = '#ff3e1d';
-        }
     </script>
-    <style>
-        .idred {
-            color: #ff3e1d;
-        }
-    </style>
 </body>
 
 </html>

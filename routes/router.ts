@@ -2,11 +2,10 @@ import { Router } from "express";
 
 import { agregarCampo, buscarCampo, cancelarEditarCampo, editarCampo, eliminarCampo, listarCampos,mostrarCampos, mostrarTrazado } from '../business_logic/controllers/campos_controller';
 import { agregarRol, buscarRol, cancelarEditarRol, editarRol, eliminarRol, listarRoles, restaurarRol } from "../business_logic/controllers/roles_controller";
+import { agregarFamilia, buscarFamilia, cancelarEditarFamilia, editarFamilia, eliminarFamilia, listarFamilias, restaurarFamilia } from "../business_logic/controllers/familias_controller";
 import { agregarCultivo, buscarCultivo, cancelarEditarCultivo, editarCultivo, eliminarCultivo, listarCultivos, restaurarCultivo } from "../business_logic/controllers/cultivos_controller";
-import { agregarCultivo_salida, buscarCultivo_salida, listarCultivo_salidas } from "../business_logic/controllers/cultivos_salida_controller";
 import { agregarEstado, buscarEstado, cancelarEditarEstado, editarEstado, eliminarEstado, listarEstados, restaurarEstado } from "../business_logic/controllers/estados_controller";
 import { agregarRegistro, buscarRegistro, eliminarRegistro, listarRegistros } from "../business_logic/controllers/registros_controller";
-import { agregarSalida, buscarSalida, eliminarSalida, listarSalidas } from "../business_logic/controllers/salidas_controller";
 import { agregarSiembra, buscarSiembra, eliminarSiembra, listarSiembras } from "../business_logic/controllers/siembras_controller";
 import { agregarUsuario, buscarUsuario, cambiarRol, cancelarEditarUsuario, editarUsuario, eliminarUsuario, listarUsuarios, mostrarPerfil, restaurarUsuario } from "../business_logic/controllers/usuarios_controller";
 import { cerrarSesion, enviarEmail, iniciarSesion, inicioSesion, restaurarContrasena, showRegistro, showRestaurar } from "../business_logic/processes/login_controller";
@@ -76,6 +75,15 @@ router.get('/estados/delete/:id', eliminarEstado);
 router.get('/cancelEditEstado', cancelarEditarEstado);
 router.get('/estados/restore/:id', restaurarEstado);
 
+//Rutas para familias de cultivos
+router.get('/familias', listarFamilias);
+router.get('/familias/:id', buscarFamilia);
+router.post('/familias/add', agregarFamilia);
+router.post('/familias/edit/:id', editarFamilia);
+router.get('/familias/delete/:id', eliminarFamilia);
+router.get('/cancelEditFamilia', cancelarEditarFamilia);
+router.get('/familias/restore/:id', restaurarFamilia);
+
 //Rutas para cultivos
 router.get('/cultivos', listarCultivos);
 router.get('/cultivos/:id', buscarCultivo);
@@ -107,16 +115,5 @@ router.get('/registros', listarRegistros);
 router.get('/registros/:id', buscarRegistro);
 router.post('/registros/add', agregarRegistro);
 router.get('/registros/delete/:id', eliminarRegistro);
-
-//Rutas para salidas
-router.get('/salidas', listarSalidas);
-router.get('/salidas/:id', buscarSalida);
-router.post('/salidas/add', agregarSalida);
-router.delete('/salidas/delete/:id', eliminarSalida);
-
-//Rutas para cultivos_salida
-router.get('/cultivos_salida', listarCultivo_salidas);
-router.get('/cultivos_salida/:id', buscarCultivo_salida);
-router.post('/cultivos_salida/add', agregarCultivo_salida);
 
 export default router;

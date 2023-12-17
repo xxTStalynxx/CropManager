@@ -5,13 +5,13 @@ const Cultivo = db.define('cultivos',{
     nombre:{
         type:DataTypes.STRING
     },
+    familia:{
+        type:DataTypes.INTEGER
+    },
     descripcion:{
         type:DataTypes.STRING
     },
     productividad:{
-        type:DataTypes.DECIMAL
-    },
-    precio:{
         type:DataTypes.DECIMAL
     },
     crecimiento:{

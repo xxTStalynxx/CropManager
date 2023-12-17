@@ -14,6 +14,7 @@ const cultivos_dta_1 = require("../../data_access/cultivos_dta");
 const date_controller_1 = require("../processes/date_controller");
 const usuarios_dta_1 = require("../../data_access/usuarios_dta");
 const roles_dta_1 = require("../../data_access/roles_dta");
+const familias_dta_1 = require("../../data_access/familias.dta");
 const listarCultivos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.session.user) {
         const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
@@ -23,8 +24,9 @@ const listarCultivos = (req, res) => __awaiter(void 0, void 0, void 0, function*
         else {
             const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
             const cultivos = yield (0, cultivos_dta_1.getCultivos)();
+            const familias = yield (0, familias_dta_1.getFamiliasActivas)();
             const date = (0, date_controller_1.getDate)();
-            res.render('crops', { cultivos, date, usuario, rol, error: '' });
+            res.render('crops', { cultivos, familias, date, usuario, rol, error: '' });
         }
     }
     else {
@@ -40,7 +42,8 @@ const buscarCultivo = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
         const date = (0, date_controller_1.getDate)();
         if (cultivo !== null) {
-            res.render('crops_edit', { cultivo, date, usuario, rol, error: '' });
+            const familias = yield (0, familias_dta_1.getFamiliasActivas)();
+            res.render('crops_edit', { cultivo, familias, date, usuario, rol, error: '' });
         }
         else {
             res.status(404).json({ message: 'No existe el cultivo' });
@@ -57,8 +60,9 @@ const agregarCultivo = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
         const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
         const cultivos = yield (0, cultivos_dta_1.getCultivos)();
+        const familias = yield (0, familias_dta_1.getFamiliasActivas)();
         const date = (0, date_controller_1.getDate)();
-        res.render('crops', { cultivos, date, usuario, rol, error: '* El cultivo ya existe' });
+        res.render('crops', { cultivos, familias, date, usuario, rol, error: '* El cultivo ya existe' });
     }
     else {
         yield (0, cultivos_dta_1.postCultivo)(req);
@@ -74,9 +78,10 @@ const editarCultivo = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (body.nombre != cultivo.dataValues.nombre) {
             if (yield (0, cultivos_dta_1.searchCultivo)(body.nombre)) {
                 const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
+                const familias = yield (0, familias_dta_1.getFamiliasActivas)();
                 const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
                 const date = (0, date_controller_1.getDate)();
-                res.render('crops_edit', { cultivo, date, usuario, rol, error: '* Cultivo ya registrado' });
+                res.render('crops_edit', { cultivo, familias, date, usuario, rol, error: '* Cultivo ya registrado' });
             }
             else {
                 yield (0, cultivos_dta_1.putCultivo)(req);

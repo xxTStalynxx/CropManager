@@ -52,7 +52,6 @@ const dataCalendar = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         "start": ''
     };
     let data = [];
-    let data2 = [];
     if (actividades.length > 0) {
         for (let i = 0; i < actividades.length; i++) {
             const campo = yield (0, campos_dta_1.getNombreCampo)(actividades[i].dataValues.id_campo);

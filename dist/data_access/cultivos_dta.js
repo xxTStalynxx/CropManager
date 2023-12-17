@@ -40,9 +40,9 @@ const postCultivo = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const cultivo = yield cultivo_1.default.create({
         nombre: body.nombre,
+        familia: body.familia,
         descripcion: body.descripcion,
         productividad: body.productividad,
-        precio: body.precio,
         crecimiento: body.crecimiento
     });
     yield cultivo.save();

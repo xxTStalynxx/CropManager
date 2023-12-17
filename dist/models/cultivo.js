@@ -9,13 +9,13 @@ const Cultivo = connect_1.default.define('cultivos', {
     nombre: {
         type: sequelize_1.DataTypes.STRING
     },
+    familia: {
+        type: sequelize_1.DataTypes.INTEGER
+    },
     descripcion: {
         type: sequelize_1.DataTypes.STRING
     },
     productividad: {
-        type: sequelize_1.DataTypes.DECIMAL
-    },
-    precio: {
         type: sequelize_1.DataTypes.DECIMAL
     },
     crecimiento: {

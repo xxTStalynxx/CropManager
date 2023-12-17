@@ -1,0 +1,94 @@
+.idred {
+    color: #FF4C4C;
+}
+
+.container_datos {
+    width: 16rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+}
+
+.hideContainer {
+    display: none;
+}
+
+.hideContainerSiembra {
+    display: none;
+}
+
+.hideContainerAddCultivo {
+    display: none;
+}
+
+.hideContainerPrediccion {
+    display: none;
+}
+
+.hideContainerCosechar {
+    display: none;
+}
+
+.container_datos_cultivo {
+    width: 16rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+}
+
+.container_siembra {
+    width: 18rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+}
+
+.container_prediccion {
+    width: 18rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 2rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.container_cosechar {
+    width: 18rem;
+    padding: 1rem;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+}

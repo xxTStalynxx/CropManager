@@ -27,7 +27,8 @@ export const postEstado = async (req: Request) => {
     const { body } = req;
     const estado = await Estado.create({
         nombre: body.nombre,
-        descripcion: body.descripcion,
+        actividad: body.actividad,
+        color: body.color,
     })
     await estado.save();
 }
