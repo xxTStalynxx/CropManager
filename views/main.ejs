@@ -4,42 +4,7 @@
     data-template="vertical-menu-template-free">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>CropManager</title>
-
-    <meta name="description" content="" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
-
-    <!-- Fuentes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet" />
-
-    <!-- Iconos -->
-    <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/assets/css/demo.css" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
-
-    <!-- Helpers -->
-    <script src="/assets/vendor/js/helpers.js"></script>
-
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="/assets/js/config.js"></script>
+    <%- include('includes/header') %>
 </head>
 
 <body>
@@ -52,7 +17,7 @@
 
                 <!-- Navbar -->
                 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
-                    <div class="container-fluid">
+                    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                         <a href="/" class="app-brand-link me-xl-4">
                             <span class="app-brand-logo demo">
                                 <svg width="40" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -69,14 +34,14 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="collapse navbar-collapse mx-3" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+                                    <a class="nav-link active" style="font-size: 17px;" aria-current="page" href="/">Inicio</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 17px;">
                                         Acerca de
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -84,14 +49,14 @@
                                         <li><a class="dropdown-item" href="/cropmanager">CropManager</a></li>
                                     </ul>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: 17px;" aria-current="page" href="">Mapa</a>
+                                </li>
                             </ul>
-                            <div class="px-2">
-                                <a class="btn btn-outline-primary" href="/login"><span>Inicia sesión</span>
-                                </a>
-                                <a class="btn btn-primary" href="/registro"><span>Regístrate</span>
-                                </a>
+                            <div class="px-0 mx-3">
+                                <a class="btn btn-outline-primary" href="/login"><i class="bx bx-log-in me-1"></i>
+                                <span>Iniciar sesión</span></a>
                             </div>
-
                         </div>
                     </div>
                 </nav>
@@ -113,8 +78,8 @@
                                         gestione todos sus campos, y realice su rotación de cultivos de manera sencilla.
                                     </h4>
                                     <div class="py-2">
-                                        <p>Crea una cuenta para empezar</p>
-                                        <a class="btn btn-primary" href="/registro"><span>Crear cuenta</span>
+                                        <p>Inicie sesión para empezar</p>
+                                        <a class="btn btn-primary" href="/login"><span>Iniciar sesión</span>
                                         </a>
                                     </div>
                                 </div>

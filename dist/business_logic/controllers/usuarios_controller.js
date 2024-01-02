@@ -34,7 +34,7 @@ const listarUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 rol = yield (0, roles_dta_1.getNombre)(usuarios[i].dataValues.rol_usuario);
                 usuarios[i].dataValues.rol = rol;
             }
-            res.render('users', { usuarios, roles, date, usuario, rolusuario });
+            res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: false, error: '' });
         }
     }
     else {
@@ -62,31 +62,36 @@ const buscarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.buscarUsuario = buscarUsuario;
 const agregarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
+    const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
+    let usuarios = yield (0, usuarios_dta_1.getUsuarios)();
+    const roles = yield (0, roles_dta_1.getRolesforUsers)();
+    const date = (0, date_controller_1.getDate)();
+    const rolusuario = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
+    let rol;
+    for (let i = 0; i < usuarios.length; i++) {
+        rol = yield (0, roles_dta_1.getNombre)(usuarios[i].dataValues.rol_usuario);
+        usuarios[i].dataValues.rol = rol;
+    }
     if ((0, validations_1.validarEmail)(body.correo)) {
-        const usuario = yield (0, usuarios_dta_1.searchByEmail)(body.correo);
-        if (usuario !== null) {
-            res.render('register', { error: '* El correo ya está en uso' });
+        const usuarioC = yield (0, usuarios_dta_1.searchByEmail)(body.correo);
+        if (usuarioC !== null) {
+            res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: true, error: '* El correo ya está en uso' });
         }
         else {
             if ((0, validations_1.validarPassword)(body.contrasena)) {
-                if (body.contrasena == body.confcontrasena) {
-                    bcrypt_1.default.hash(body.contrasena, 12).then((hash) => __awaiter(void 0, void 0, void 0, function* () {
-                        body.contrasena = hash;
-                        yield (0, usuarios_dta_1.postUsuario)(body);
-                        res.redirect('/login');
-                    }));
-                }
-                else {
-                    res.render('register', { error: '* Las contraseñas no coinciden' });
-                }
+                bcrypt_1.default.hash(body.contrasena, 12).then((hash) => __awaiter(void 0, void 0, void 0, function* () {
+                    body.contrasena = hash;
+                    yield (0, usuarios_dta_1.postUsuario)(body);
+                    res.redirect('/usuarios');
+                }));
             }
             else {
-                res.render('register', { error: '* La contraseña debe tener mínimo 8 caracteres, al menos un número, un caracter especial y una letra mayúscula' });
+                res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: true, error: '* La contraseña debe tener mínimo 8 caracteres, al menos un número, un caracter especial y una letra mayúscula' });
             }
         }
     }
     else {
-        res.render('register', { error: '* El correo no es válido' });
+        res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: true, error: '* El correo no es válido' });
     }
 });
 exports.agregarUsuario = agregarUsuario;

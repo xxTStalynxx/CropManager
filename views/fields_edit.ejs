@@ -86,12 +86,12 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
+                                <a href="/rotacion" class="menu-link">
                                     <div data-i18n="Container">Rotación de cultivos</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
+                                <a href="/actividades/0" class="menu-link">
                                     <div data-i18n="Container">Actividades</div>
                                 </a>
                             </li>
@@ -317,7 +317,7 @@
                                                 <div class="input-group input-group-merge">
                                                     <span id="basic-icon-default-message2" class="input-group-text"><i
                                                             class="bx bx-detail"></i></span>
-                                                    <textarea id="basic-icon-default-message" class="form-control"
+                                                    <textarea id="id_descripcion" class="form-control"
                                                         placeholder="Describa el campo" name="descripcion"
                                                         aria-describedby="basic-icon-default-message2"></textarea>
                                                 </div>
@@ -325,15 +325,21 @@
                                             <div class="mb-3">
                                                 <label for="exampleFormControlSelect1" class="form-label">Estado</label>
                                                 <select class="form-select" aria-label="Seleccionar el estado"
-                                                    name="estado">
+                                                    name="estado" disabled>
                                                     <% if (estados) {%>
                                                         <% for (var i=0; i < estados.length; i++) { %>
+                                                            <% if (estados[i].id == campo.estado) {%>
                                                             <option value="<%= campo.estado %>">
                                                                 <%= estados[i].nombre %>
                                                             </option>
                                                             <% } %>
-                                                                <% } %>
+                                                        <% } %>
+                                                    <% } %>
                                                 </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input id="contenido" type="hidden" class="form-control" name="contenido" value="<%= campo.descripcion %>"
+                                                    placeholder="Contenido de la descripcion"/>
                                             </div>
                                             <button type="submit" class="btn btn-primary">
                                                 <span class="tf-icons bx bx-edit-alt"></span> Editar</button>
@@ -388,6 +394,12 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        (function ( ) {
+            let contenido = document.getElementById("contenido").value;
+            document.getElementById("id_descripcion").innerHTML = contenido;
+        }) ( );
+    </script>
 </body>
 
 </html>

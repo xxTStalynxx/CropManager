@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembrasbyUsuario = exports.getSiembras = void 0;
+exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembrasPorCampo = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembrasbyUsuario = exports.getSiembras = void 0;
 const siembra_1 = __importDefault(require("../models/siembra"));
 const getSiembras = () => __awaiter(void 0, void 0, void 0, function* () {
     const siembras = yield siembra_1.default.findAll();
@@ -48,6 +48,14 @@ const getSiembraByCampo = (id) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getSiembraByCampo = getSiembraByCampo;
+const getSiembrasPorCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const siembras = yield siembra_1.default.findAll({
+        where: { id_campo: id },
+        order: ['fecha_cosecha_est']
+    });
+    return siembras;
+});
+exports.getSiembrasPorCampo = getSiembrasPorCampo;
 const postSiembra = (newSiembra) => __awaiter(void 0, void 0, void 0, function* () {
     const siembra = yield siembra_1.default.create({
         id_campo: newSiembra.id_campo,

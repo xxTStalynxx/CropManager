@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNombreEstado = exports.searchEstado = exports.restoreEstado = exports.deleteEstado = exports.putEstado = exports.postEstado = exports.getEstado = exports.getEstadosForCampos = exports.getEstados = void 0;
+exports.getActividadEstado = exports.getNombreEstado = exports.searchEstado = exports.restoreEstado = exports.deleteEstado = exports.putEstado = exports.postEstado = exports.getEstado = exports.getEstadosForCampos = exports.getActividades = exports.getEstadosActivos = exports.getEstados = void 0;
 const estado_1 = __importDefault(require("../models/estado"));
 const sequelize_1 = require("sequelize");
 const getEstados = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,6 +20,22 @@ const getEstados = () => __awaiter(void 0, void 0, void 0, function* () {
     return estados;
 });
 exports.getEstados = getEstados;
+const getEstadosActivos = () => __awaiter(void 0, void 0, void 0, function* () {
+    const estados = yield estado_1.default.findAll({
+        where: { activo: true }
+    });
+    return estados;
+});
+exports.getEstadosActivos = getEstadosActivos;
+const getActividades = (libre, sembrado) => __awaiter(void 0, void 0, void 0, function* () {
+    const estados = yield estado_1.default.findAll({
+        where: { id: { [sequelize_1.Op.and]: [{ [sequelize_1.Op.ne]: libre }, { [sequelize_1.Op.ne]: sembrado }] },
+            activo: true,
+        }
+    });
+    return estados;
+});
+exports.getActividades = getActividades;
 const getEstadosForCampos = () => __awaiter(void 0, void 0, void 0, function* () {
     const estados = yield estado_1.default.findAll({
         where: { id: { [sequelize_1.Op.ne]: 2 } }
@@ -83,10 +99,17 @@ const searchEstado = (nombre) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.searchEstado = searchEstado;
 const getNombreEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const rol = yield estado_1.default.findByPk(id);
-    if (rol) {
-        return rol.dataValues.nombre;
+    const estado = yield estado_1.default.findByPk(id);
+    if (estado) {
+        return estado.dataValues.nombre;
     }
 });
 exports.getNombreEstado = getNombreEstado;
+const getActividadEstado = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const estado = yield estado_1.default.findByPk(id);
+    if (estado) {
+        return estado.dataValues.actividad;
+    }
+});
+exports.getActividadEstado = getActividadEstado;
 //# sourceMappingURL=estados_dta.js.map

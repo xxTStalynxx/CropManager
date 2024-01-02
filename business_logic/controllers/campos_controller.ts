@@ -3,7 +3,7 @@ import { deleteCampo, getAllCampos, getCampo, getCampos, postCampo, putCampo } f
 import { getDate } from "../processes/date_controller";
 import { getNombreUsuario, getUsuario } from "../../data_access/usuarios_dta";
 import { getNombre } from "../../data_access/roles_dta";
-import { getCultivosforCampos } from "../../data_access/cultivos_dta";
+import { getCultivosActivos } from "../../data_access/cultivos_dta";
 import { getEstado, getEstadosForCampos, getNombreEstado } from "../../data_access/estados_dta";
 import { getConfig } from "../../data_access/configuracion_dta";
 
@@ -57,6 +57,16 @@ export const buscarCampo = async (req: Request, res: Response) => {
     }
 }
 
+export const mostrarCampo = async (req: Request, res: Response) => {
+    const { id_campo } = req.params;
+    const campo = await getCampo(id_campo);
+    if (campo !== null) {
+        res.json(campo);
+    } else {
+        res.status(404).json({ message: 'No existe el campo' });
+    }
+}
+
 export const agregarCampo = async (req: Request, res: Response) => {
     const { body } = req;
     const conf = await getConfig();
@@ -103,7 +113,7 @@ export const eliminarCampo = async (req: Request, res: Response) => {
 export const mostrarTrazado = async (req: Request, res: Response) => {
     if (req.session.user){
         const date = getDate();
-        const cultivos = await getCultivosforCampos();
+        const cultivos = await getCultivosActivos();
         const usuario = await getUsuario(req.session.user);
         const rol = await getNombre(usuario?.dataValues.rol_usuario);
         res.render('traced', { date, usuario, rol, cultivos });

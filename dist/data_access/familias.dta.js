@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchFamilia = exports.restoreFamilia = exports.deleteFamilia = exports.putFamilia = exports.postFamilia = exports.getFamilia = exports.getFamiliasActivas = exports.getFamilias = void 0;
+exports.searchFamilia = exports.restoreFamilia = exports.deleteFamilia = exports.putFamilia = exports.postFamilia = exports.getFamilia = exports.getFamiliasMenorExigencia = exports.getFamiliasPorExigencia = exports.getFamiliasActivas = exports.getFamilias = void 0;
 const familia_1 = __importDefault(require("../models/familia"));
+const sequelize_1 = require("sequelize");
 const getFamilias = () => __awaiter(void 0, void 0, void 0, function* () {
     const familias = yield familia_1.default.findAll();
     return familias;
@@ -26,6 +27,22 @@ const getFamiliasActivas = () => __awaiter(void 0, void 0, void 0, function* () 
     return familias;
 });
 exports.getFamiliasActivas = getFamiliasActivas;
+const getFamiliasPorExigencia = (exigencia) => __awaiter(void 0, void 0, void 0, function* () {
+    const familias = yield familia_1.default.findAll({
+        where: { exigencia_organica: exigencia },
+    });
+    return familias;
+});
+exports.getFamiliasPorExigencia = getFamiliasPorExigencia;
+const getFamiliasMenorExigencia = (exigencia) => __awaiter(void 0, void 0, void 0, function* () {
+    const familias = yield familia_1.default.findAll({
+        where: {
+            exigencia_organica: { [sequelize_1.Op.lte]: exigencia }
+        }
+    });
+    return familias;
+});
+exports.getFamiliasMenorExigencia = getFamiliasMenorExigencia;
 const getFamilia = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const familia = yield familia_1.default.findByPk(id);
     if (familia) {

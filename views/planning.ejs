@@ -27,8 +27,7 @@
                         <span class="app-brand-text demo menu-text fw-bolder ms-2">CropManager</span>
                     </a>
 
-                    <a href="javascript:void(0);"
-                        class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                    <a href="" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
                         <i class="bx bx-chevron-left bx-sm align-middle"></i>
                     </a>
                 </div>
@@ -79,7 +78,7 @@
                     </li>
 
                     <!-- Planificación -->
-                    <li class="menu-item">
+                    <li class="menu-item active open">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-notepad"></i>
                             <div data-i18n="Basic">Planificación</div>
@@ -90,7 +89,7 @@
                                     <div data-i18n="Container">Rotación de cultivos</div>
                                 </a>
                             </li>
-                            <li class="menu-item">
+                            <li class="menu-item active">
                                 <a href="/actividades/0" class="menu-link">
                                     <div data-i18n="Container">Actividades</div>
                                 </a>
@@ -98,7 +97,7 @@
                         </ul>
                     </li>
                     <% if (usuario.rol_usuario==1) {%>
-                        <li class="menu-item active">
+                        <li class="menu-item">
                             <a href="/estados" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-collection"></i>
                                 <div data-i18n="Basic">Estados</div>
@@ -142,7 +141,7 @@
                                             </li>
                                             <% } %>
                                                 <li class="menu-item">
-                                                    <a href="#" class="menu-link">
+                                                    <a href="/perfil" class="menu-link">
                                                         <i class="menu-icon tf-icons bx bxs-user-account"></i>
                                                         <div data-i18n="Analytics">Mi perfil</div>
                                                     </a>
@@ -275,118 +274,217 @@
                 </nav>
                 <!-- / Navbar -->
 
-                <!-- Contenido de Estados -->
+                <!-- Contenido de Planificación -->
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Nuevo estado</h5>
-                                        <small class="text-muted float-end">Llene los campos</small>
-                                    </div>
-                                    <div class="card-body">
-                                        <form action="/estados/add" method="post">
-                                            <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-fullname">Nombre</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                            class="bx bx-pencil"></i></span>
-                                                    <input type="text" class="form-control"
-                                                        id="basic-icon-default-fullname" placeholder="Nombre del estado"
-                                                        name="nombre" aria-describedby="basic-icon-default-fullname2"
-                                                        required />
-                                                </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mt-0">
+                                <!-- Nueva actividad -->
+                                <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalCenterTitle">Nueva actividad</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-message">Actividad</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-message2" class="input-group-text"><i
-                                                            class="bx bx-detail"></i></span>
-                                                    <textarea id="basic-icon-default-message" class="form-control"
-                                                        placeholder="Actividad que se realiza" name="actividad" required
-                                                        aria-describedby="basic-icon-default-message2"></textarea>
-                                                </div>
+                                            <div class="modal-body">
+                                                <form id="formAuthentication" class="mb-3" action="/actividades/add"
+                                                    method="POST">
+                                                    <div class="mb-3">
+                                                        <label for="nameBasic" class="form-label">Campo</label>
+                                                        <input type="text" id="campo" class="form-control"
+                                                            placeholder="Campo" readonly required />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input type="hidden" id="id_campo" class="form-control"
+                                                            name="id_campo" required />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Seleccione la actividad</label>
+                                                        <select class="form-select" id="selectedActividad"
+                                                            aria-label="Seleccionar la actividad" name="actividad"
+                                                            required>
+                                                            <% if (estados.length> 0) {%>
+                                                                <% for (var i=0; i < estados.length; i++) { %>
+                                                                    <option value="<%= estados[i].id%>">
+                                                                        <%= estados[i].actividad %>
+                                                                    </option>
+                                                                    <% } %>
+                                                                        <% } else {%>
+                                                                            <option value="0">
+                                                                                No hay actividades
+                                                                            </option>
+                                                                            <% } %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="row g-2">
+                                                        <div class="col mb-2">
+                                                            <label for="html5-date-input" class="form-label">Fecha de
+                                                                inicio</label>
+                                                            <div class="col-md-10" style="width: 100%">
+                                                                <input min="<%= date %>" value="<%= date %>"
+                                                                    class="form-control" name="fecha_inicio"
+                                                                    style="width: 100%;" type="date" required />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <label for="html5-date-input" class="form-label">Fecha de
+                                                                finalización</label>
+                                                            <div class="col-md-10" style="width: 100%">
+                                                                <input min="<%= date %>" value="<%= date %>"
+                                                                    class="form-control" name="fecha_fin"
+                                                                    style="width: 100%;" type="date" required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-1">
+                                                        <input id="contenido" type="hidden" class="form-control"
+                                                            name="contenido" value="<%= activo %>"
+                                                            placeholder="Contenido de la actividad" />
+                                                    </div>
+                                                    <% if (error) {%>
+                                                        <p class="mb-n2" style="color:#ff5c5c">
+                                                            <%= error %>
+                                                        </p>
+                                                        <% } %>
+                                                            <div class="modal-footer my-1">
+                                                                <button type="button" class="btn btn-outline-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                    Cerrar
+                                                                </button>
+                                                                <button id="btnGuardar" type="submit"
+                                                                    class="btn btn-primary" disabled>
+                                                                    <span class="tf-icons bx bx-save"></span>
+                                                                    Guardar</button>
+                                                            </div>
+                                                </form>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-fullname">Color</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                            class="bx bx-palette"></i></span>
-                                                    <input type="color" class="form-control"
-                                                        id="basic-icon-default-fullname"
-                                                        title="Color que identifica al estado" name="color"
-                                                        aria-describedby="basic-icon-default-fullname2" required />
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">
-                                                <span class="tf-icons bx bx-plus-circle"></span> Agregar</button>
-                                        </form>
-                                        <% if (error) {%>
-                                            <p class="mb-n2" style="color:#ff5c5c">
-                                                <%= error %>
-                                            </p>
-                                            <% } %>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Planificación de actividades</h5>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Campo</label>
+                                            <select class="form-select" id="selectedCampo"
+                                                aria-label="Seleccionar el campo" onchange="setCampo(this.value, true)">
+                                                <% if (_campo) {%>
+                                                <option value="<%= _campo.id %>" selected>
+                                                    <%= _campo.nombre %>
+                                                </option>
+                                                <% } %>
+                                                <% if (campos.length> 0) {%>
+                                                    <% for (var i=0; i < campos.length; i++) { %>
+                                                        <option value="<%= campos[i].id %>">
+                                                            <%= campos[i].nombre %>
+                                                        </option>
+                                                        <% } %>
+                                                            <% } else {%>
+                                                                <option value="0">
+                                                                    No hay campos
+                                                                </option>
+                                                                <% } %>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 pt-2 my-1"
+                                            style="text-align: center; align-self:flex-end;">
+                                            <button id="btn" type="button" class="btn btn-outline-primary"
+                                                data-bs-toggle="modal" data-bs-target="#modalCenter" disabled> <span
+                                                    class="tf-icons bx bx-plus-circle"></span>
+                                                Nueva actividad
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 pt-2">
                                 <div class="card">
-                                    <h5 class="card-header">Estados</h5>
                                     <div class="table-responsive text-nowrap">
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</th>
                                                     <th>Actividad</th>
+                                                    <th>Fecha de inicio</th>
+                                                    <th>Fecha de finalización</th>
                                                     <th>Estado</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
-                                                <% if (estados) {%>
-                                                    <% for (var i=0; i < estados.length; i++) { %>
+                                                <% if (actividades) {%>
+                                                    <% for (var i=0; i < actividades.length; i++) { %>
                                                         <tr>
                                                             <td><i class="fab fa-angular fa-lg text-danger"></i>
-                                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                                    width="25" height="25" viewBox="0 0 30 30">
-                                                                    <rect x="10" y="3" width="30" height="20"
-                                                                        fill="<%= estados[i].color %>" />
-                                                                </svg>
                                                                 <strong class="px-1">
-                                                                    <%= estados[i].nombre %>
+                                                                    <%= actividades[i].actividad %>
                                                                 </strong>
                                                             </td>
                                                             <td>
-                                                                <%= estados[i].actividad %>
+                                                                <%= actividades[i].fecha_inicio %>
                                                             </td>
-                                                            <% if (estados[i].activo==1) {%>
-                                                                <td><span
-                                                                        class="badge bg-label-success">Activo</span>
-                                                                </td>
+                                                            <td>
+                                                                <%= actividades[i].fecha_fin %>
+                                                            </td>
+                                                            <% if (actividades[i].activo==1) {%>
                                                                 <td>
-                                                                    <a class="btn btn-outline-primary"
-                                                                        href="/estados/<%= estados[i].id %>"
-                                                                        title="Editar"><i
-                                                                            class="bx bx-edit-alt"></i></a>
-                                                                    <a class="btn btn-outline-danger"
-                                                                        href="/estados/delete/<%= estados[i].id %>"
-                                                                        title="Eliminar"><i class="bx bx-trash"></i></a>
+                                                                    <span class="badge bg-label-success">En
+                                                                        proceso</span>
                                                                 </td>
-                                                                <%} else {%>
-                                                                    <td><span
-                                                                            class="badge bg-label-danger">Inactivo</span>
-                                                                    </td>
+                                                                <%} else if (actividades[i].activo==2) {%>
                                                                     <td>
-                                                                        <a class="btn btn-outline-secondary"
-                                                                            href="/estados/restore/<%= estados[i].id %>"
-                                                                            title="Restaurar"><i
-                                                                                class="bx bx-redo"></i></a>
+                                                                        <span
+                                                                            class="badge bg-label-danger">Finalizada</span>
                                                                     </td>
-                                                                    <%} %>
+                                                                    <% } else {%>
+                                                                        <td>
+                                                                            <span
+                                                                                class="badge bg-label-secondary">Planificada</span>
+                                                                        </td>
+                                                                        <% } %>
+                                                                            <% if (actividades[i].id !=0) {%>
+                                                                                <td>
+                                                                                    <% if (date < actividades[i].fecha_inicio) {%>
+                                                                                        <a class="btn btn-outline-primary"
+                                                                                            href="/actividades/search/<%= actividades[i].id %>"
+                                                                                            title="Editar actividad"><i
+                                                                                                class="bx bx-edit-alt"></i></a>
+                                                                                    <% } %>
+                                                                                    <% if (actividades[i].activo!=2) {%>
+                                                                                        <a class="btn btn-outline-secondary"
+                                                                                            onclick="confirmar(<%= actividades[i].id %>)"
+                                                                                            onmouseenter="entra(<%= actividades[i].id %>)"
+                                                                                            onmouseleave="sale(<%= actividades[i].id %>)"
+                                                                                            title="Finalizar actividad"
+                                                                                            id="btnFinish<%= actividades[i].id %>">Finalizar</a>
+                                                                                    <% } else {%>
+                                                                                        <a class="btn btn-outline-danger"
+                                                                                            onclick="confirmarEliminacion(<%= actividades[i].id %>)"
+                                                                                            onmouseenter="entra2(<%= actividades[i].id %>)"
+                                                                                            onmouseleave="sale2(<%= actividades[i].id %>)"
+                                                                                            title="Eliminar"><i id="btnDelete<%= actividades[i].id %>"
+                                                                                            class="bx bx-trash idred"></i></a>
+                                                                                    <% } %>
+                                                                                </td>
+                                                                                <% } else {%>
+                                                                                    <td>
+                                                                                        <a class="btn btn-outline-primary"
+                                                                                            href="/trazado"
+                                                                                            title="Ver detalle"><i
+                                                                                                class="bx bx-show"></i></a>
+                                                                                    </td>
+                                                                                    <% } %>
                                                         </tr>
                                                         <% } %>
                                                             <% } %>
@@ -435,6 +533,90 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        function confirmar(id) {
+            Swal.fire({
+                title: '¿Desea dar por finalizada esta actividad?',
+                icon: 'warning',
+                backdrop: false,
+                showCancelButton: true,
+                confirmButtonText: 'Finalizar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = '/actividades/finish/' + id;
+                }
+            })
+        }
+
+        function confirmarEliminacion(id) {
+            Swal.fire({
+                title: '¿Desea eliminar esta actividad?',
+                text: 'El registro se eliminará permanentemente',
+                icon: 'warning',
+                backdrop: false,
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = '/actividades/delete/' + id;
+                }
+            })
+        }
+
+        function entra(id) {
+            document.getElementById("btnFinish" + id).style.color = 'white';
+        }
+
+        function sale(id) {
+            document.getElementById("btnFinish" + id).style.color = '#7885a1';
+        }
+
+        function entra2(id) {
+            document.getElementById("btnDelete" + id).style.color = 'white';
+        }
+
+        function sale2(id) {
+            document.getElementById("btnDelete" + id).style.color = '#ff3e1d';
+        }
+
+        function setCampo(campo, activar) {
+            let _campo = document.getElementById("campo");
+            let id_campo = document.getElementById("id_campo");
+            let combo = document.getElementById("selectedCampo");
+            _campo.value = combo.options[combo.selectedIndex].text;
+            id_campo.value = campo;
+            if (activar) {
+                window.location = '/actividades/' + campo;
+            }
+        }
+
+        (function () {
+            let selectedCampo = document.getElementById("selectedCampo").value;
+            if (selectedCampo == 0) {
+                document.getElementById('btn').disabled = true;
+            } else {
+                document.getElementById('btn').disabled = false;
+            }
+            setCampo(selectedCampo, false);
+
+            let selectedActividad = document.getElementById("selectedActividad").value;
+            if (selectedActividad != 0) {
+                document.getElementById('btnGuardar').disabled = false;
+            }
+
+            let contenido = document.getElementById("contenido").value;
+            if (contenido == 'true') {
+                document.getElementById('btn').click();
+            }
+        })();
+    </script>
+    <style>
+        .idred {
+            color: #FF3E1D;
+        }
+    </style>
 </body>
 
 </html>

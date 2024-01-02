@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restaurarContrasena = exports.enviarEmail = exports.showRestaurar = exports.cerrarSesion = exports.showRegistro = exports.iniciarSesion = exports.inicioSesion = void 0;
+exports.restaurarContrasena = exports.enviarEmail = exports.showRestaurar = exports.cerrarSesion = exports.iniciarSesion = exports.inicioSesion = void 0;
 const usuarios_dta_1 = require("../../data_access/usuarios_dta");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const mail_controller_1 = require("./mail_controller");
@@ -50,15 +50,6 @@ const iniciarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.iniciarSesion = iniciarSesion;
-const showRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (req.session.user) {
-        res.redirect('/inicio');
-    }
-    else {
-        res.render('register', { error: '' });
-    }
-});
-exports.showRegistro = showRegistro;
 const cerrarSesion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.session.user) {
         req.session.destroy((err) => {

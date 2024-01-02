@@ -10,7 +10,7 @@ export const getDate = () =>{
 
 export const fechaEstimada = async (fecha: string, id_cult: string) =>{
     const cultivo = await getCultivo(id_cult);
-    const fech = Date.parse(fecha) + cultivo?.dataValues.crecimiento * 3600000 *24;
+    const fech = Date.parse(fecha) + cultivo?.dataValues.crecimiento * 3600000 * 24 + 3600000 * 12;
     const date = new Date(fech);
     const formatDate = (moment(date)).format('YYYY-MM-DD');
     return formatDate;

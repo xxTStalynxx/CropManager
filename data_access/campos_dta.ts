@@ -14,6 +14,31 @@ export const getCampos = async (idencargado: string) => {
     return campos;
 }
 
+export const getCamposParaActividades = async (idencargado: string, campo: string) => {
+    const campos = await Campo.findAll({
+        where: {
+            id: { [Op.ne]: campo },
+            [Op.and]: [
+                { encargado: idencargado },
+                { activo: true }
+            ]
+        }
+    });
+    return campos;
+}
+
+export const getCamposSembrados = async (idencargado: string, _estado: string) => {
+    const campos = await Campo.findAll({
+        where: {
+            [Op.and]: [
+                { encargado: idencargado },
+                { estado: _estado }
+            ]
+        }
+    });
+    return campos;
+}
+
 export const getAllCampos = async () => {
     const campos = await Campo.findAll();
     return campos;

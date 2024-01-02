@@ -7,6 +7,22 @@ export const getEstados = async () => {
     return estados;
 }
 
+export const getEstadosActivos = async () => {
+    const estados = await Estado.findAll({
+        where: { activo: true }
+    });
+    return estados;
+}
+
+export const getActividades = async (libre: string, sembrado: string) => {
+    const estados = await Estado.findAll({
+        where: { id: { [Op.and]: [{ [Op.ne]: libre }, { [Op.ne]: sembrado} ] },
+            activo: true,            
+        }
+    });
+    return estados;
+}
+
 export const getEstadosForCampos = async () => {
     const estados = await Estado.findAll({
         where: { id: { [Op.ne]: 2 } }
@@ -68,8 +84,15 @@ export const searchEstado = async (nombre: string) => {
 }
 
 export const getNombreEstado = async (id: string) => {
-    const rol = await Estado.findByPk(id);
-    if (rol) {
-        return rol.dataValues.nombre;
+    const estado = await Estado.findByPk(id);
+    if (estado) {
+        return estado.dataValues.nombre;
+    }
+}
+
+export const getActividadEstado = async (id: string) => {
+    const estado = await Estado.findByPk(id);
+    if (estado) {
+        return estado.dataValues.actividad;
     }
 }

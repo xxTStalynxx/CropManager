@@ -24,7 +24,7 @@ const getDate = () => {
 exports.getDate = getDate;
 const fechaEstimada = (fecha, id_cult) => __awaiter(void 0, void 0, void 0, function* () {
     const cultivo = yield (0, cultivos_dta_1.getCultivo)(id_cult);
-    const fech = Date.parse(fecha) + (cultivo === null || cultivo === void 0 ? void 0 : cultivo.dataValues.crecimiento) * 3600000 * 24;
+    const fech = Date.parse(fecha) + (cultivo === null || cultivo === void 0 ? void 0 : cultivo.dataValues.crecimiento) * 3600000 * 24 + 3600000 * 12;
     const date = new Date(fech);
     const formatDate = ((0, moment_1.default)(date)).format('YYYY-MM-DD');
     return formatDate;

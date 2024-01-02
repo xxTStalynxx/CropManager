@@ -15,13 +15,14 @@ const panel_controller_1 = require("../business_logic/controllers/panel_controll
 const prediccion_controller_1 = require("../business_logic/processes/prediccion_controller");
 const calendar_controller_1 = require("../business_logic/controllers/calendar_controller");
 const config_controller_1 = require("../business_logic/processes/config_controller");
+const rotation_controller_1 = require("../business_logic/controllers/rotation_controller");
+const planning_controller_1 = require("../business_logic/controllers/planning_controller");
 const router = (0, express_1.Router)();
 //Rutas generales
 router.get('/', main_controller_1.showMain);
 router.get('/login', login_controller_1.inicioSesion);
 router.post('/iniciarSesion', login_controller_1.iniciarSesion);
 router.get('/logout', login_controller_1.cerrarSesion);
-router.get('/registro', login_controller_1.showRegistro);
 router.get('/nosotros', main_controller_1.showNosotros);
 router.get('/cropmanager', main_controller_1.showCropManager);
 //Rutas para recuperar contraseña
@@ -40,6 +41,21 @@ router.get('/dataCalendar', calendar_controller_1.dataCalendar);
 router.get('/configuracion', config_controller_1.mostrarConfig);
 router.post('/configuracion', config_controller_1.guardarConfig);
 router.post('/configuracion/edit', config_controller_1.editarConfig);
+//Rutas para la rotacion de cultivos
+router.get('/rotacion', rotation_controller_1.mostrarRotacion);
+router.get('/rotacion/getCampos', rotation_controller_1.mostrarCamposSembrados);
+router.get('/rotacion/getCultivos/:campo', rotation_controller_1.mostrarCultivosRecomendados);
+router.get('/rotacion/getSiembra/:campo', rotation_controller_1.mostrarSiembra);
+router.get('/rotacion/getCampo/:id_campo', campos_controller_1.mostrarCampo);
+router.post('/rotacion/add', rotation_controller_1.agregarRotacionDeSiembra);
+//Rutas para la planificacion de actividades
+router.get('/actividades/:campo', planning_controller_1.mostrarPlanificacion);
+router.get('/actividades/search/:id', planning_controller_1.buscarActividad);
+router.post('/actividades/add', planning_controller_1.guardarActividad);
+router.post('/actividades/edit/:id', planning_controller_1.editarActividad);
+router.get('/actividades/finish/:id', planning_controller_1.finalizarActividad);
+router.get('/actividades/delete/:id', planning_controller_1.eliminarActividad);
+router.get('/cancelEditActividad/:campo', planning_controller_1.cancelarEditarActividad);
 //Rutas para usuarios
 router.get('/usuarios', usuarios_controller_1.listarUsuarios);
 router.get('/usuarios/:id', usuarios_controller_1.buscarUsuario);

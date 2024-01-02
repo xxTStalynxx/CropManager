@@ -14,6 +14,22 @@ export const getFamiliasActivas = async () => {
     return familias;
 }
 
+export const getFamiliasPorExigencia = async (exigencia: number) => {
+    const familias = await Familia.findAll({
+        where: { exigencia_organica: exigencia },
+    });
+    return familias;
+}
+
+export const getFamiliasMenorExigencia = async (exigencia: number) => {
+    const familias = await Familia.findAll({
+        where: {
+            exigencia_organica: { [Op.lte]: exigencia }
+        }
+    });
+    return familias;
+}
+
 export const getFamilia = async (id: string) => {
     const familia = await Familia.findByPk(id);
     if (familia) {

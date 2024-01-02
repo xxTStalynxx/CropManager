@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNombreCampo = exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getAllCampos = exports.getCampos = void 0;
+exports.getNombreCampo = exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getAllCampos = exports.getCamposSembrados = exports.getCamposParaActividades = exports.getCampos = void 0;
 const campo_1 = __importDefault(require("../models/campo"));
 const sequelize_1 = require("sequelize");
 const getCampos = (idencargado) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,6 +27,31 @@ const getCampos = (idencargado) => __awaiter(void 0, void 0, void 0, function* (
     return campos;
 });
 exports.getCampos = getCampos;
+const getCamposParaActividades = (idencargado, campo) => __awaiter(void 0, void 0, void 0, function* () {
+    const campos = yield campo_1.default.findAll({
+        where: {
+            id: { [sequelize_1.Op.ne]: campo },
+            [sequelize_1.Op.and]: [
+                { encargado: idencargado },
+                { activo: true }
+            ]
+        }
+    });
+    return campos;
+});
+exports.getCamposParaActividades = getCamposParaActividades;
+const getCamposSembrados = (idencargado, _estado) => __awaiter(void 0, void 0, void 0, function* () {
+    const campos = yield campo_1.default.findAll({
+        where: {
+            [sequelize_1.Op.and]: [
+                { encargado: idencargado },
+                { estado: _estado }
+            ]
+        }
+    });
+    return campos;
+});
+exports.getCamposSembrados = getCamposSembrados;
 const getAllCampos = () => __awaiter(void 0, void 0, void 0, function* () {
     const campos = yield campo_1.default.findAll();
     return campos;

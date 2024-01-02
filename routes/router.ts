@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { agregarCampo, buscarCampo, cancelarEditarCampo, editarCampo, eliminarCampo, listarCampos,mostrarCampos, mostrarTrazado } from '../business_logic/controllers/campos_controller';
+import { agregarCampo, buscarCampo, cancelarEditarCampo, editarCampo, eliminarCampo, listarCampos, mostrarCampo, mostrarCampos, mostrarTrazado } from '../business_logic/controllers/campos_controller';
 import { agregarRol, buscarRol, cancelarEditarRol, editarRol, eliminarRol, listarRoles, restaurarRol } from "../business_logic/controllers/roles_controller";
 import { agregarFamilia, buscarFamilia, cancelarEditarFamilia, editarFamilia, eliminarFamilia, listarFamilias, restaurarFamilia } from "../business_logic/controllers/familias_controller";
 import { agregarCultivo, buscarCultivo, cancelarEditarCultivo, editarCultivo, eliminarCultivo, listarCultivos, restaurarCultivo } from "../business_logic/controllers/cultivos_controller";
@@ -8,12 +8,14 @@ import { agregarEstado, buscarEstado, cancelarEditarEstado, editarEstado, elimin
 import { agregarRegistro, buscarRegistro, eliminarRegistro, listarRegistros } from "../business_logic/controllers/registros_controller";
 import { agregarSiembra, buscarSiembra, eliminarSiembra, listarSiembras } from "../business_logic/controllers/siembras_controller";
 import { agregarUsuario, buscarUsuario, cambiarRol, cancelarEditarUsuario, editarUsuario, eliminarUsuario, listarUsuarios, mostrarPerfil, restaurarUsuario } from "../business_logic/controllers/usuarios_controller";
-import { cerrarSesion, enviarEmail, iniciarSesion, inicioSesion, restaurarContrasena, showRegistro, showRestaurar } from "../business_logic/processes/login_controller";
+import { cerrarSesion, enviarEmail, iniciarSesion, inicioSesion, restaurarContrasena, showRestaurar } from "../business_logic/processes/login_controller";
 import { showCropManager, showForgot, showMain, showNosotros } from "../business_logic/processes/main_controller";
 import { getCamposStatsChart, getProduccionStats, showDashboard } from "../business_logic/controllers/panel_controller";
 import { doPrediccion } from "../business_logic/processes/prediccion_controller";
 import { dataCalendar, showCalendar } from "../business_logic/controllers/calendar_controller";
 import { editarConfig, guardarConfig, mostrarConfig } from "../business_logic/processes/config_controller";
+import { agregarRotacionDeSiembra, mostrarCamposSembrados, mostrarCultivosRecomendados, mostrarRotacion, mostrarSiembra } from "../business_logic/controllers/rotation_controller";
+import { buscarActividad, cancelarEditarActividad, editarActividad, eliminarActividad, finalizarActividad, guardarActividad, mostrarPlanificacion } from "../business_logic/controllers/planning_controller";
 
 const router = Router();
 
@@ -22,7 +24,6 @@ router.get('/', showMain);
 router.get('/login', inicioSesion);
 router.post('/iniciarSesion', iniciarSesion);
 router.get('/logout', cerrarSesion);
-router.get('/registro', showRegistro);
 router.get('/nosotros', showNosotros);
 router.get('/cropmanager', showCropManager);
 
@@ -45,6 +46,23 @@ router.get('/dataCalendar', dataCalendar);
 router.get('/configuracion', mostrarConfig);
 router.post('/configuracion', guardarConfig);
 router.post('/configuracion/edit', editarConfig);
+
+//Rutas para la rotacion de cultivos
+router.get('/rotacion', mostrarRotacion);
+router.get('/rotacion/getCampos', mostrarCamposSembrados);
+router.get('/rotacion/getCultivos/:campo', mostrarCultivosRecomendados);
+router.get('/rotacion/getSiembra/:campo', mostrarSiembra);
+router.get('/rotacion/getCampo/:id_campo', mostrarCampo);
+router.post('/rotacion/add', agregarRotacionDeSiembra);
+
+//Rutas para la planificacion de actividades
+router.get('/actividades/:campo', mostrarPlanificacion);
+router.get('/actividades/search/:id', buscarActividad);
+router.post('/actividades/add', guardarActividad);
+router.post('/actividades/edit/:id', editarActividad);
+router.get('/actividades/finish/:id', finalizarActividad);
+router.get('/actividades/delete/:id', eliminarActividad);
+router.get('/cancelEditActividad/:campo', cancelarEditarActividad);
 
 //Rutas para usuarios
 router.get('/usuarios', listarUsuarios);

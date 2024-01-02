@@ -1,4 +1,3 @@
-import { Request } from "express";
 import Siembra from "../models/siembra";
 
 export const getSiembras = async () => {
@@ -31,6 +30,14 @@ export const getSiembraByCampo = async (id: string) => {
     } else {
         return null;
     }
+}
+
+export const getSiembrasPorCampo = async (id: string) => {
+    const siembras = await Siembra.findAll({
+        where:{ id_campo: id },
+        order:['fecha_cosecha_est']
+    });
+    return siembras;
 }
 
 export const postSiembra = async (newSiembra: any) => {

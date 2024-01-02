@@ -2,20 +2,6 @@
     color: #FF4C4C;
 }
 
-.container_datos {
-    width: 16rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    margin-right: 1rem;
-    border-style: solid;
-    border-width: 0;
-    border-radius: 10px;
-    background-color: white;
-    position: absolute;
-    right: 0;
-    z-index: 999;
-}
-
 .hideContainer {
     display: none;
 }
@@ -34,6 +20,20 @@
 
 .hideContainerCosechar {
     display: none;
+}
+
+.container_datos {
+    width: 16rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    z-index: 999;
 }
 
 .container_datos_cultivo {
@@ -91,4 +91,41 @@
     position: absolute;
     right: 0;
     z-index: 999;
+}
+
+.container_rotacion {
+    width: 19rem;
+    height: 79%;
+    padding: 1rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+}
+
+.container_usuario {
+    width: 24rem;
+    border-style: solid;
+    border-width: 0;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    z-index: 99999;
+    left: 18%;
+}
+
+.fondo:before {
+	content:'';
+	position: absolute;
+        top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+    z-index: 9999;
+	background-color: rgba(0, 0, 0, 0.37);
 }

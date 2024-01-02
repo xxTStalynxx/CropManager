@@ -86,12 +86,12 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
+                                <a href="/rotacion" class="menu-link">
                                     <div data-i18n="Container">Rotación de cultivos</div>
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
+                                <a href="/actividades/0" class="menu-link">
                                     <div data-i18n="Container">Actividades</div>
                                 </a>
                             </li>
@@ -377,12 +377,18 @@
                                                             aria-label="Seleccionar estado" name="campo_vacio" required
                                                             disabled>
                                                             <% if (estados) {%>
-                                                                <% for (var i=0; i < estados.length; i++) { %>
-                                                                    <option value="<%= config[0].campo_vacio %>">
-                                                                        <%= estados[i].nombre %>
-                                                                    </option>
+                                                                <% for (var i=0; i < estados.length; i++) { %>          
+                                                                    <% if (estados[i].id == config[0].campo_vacio) {%>
+                                                                        <option selected value="<%= estados[i].id %>">
+                                                                            <%= estados[i].nombre %>
+                                                                        </option>
+                                                                    <% } else { %>
+                                                                        <option value="<%= estados[i].id %>">
+                                                                            <%= estados[i].nombre %>
+                                                                        </option>
                                                                     <% } %>
-                                                                        <% } %>
+                                                                <% } %>
+                                                            <% } %>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
@@ -392,13 +398,18 @@
                                                             aria-label="Seleccionar estado" name="campo_sembrado"
                                                             required disabled>
                                                             <% if (estados) {%>
-                                                                <% for (var i=0; i < estados.length; i++) { %>
-                                                                    <option selected
-                                                                        value="<%= config[0].campo_sembrado %>">
-                                                                        <%= estados[i].nombre %>
-                                                                    </option>
+                                                                <% for (var i=0; i < estados.length; i++) { %>          
+                                                                    <% if (estados[i].id == config[0].campo_sembrado) {%>
+                                                                        <option selected value="<%= estados[i].id %>">
+                                                                            <%= estados[i].nombre %>
+                                                                        </option>
+                                                                    <% } else { %>
+                                                                        <option value="<%= estados[i].id %>">
+                                                                            <%= estados[i].nombre %>
+                                                                        </option>
                                                                     <% } %>
-                                                                        <% } %>
+                                                                <% } %>
+                                                            <% } %>
                                                         </select>
                                                     </div>
                                                     <button id="btn" type="submit" class="btn btn-primary" disabled>

@@ -79,7 +79,7 @@
                     </li>
 
                     <!-- Planificación -->
-                    <li class="menu-item">
+                    <li class="menu-item active open">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-notepad"></i>
                             <div data-i18n="Basic">Planificación</div>
@@ -90,7 +90,7 @@
                                     <div data-i18n="Container">Rotación de cultivos</div>
                                 </a>
                             </li>
-                            <li class="menu-item">
+                            <li class="menu-item active">
                                 <a href="/actividades/0" class="menu-link">
                                     <div data-i18n="Container">Actividades</div>
                                 </a>
@@ -98,7 +98,7 @@
                         </ul>
                     </li>
                     <% if (usuario.rol_usuario==1) {%>
-                        <li class="menu-item active">
+                        <li class="menu-item">
                             <a href="/estados" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-collection"></i>
                                 <div data-i18n="Basic">Estados</div>
@@ -129,7 +129,7 @@
                                         <div data-i18n="Basic">Cultivos</div>
                                     </a>
                                 </li>
-                                <% } %>
+                            <% } %>
 
                                     <!-- Usuarios -->
                                     <% if (usuario.rol_usuario==1) {%>
@@ -142,7 +142,7 @@
                                             </li>
                                             <% } %>
                                                 <li class="menu-item">
-                                                    <a href="#" class="menu-link">
+                                                    <a href="/perfil" class="menu-link">
                                                         <i class="menu-icon tf-icons bx bxs-user-account"></i>
                                                         <div data-i18n="Analytics">Mi perfil</div>
                                                     </a>
@@ -275,123 +275,65 @@
                 </nav>
                 <!-- / Navbar -->
 
-                <!-- Contenido de Estados -->
+                <!-- Contenido de Roles -->
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Nuevo estado</h5>
+                                        <h5 class="mb-0">Editar actividad</h5>
                                         <small class="text-muted float-end">Llene los campos</small>
                                     </div>
                                     <div class="card-body">
-                                        <form action="/estados/add" method="post">
+                                        <form action="/actividades/edit/<%= actividad.id %>" method="post">
                                             <div class="mb-3">
                                                 <label class="form-label"
-                                                    for="basic-icon-default-fullname">Nombre</label>
+                                                    for="basic-icon-default-fullname">Actividad</label>
                                                 <div class="input-group input-group-merge">
                                                     <span id="basic-icon-default-fullname2" class="input-group-text"><i
                                                             class="bx bx-pencil"></i></span>
                                                     <input type="text" class="form-control"
-                                                        id="basic-icon-default-fullname" placeholder="Nombre del estado"
-                                                        name="nombre" aria-describedby="basic-icon-default-fullname2"
-                                                        required />
+                                                        id="basic-icon-default-fullname" placeholder="Actividad" value="<%= nombre %>"
+                                                        aria-describedby="basic-icon-default-fullname2" required readonly />
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-message">Actividad</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-message2" class="input-group-text"><i
-                                                            class="bx bx-detail"></i></span>
-                                                    <textarea id="basic-icon-default-message" class="form-control"
-                                                        placeholder="Actividad que se realiza" name="actividad" required
-                                                        aria-describedby="basic-icon-default-message2"></textarea>
-                                                </div>
+                                                <input type="hidden" class="form-control" name="id_campo" value="<%= actividad.id_campo %>"
+                                                    placeholder="Id del campo"/>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-fullname">Color</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                            class="bx bx-palette"></i></span>
-                                                    <input type="color" class="form-control"
-                                                        id="basic-icon-default-fullname"
-                                                        title="Color que identifica al estado" name="color"
-                                                        aria-describedby="basic-icon-default-fullname2" required />
+                                                <input type="hidden" class="form-control" name="actividad" value="<%= actividad.actividad %>"
+                                                    placeholder="Id del campo"/>
+                                            </div>
+                                            <div class="col mb-2">
+                                                <label for="html5-date-input" class="form-label">Fecha de
+                                                    inicio</label>
+                                                <div class="col-md-10" style="width: 100%">
+                                                    <input min="<%= actividad.fecha_inicio %>" value="<%= actividad.fecha_inicio %>"
+                                                        class="form-control" name="fecha_inicio"
+                                                        style="width: 100%;" type="date" required />
+                                                </div>
+                                            </div>
+                                            <div class="col mb-2">
+                                                <label for="html5-date-input" class="form-label">Fecha de
+                                                    finalización</label>
+                                                <div class="col-md-10" style="width: 100%">
+                                                    <input min="<%= date %>" value="<%= actividad.fecha_fin %>"
+                                                        class="form-control" name="fecha_fin"
+                                                        style="width: 100%;" type="date" required />
                                                 </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary">
-                                                <span class="tf-icons bx bx-plus-circle"></span> Agregar</button>
+                                                <span class="tf-icons bx bx-edit-alt"></span> Editar</button>
+                                            <a href="/cancelEditActividad/<%= actividad.id_campo %>" class="btn btn-danger">
+                                                <span class="tf-icons bx bx-window-close"></span> Cancelar</a>
                                         </form>
                                         <% if (error) {%>
-                                            <p class="mb-n2" style="color:#ff5c5c">
+                                            <p class="mb-n2 pt-2" style="color:#ff5c5c">
                                                 <%= error %>
                                             </p>
                                             <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card">
-                                    <h5 class="card-header">Estados</h5>
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Actividad</th>
-                                                    <th>Estado</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-border-bottom-0">
-                                                <% if (estados) {%>
-                                                    <% for (var i=0; i < estados.length; i++) { %>
-                                                        <tr>
-                                                            <td><i class="fab fa-angular fa-lg text-danger"></i>
-                                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                                    width="25" height="25" viewBox="0 0 30 30">
-                                                                    <rect x="10" y="3" width="30" height="20"
-                                                                        fill="<%= estados[i].color %>" />
-                                                                </svg>
-                                                                <strong class="px-1">
-                                                                    <%= estados[i].nombre %>
-                                                                </strong>
-                                                            </td>
-                                                            <td>
-                                                                <%= estados[i].actividad %>
-                                                            </td>
-                                                            <% if (estados[i].activo==1) {%>
-                                                                <td><span
-                                                                        class="badge bg-label-success">Activo</span>
-                                                                </td>
-                                                                <td>
-                                                                    <a class="btn btn-outline-primary"
-                                                                        href="/estados/<%= estados[i].id %>"
-                                                                        title="Editar"><i
-                                                                            class="bx bx-edit-alt"></i></a>
-                                                                    <a class="btn btn-outline-danger"
-                                                                        href="/estados/delete/<%= estados[i].id %>"
-                                                                        title="Eliminar"><i class="bx bx-trash"></i></a>
-                                                                </td>
-                                                                <%} else {%>
-                                                                    <td><span
-                                                                            class="badge bg-label-danger">Inactivo</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a class="btn btn-outline-secondary"
-                                                                            href="/estados/restore/<%= estados[i].id %>"
-                                                                            title="Restaurar"><i
-                                                                                class="bx bx-redo"></i></a>
-                                                                    </td>
-                                                                    <%} %>
-                                                        </tr>
-                                                        <% } %>
-                                                            <% } %>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>

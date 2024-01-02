@@ -6,9 +6,9 @@ import { getNombre, getRol, getRolesforUsers } from "../../data_access/roles_dta
 import { getDate } from "../processes/date_controller";
 
 export const listarUsuarios = async (req: Request, res: Response) => {
-    if (req.session.user){
+    if (req.session.user) {
         const usuario = await getUsuario(req.session.user);
-        if (usuario?.dataValues.rol_usuario != 1){
+        if (usuario?.dataValues.rol_usuario != 1) {
             res.render('noauth');
         } else {
             let usuarios = await getUsuarios();
@@ -20,7 +20,7 @@ export const listarUsuarios = async (req: Request, res: Response) => {
                 rol = await getNombre(usuarios[i].dataValues.rol_usuario);
                 usuarios[i].dataValues.rol = rol;
             }
-            res.render('users', { usuarios, roles, date, usuario, rolusuario });
+            res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: false, error: '' });
         }
     } else {
         res.render('login', { error: '' });
@@ -28,7 +28,7 @@ export const listarUsuarios = async (req: Request, res: Response) => {
 }
 
 export const buscarUsuario = async (req: Request, res: Response) => {
-    if (req.session.user){
+    if (req.session.user) {
         const { id } = req.params;
         const usuario = await getUsuario(id);
         const date = getDate();
@@ -45,27 +45,34 @@ export const buscarUsuario = async (req: Request, res: Response) => {
 
 export const agregarUsuario = async (req: Request, res: Response) => {
     const { body } = req;
+    const usuario = await getUsuario(req.session.user);
+    let usuarios = await getUsuarios();
+    const roles = await getRolesforUsers();
+    const date = getDate();
+    const rolusuario = await getNombre(usuario?.dataValues.rol_usuario);
+    let rol;
+    for (let i = 0; i < usuarios.length; i++) {
+        rol = await getNombre(usuarios[i].dataValues.rol_usuario);
+        usuarios[i].dataValues.rol = rol;
+    }
+
     if (validarEmail(body.correo)) {
-        const usuario = await searchByEmail(body.correo);
-        if (usuario !== null) {
-            res.render('register', { error: '* El correo ya está en uso' });
+        const usuarioC = await searchByEmail(body.correo);
+        if (usuarioC !== null) {
+            res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: true, error: '* El correo ya está en uso' });
         } else {
             if (validarPassword(body.contrasena)) {
-                if(body.contrasena == body.confcontrasena){
-                    bcrypt.hash(body.contrasena, 12).then(async hash => {
-                        body.contrasena = hash;
-                        await postUsuario(body);
-                        res.redirect('/login');
-                    });
-                } else{
-                    res.render('register', { error: '* Las contraseñas no coinciden' });
-                }  
+                bcrypt.hash(body.contrasena, 12).then(async hash => {
+                    body.contrasena = hash;
+                    await postUsuario(body);
+                    res.redirect('/usuarios');
+                });
             } else {
-                res.render('register', { error: '* La contraseña debe tener mínimo 8 caracteres, al menos un número, un caracter especial y una letra mayúscula' });
+                res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: true, error: '* La contraseña debe tener mínimo 8 caracteres, al menos un número, un caracter especial y una letra mayúscula' });
             }
         }
     } else {
-        res.render('register', { error: '* El correo no es válido' });
+        res.render('users', { usuarios, roles, date, usuario, rolusuario, activo: true, error: '* El correo no es válido' });
     }
 }
 
@@ -74,13 +81,13 @@ export const editarUsuario = async (req: Request, res: Response) => {
     const { id } = req.params;
     const usuario = await getUsuario(id);
     if (usuario !== null) {
-        if(body.cambiarContrasena){
+        if (body.cambiarContrasena) {
             const date = getDate();
             const rol = await getNombre(usuario.dataValues.rol_usuario);
-            if(validarPassword(body.newcontrasena)){
-                if(body.newcontrasena == body.confcontrasena){
-                    bcrypt.compare(body.contrasena, usuario.dataValues.contrasena, async (err, match) =>{
-                        if (match || (body.contrasena == usuario.dataValues.contrasena)){
+            if (validarPassword(body.newcontrasena)) {
+                if (body.newcontrasena == body.confcontrasena) {
+                    bcrypt.compare(body.contrasena, usuario.dataValues.contrasena, async (err, match) => {
+                        if (match || (body.contrasena == usuario.dataValues.contrasena)) {
                             bcrypt.hash(body.newcontrasena, 12).then(async hash => {
                                 body.contrasena = hash;
                                 await putUsuario(req);
@@ -138,8 +145,8 @@ export const cambiarRol = async (req: Request, res: Response) => {
     }
 }
 
-export const mostrarPerfil =async (req: Request, res: Response) => {
-    if (req.session.user){
+export const mostrarPerfil = async (req: Request, res: Response) => {
+    if (req.session.user) {
         const date = getDate();
         const usuario = await getUsuario(req.session.user);
         const rol = await getRol(usuario?.dataValues.rol_usuario);

@@ -34,14 +34,6 @@ export const iniciarSesion = async (req: Request, res: Response) => {
     }
 }
 
-export const showRegistro = async (req: Request, res: Response) => {
-    if (req.session.user) {
-        res.redirect('/inicio');
-    } else {
-        res.render('register', { error: '' });
-    }
-}
-
 export const cerrarSesion = async (req: Request, res: Response) => {
     if (req.session.user) {
         req.session.destroy((err: any) => {

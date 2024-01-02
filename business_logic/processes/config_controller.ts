@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getUsuario } from "../../data_access/usuarios_dta";
 import { getNombre } from "../../data_access/roles_dta";
 import { getDate } from "./date_controller";
-import { getEstados } from "../../data_access/estados_dta";
+import { getEstadosActivos } from "../../data_access/estados_dta";
 import { getConfig, postConfig, putConfig } from "../../data_access/configuracion_dta";
 
 export const mostrarConfig = async (req: Request, res: Response) => {
@@ -13,7 +13,7 @@ export const mostrarConfig = async (req: Request, res: Response) => {
         } else {
             const rol = await getNombre(usuario?.dataValues.rol_usuario);
             const date = getDate();
-            const estados = await getEstados();
+            const estados = await getEstadosActivos();
             const config = await getConfig();
             res.render('configuracion', { config, estados, date, usuario, rol, error:'' });
         }
@@ -34,7 +34,7 @@ export const guardarConfig = async (req: Request, res: Response) => {
             } else {
                 const rol = await getNombre(usuario?.dataValues.rol_usuario);
                 const date = getDate();
-                const estados = await getEstados();
+                const estados = await getEstadosActivos();
                 const config = await getConfig();
                 res.render('configuracion', { config, estados, date, usuario, rol, error:'* Los estados deben ser diferentes' });
             }
@@ -56,7 +56,7 @@ export const editarConfig = async (req: Request, res: Response) => {
             } else {
                 const rol = await getNombre(usuario?.dataValues.rol_usuario);
                 const date = getDate();
-                const estados = await getEstados();
+                const estados = await getEstadosActivos();
                 const config = await getConfig();
                 res.render('configuracion', { config, estados, date, usuario, rol, error:'* Los estados deben ser diferentes' });
             }

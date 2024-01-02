@@ -24,7 +24,7 @@ const mostrarConfig = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         else {
             const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
             const date = (0, date_controller_1.getDate)();
-            const estados = yield (0, estados_dta_1.getEstados)();
+            const estados = yield (0, estados_dta_1.getEstadosActivos)();
             const config = yield (0, configuracion_dta_1.getConfig)();
             res.render('configuracion', { config, estados, date, usuario, rol, error: '' });
         }
@@ -48,7 +48,7 @@ const guardarConfig = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             else {
                 const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
                 const date = (0, date_controller_1.getDate)();
-                const estados = yield (0, estados_dta_1.getEstados)();
+                const estados = yield (0, estados_dta_1.getEstadosActivos)();
                 const config = yield (0, configuracion_dta_1.getConfig)();
                 res.render('configuracion', { config, estados, date, usuario, rol, error: '* Los estados deben ser diferentes' });
             }
@@ -73,7 +73,7 @@ const editarConfig = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             else {
                 const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
                 const date = (0, date_controller_1.getDate)();
-                const estados = yield (0, estados_dta_1.getEstados)();
+                const estados = yield (0, estados_dta_1.getEstadosActivos)();
                 const config = yield (0, configuracion_dta_1.getConfig)();
                 res.render('configuracion', { config, estados, date, usuario, rol, error: '* Los estados deben ser diferentes' });
             }

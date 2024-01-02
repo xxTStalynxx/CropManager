@@ -1,14 +1,25 @@
 import { Request } from "express";
 import Cultivo from "../models/cultivo";
+import { Op } from "sequelize";
 
 export const getCultivos = async () => {
     const cultivos = await Cultivo.findAll();
     return cultivos;
 }
 
-export const getCultivosforCampos = async () => {
+export const getCultivosActivos = async () => {
     const cultivos = await Cultivo.findAll({
         where: { activo: true }
+    });
+    return cultivos;
+}
+
+export const getCultivosRecomendados = async (id_cultivo: string, id_familia: number) => {
+    const cultivos = await Cultivo.findAll({
+        where: {
+            familia: id_familia,
+            id: { [Op.ne]: id_cultivo }
+        }
     });
     return cultivos;
 }

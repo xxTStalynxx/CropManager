@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelarEditarCampo = exports.mostrarTrazado = exports.eliminarCampo = exports.editarCampo = exports.agregarCampo = exports.buscarCampo = exports.listarCampos = exports.mostrarCampos = void 0;
+exports.cancelarEditarCampo = exports.mostrarTrazado = exports.eliminarCampo = exports.editarCampo = exports.agregarCampo = exports.mostrarCampo = exports.buscarCampo = exports.listarCampos = exports.mostrarCampos = void 0;
 const campos_dta_1 = require("../../data_access/campos_dta");
 const date_controller_1 = require("../processes/date_controller");
 const usuarios_dta_1 = require("../../data_access/usuarios_dta");
@@ -70,6 +70,17 @@ const buscarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.buscarCampo = buscarCampo;
+const mostrarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_campo } = req.params;
+    const campo = yield (0, campos_dta_1.getCampo)(id_campo);
+    if (campo !== null) {
+        res.json(campo);
+    }
+    else {
+        res.status(404).json({ message: 'No existe el campo' });
+    }
+});
+exports.mostrarCampo = mostrarCampo;
 const agregarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const conf = yield (0, configuracion_dta_1.getConfig)();
@@ -120,7 +131,7 @@ exports.eliminarCampo = eliminarCampo;
 const mostrarTrazado = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.session.user) {
         const date = (0, date_controller_1.getDate)();
-        const cultivos = yield (0, cultivos_dta_1.getCultivosforCampos)();
+        const cultivos = yield (0, cultivos_dta_1.getCultivosActivos)();
         const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
         const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
         res.render('traced', { date, usuario, rol, cultivos });

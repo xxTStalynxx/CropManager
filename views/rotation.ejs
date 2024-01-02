@@ -1,13 +1,90 @@
 <!DOCTYPE html>
-
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/"
     data-template="vertical-menu-template-free">
 
 <head>
-    <%- include('includes/header') %>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>CropManager</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/assets/css/demo.css" />
+    <link rel="stylesheet" href="/assets/css/trazado.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+
+    <!-- Helpers -->
+    <script src="/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/assets/js/config.js"></script>
+
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxHLrR15oQTeiQFRndW9Y6YacYsVFHcR0&libraries=drawing&callback=initMap">
+        </script>
+
 </head>
 
+<style>
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .gm-style-cc {
+        display: none !important;
+    }
+</style>
+
 <body>
+    <script>
+        let oMapaGoogle;
+
+        async function initMap() {
+            oMapaGoogle = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -1.282432, lng: -78.665098 },
+                zoom: 17,
+                mapTypeId: 'hybrid',
+                zoomControl: false,
+                fullscreenControl: false,
+                streetViewControl: false,
+                mapTypeControl: false
+            });
+            getCamposSembrados()
+        }
+
+        initMap();
+    </script>
+
     <!-- Layout -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -15,7 +92,7 @@
             <!-- Menu -->
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
-                    <a href="/inicio" class="app-brand-link">
+                    <a href="index.html" class="app-brand-link">
                         <span class="app-brand-logo demo">
                             <svg width="40" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -26,7 +103,6 @@
                         </span>
                         <span class="app-brand-text demo menu-text fw-bolder ms-2">CropManager</span>
                     </a>
-
                     <a href="javascript:void(0);"
                         class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
                         <i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -38,7 +114,7 @@
                 <ul class="menu-inner py-1">
 
                     <!-- Dashboard -->
-                    <li class="menu-item">
+                    <li class="menu-item ">
                         <a href="/inicio" class="menu-link">
                             <i class="menu-icon tf-icons bx bxs-dashboard"></i>
                             <div data-i18n="Analytics">Panel de control</div>
@@ -54,7 +130,7 @@
                     <!-- Campos -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Campos</span></li>
                     <li class="menu-item">
-                        <a href="#" class="menu-link menu-toggle">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-layout"></i>
                             <div data-i18n="Basic">Campos</div>
                         </a>
@@ -79,13 +155,13 @@
                     </li>
 
                     <!-- Planificación -->
-                    <li class="menu-item">
+                    <li class="menu-item active open">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-notepad"></i>
                             <div data-i18n="Basic">Planificación</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item">
+                            <li class="menu-item active">
                                 <a href="/rotacion" class="menu-link">
                                     <div data-i18n="Container">Rotación de cultivos</div>
                                 </a>
@@ -98,7 +174,7 @@
                         </ul>
                     </li>
                     <% if (usuario.rol_usuario==1) {%>
-                        <li class="menu-item active">
+                        <li class="menu-item">
                             <a href="/estados" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-collection"></i>
                                 <div data-i18n="Basic">Estados</div>
@@ -142,7 +218,7 @@
                                             </li>
                                             <% } %>
                                                 <li class="menu-item">
-                                                    <a href="#" class="menu-link">
+                                                    <a href="/perfil" class="menu-link">
                                                         <i class="menu-icon tf-icons bx bxs-user-account"></i>
                                                         <div data-i18n="Analytics">Mi perfil</div>
                                                     </a>
@@ -222,7 +298,7 @@
                                             class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                                <ul class="dropdown-menu dropdown-menu-end" style="z-index: 10000">
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="d-flex">
@@ -275,143 +351,76 @@
                 </nav>
                 <!-- / Navbar -->
 
-                <!-- Contenido de Estados -->
+                <!-- Contenido de Rotacion -->
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Nuevo estado</h5>
-                                        <small class="text-muted float-end">Llene los campos</small>
-                                    </div>
-                                    <div class="card-body">
-                                        <form action="/estados/add" method="post">
-                                            <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-fullname">Nombre</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                            class="bx bx-pencil"></i></span>
-                                                    <input type="text" class="form-control"
-                                                        id="basic-icon-default-fullname" placeholder="Nombre del estado"
-                                                        name="nombre" aria-describedby="basic-icon-default-fullname2"
-                                                        required />
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-message">Actividad</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-message2" class="input-group-text"><i
-                                                            class="bx bx-detail"></i></span>
-                                                    <textarea id="basic-icon-default-message" class="form-control"
-                                                        placeholder="Actividad que se realiza" name="actividad" required
-                                                        aria-describedby="basic-icon-default-message2"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label"
-                                                    for="basic-icon-default-fullname">Color</label>
-                                                <div class="input-group input-group-merge">
-                                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                            class="bx bx-palette"></i></span>
-                                                    <input type="color" class="form-control"
-                                                        id="basic-icon-default-fullname"
-                                                        title="Color que identifica al estado" name="color"
-                                                        aria-describedby="basic-icon-default-fullname2" required />
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">
-                                                <span class="tf-icons bx bx-plus-circle"></span> Agregar</button>
-                                        </form>
-                                        <% if (error) {%>
-                                            <p class="mb-n2" style="color:#ff5c5c">
-                                                <%= error %>
-                                            </p>
-                                            <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card">
-                                    <h5 class="card-header">Estados</h5>
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Actividad</th>
-                                                    <th>Estado</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-border-bottom-0">
-                                                <% if (estados) {%>
-                                                    <% for (var i=0; i < estados.length; i++) { %>
-                                                        <tr>
-                                                            <td><i class="fab fa-angular fa-lg text-danger"></i>
-                                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                                    width="25" height="25" viewBox="0 0 30 30">
-                                                                    <rect x="10" y="3" width="30" height="20"
-                                                                        fill="<%= estados[i].color %>" />
-                                                                </svg>
-                                                                <strong class="px-1">
-                                                                    <%= estados[i].nombre %>
-                                                                </strong>
-                                                            </td>
-                                                            <td>
-                                                                <%= estados[i].actividad %>
-                                                            </td>
-                                                            <% if (estados[i].activo==1) {%>
-                                                                <td><span
-                                                                        class="badge bg-label-success">Activo</span>
-                                                                </td>
-                                                                <td>
-                                                                    <a class="btn btn-outline-primary"
-                                                                        href="/estados/<%= estados[i].id %>"
-                                                                        title="Editar"><i
-                                                                            class="bx bx-edit-alt"></i></a>
-                                                                    <a class="btn btn-outline-danger"
-                                                                        href="/estados/delete/<%= estados[i].id %>"
-                                                                        title="Eliminar"><i class="bx bx-trash"></i></a>
-                                                                </td>
-                                                                <%} else {%>
-                                                                    <td><span
-                                                                            class="badge bg-label-danger">Inactivo</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a class="btn btn-outline-secondary"
-                                                                            href="/estados/restore/<%= estados[i].id %>"
-                                                                            title="Restaurar"><i
-                                                                                class="bx bx-redo"></i></a>
-                                                                    </td>
-                                                                    <%} %>
-                                                        </tr>
-                                                        <% } %>
-                                                            <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="card" id="map"></div>
                     </div>
-                    <!-- / Contenido -->
+                    <div id="containerCosechar" class="container_rotacion">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 class="mb-n2 py-2 flex-shrink-0">Rotación de cultivos</h5>
+                        </div>
+                        <form action="/rotacion/add" method="post">
+                            <div class="mb-2">
+                                <small id="idCampo"></small>
+                                <label for="exampleFormControlSelect1" class="form-label">Campo</label>
+                                <select class="form-select" id="selectedCampo" aria-label="Seleccionar el campo"
+                                    onchange="setCultivos(this.value)" name="id_campo">
+                                    <% if (campos.length> 0) {%>
+                                        <% for (var i=0; i < campos.length; i++) { %>
+                                            <option value="<%= campos[i].id %>">
+                                                <%= campos[i].nombre %>
+                                            </option>
+                                            <% } %>
+                                                <% } else {%>
+                                                    <option value="0">
+                                                        No hay campos sembrados
+                                                    </option>
+                                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <label for="exampleFormControlSelect1" class="form-label">Cultivo</label>
+                                <select class="form-select" id="selectedCultivo" aria-label="Seleccionar el cultivo"
+                                    onchange="setPrediccion()" name="id_cultivo">
 
-                    <!-- Footer -->
-                    <%- include('includes/footer') %>
-                        <!-- / Footer -->
-
-                        <div class="content-backdrop fade"></div>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="basic-icon-default-fullname">Producción estimada
+                                    (Kg)</label>
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                            class="bx bx-stats"></i></span>
+                                    <input type="number" class="form-control" id="produccionEstimada"
+                                        placeholder="Producción estimada" name="produccion"
+                                        aria-describedby="basic-icon-default-fullname2" readonly required />
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="html5-date-input" class="form-label">Fecha de siembra</label>
+                                <div class="col-md-10" style="width: 100%">
+                                    <input id="fechaCosecha" class="form-control" name="fecha_siembra"
+                                        style="width: 100%;" type="date" required />
+                                </div>
+                            </div>
+                            <button id="btn" class="btn btn-primary" type="submit" disabled>
+                                <span class="tf-icons bx bx-save"></span> Guardar</button>
+                        </form>
+                    </div>
                 </div>
-                <!-- Content wrapper -->
             </div>
-            <!-- / Layout page -->
-        </div>
+            <!-- / Contenido -->
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+            <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
     </div>
 
     <!-- Core JS -->
@@ -435,6 +444,192 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+        function getCamposSembrados() {
+            const campo = document.getElementById("selectedCampo").value;
+            if (campo == 0) {
+                document.getElementById('btn').disabled = true;
+            } else {
+                document.getElementById('btn').disabled = false;
+                setCultivos(campo);
+            }
+            $.ajax({
+                url: '/rotacion/getCampos',
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Respuesta exitosa de la API
+                    if (response.length > 0) {
+                        for (var i = 0; i < response.length; i++) {
+                            let list = response[i].coordenadas.split(';')
+                            let listaPol = []
+                            for (var j = 0; j < list.length; j++) {
+                                var list2 = list[j].split(',')
+                                var obj = { lat: parseFloat(list2[0]), lng: parseFloat(list2[1]) }
+                                listaPol.push(obj)
+                            }
+
+                            if (listaPol.length > 0) {
+                                const newPolygon = new google.maps.Polygon({
+                                    paths: listaPol,
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 3,
+                                    fillColor: response[i].color,
+                                    fillOpacity: 0.4,
+                                    id: response[i].id,
+                                    estado: response[i].estado
+                                });
+
+                                newPolygon.setMap(oMapaGoogle);
+                                newPolygon.addListener("click", function () {
+                                    changeCampo(newPolygon.id);
+                                });
+                            }
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    console.error(error);
+                }
+            });
+        }
+
+        function changeCampo(id_campo) {
+            setCultivos(id_campo);
+            let selectedCampo = document.getElementById("selectedCampo");
+            selectedCampo.value = id_campo;
+        }
+
+        function setCultivos(campo) {
+            let idCampo = document.getElementById("idCampo");
+            idCampo.title = campo;
+            setCenterPosition(campo);
+            if (campo != 0) {
+                $.ajax({
+                    url: '/rotacion/getCultivos/' + campo,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        // Respuesta exitosa de la API
+                        let cultivos = document.getElementById("selectedCultivo");
+                        cultivos.innerHTML = "";
+                        let grupo, grupo2;
+
+                        if (response.length > 0) {
+                            if (response[0].recomendado == 1) {
+                                grupo = document.createElement("optgroup");
+                                grupo.label = "Recomendado";
+                                cultivos.add(grupo);
+                            }
+                            let hay = 0;
+                            for (let i = 0; i < response.length; i++) {
+                                if (response[0].recomendado == 0) {
+                                    hay = 1;
+                                    i = response.length;
+                                }
+                            }
+                            if (hay != 0) {
+                                grupo2 = document.createElement("optgroup");
+                                grupo2.label = "Otro";
+                                cultivos.add(grupo2);
+                            }
+
+                            for (let i = 0; i < response.length; i++) {
+                                let option = document.createElement("option");
+                                option.text = response[i].nombre;
+                                option.value = response[i].id;
+                                if (response[0].recomendado == 1) {
+                                    cultivos.add(option);
+                                    grupo.appendChild(option);
+                                } else if (response[0].recomendado == 0) {
+                                    cultivos.add(option);
+                                    grupo2.appendChild(option);
+                                } else {
+                                    cultivos.add(option);
+                                }
+                            }
+                            setPrediccion();
+                            document.getElementById('btn').disabled = false;
+                        } else {
+                            let option = document.createElement("option");
+                            option.text = 'Sin cultivos para recomendar';
+                            cultivos.add(option);
+                            let produccion = document.getElementById("produccionEstimada");
+                            produccion.value = '';
+                            document.getElementById('btn').disabled = true;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Ocurrió un error al hacer la solicitud
+                        console.error(error);
+                    }
+                });
+
+                $.ajax({
+                    url: '/rotacion/getSiembra/' + campo,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        // Respuesta exitosa de la API
+                        const fecha = document.getElementById("fechaCosecha");
+                        if (response.length > 0) {
+                            fecha.setAttribute('min', response[response.length - 1].fecha_cosecha_est);
+                            fecha.setAttribute('value', response[response.length - 1].fecha_cosecha_est);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Ocurrió un error al hacer la solicitud
+                        console.error(error);
+                    }
+                });
+
+            }
+        }
+
+        function setPrediccion() {
+            const id_cult = document.getElementById("selectedCultivo").value;
+            const id_camp = document.getElementById("idCampo").title;
+            $.ajax({
+                url: '/trazado/' + id_camp + '/' + id_cult,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Respuesta exitosa de la API
+                    const produccion = document.getElementById("produccionEstimada");
+                    if (response != null) {
+                        produccion.value = response.produccion_estimada;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    console.error(error);
+                }
+            });
+        }
+
+        function setCenterPosition(campo){
+            $.ajax({
+                    url: '/rotacion/getCampo/' + campo,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        // Respuesta exitosa de la API
+                        if (response != null) {
+                            const coordenadas = response.coordenadas.split(";");
+                            const lat_lng = coordenadas[0].split(',');
+                            const center = { lat: parseFloat(lat_lng[0]), lng: parseFloat(lat_lng[1]) };
+                            oMapaGoogle.setCenter(center);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Ocurrió un error al hacer la solicitud
+                        console.error(error);
+                    }
+                });
+        }
+    </script>
 </body>
 
 </html>
