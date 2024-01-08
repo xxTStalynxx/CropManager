@@ -108,6 +108,7 @@ router.get('/campos/delete/:id', campos_controller_1.eliminarCampo);
 router.get('/trazado', campos_controller_1.mostrarTrazado);
 router.get('/trazado/:id_camp/:id_cult', prediccion_controller_1.doPrediccion);
 router.get('/cancelEditCampo', campos_controller_1.cancelarEditarCampo);
+router.get('/getActividad/:id_campo', planning_controller_1.showActividadActual);
 //Rutas para siembras
 router.get('/siembras', siembras_controller_1.listarSiembras);
 router.get('/siembras/:id', siembras_controller_1.buscarSiembra);

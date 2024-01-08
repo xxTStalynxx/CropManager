@@ -15,7 +15,7 @@ import { doPrediccion } from "../business_logic/processes/prediccion_controller"
 import { dataCalendar, showCalendar } from "../business_logic/controllers/calendar_controller";
 import { editarConfig, guardarConfig, mostrarConfig } from "../business_logic/processes/config_controller";
 import { agregarRotacionDeSiembra, mostrarCamposSembrados, mostrarCultivosRecomendados, mostrarRotacion, mostrarSiembra } from "../business_logic/controllers/rotation_controller";
-import { buscarActividad, cancelarEditarActividad, editarActividad, eliminarActividad, finalizarActividad, guardarActividad, mostrarPlanificacion } from "../business_logic/controllers/planning_controller";
+import { buscarActividad, cancelarEditarActividad, editarActividad, eliminarActividad, finalizarActividad, guardarActividad, mostrarPlanificacion, showActividadActual } from "../business_logic/controllers/planning_controller";
 
 const router = Router();
 
@@ -121,6 +121,8 @@ router.get('/campos/delete/:id', eliminarCampo);
 router.get('/trazado', mostrarTrazado);
 router.get('/trazado/:id_camp/:id_cult', doPrediccion);
 router.get('/cancelEditCampo', cancelarEditarCampo);
+router.get('/getActividad/:id_campo', showActividadActual);
+
 
 //Rutas para siembras
 router.get('/siembras', listarSiembras);

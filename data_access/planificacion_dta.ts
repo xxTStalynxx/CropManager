@@ -18,6 +18,20 @@ export const getActividad = async (id: string) => {
     }
 }
 
+export const getActividadActual = async (campo: string) => {
+    const actividad = await Planificacion.findOne({
+        where: {
+            id_campo: campo,
+            activo: 1
+        }
+    });
+    if (actividad) {
+        return actividad;
+    } else {
+        return null;
+    }
+}
+
 export const postPlanificacion = async (req: Request, _activo: number) => {
     const { body } = req;
     const planificacion = await Planificacion.create({

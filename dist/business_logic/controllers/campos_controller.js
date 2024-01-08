@@ -19,9 +19,13 @@ const estados_dta_1 = require("../../data_access/estados_dta");
 const configuracion_dta_1 = require("../../data_access/configuracion_dta");
 const mostrarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let campos = yield (0, campos_dta_1.getCampos)(req.session.user);
+    const config = yield (0, configuracion_dta_1.getConfig)();
     for (let i = 0; i < campos.length; i++) {
         const estado = yield (0, estados_dta_1.getEstado)(campos[i].dataValues.estado);
         campos[i].dataValues.color = estado === null || estado === void 0 ? void 0 : estado.dataValues.color;
+        campos[i].dataValues.nombreEstado = estado === null || estado === void 0 ? void 0 : estado.dataValues.nombre;
+        campos[i].dataValues.campoSembrado = config[0].dataValues.campo_sembrado;
+        campos[i].dataValues.campoVacio = config[0].dataValues.campo_vacio;
     }
     res.json(campos);
 });

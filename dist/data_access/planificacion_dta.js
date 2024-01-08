@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchPlanificacion = exports.deletePlanificacion = exports.finishPlanificacion = exports.putPlanificacion = exports.postPlanificacion = exports.getActividad = exports.getPlanificacion = void 0;
+exports.searchPlanificacion = exports.deletePlanificacion = exports.finishPlanificacion = exports.putPlanificacion = exports.postPlanificacion = exports.getActividadActual = exports.getActividad = exports.getPlanificacion = void 0;
 const planificacion_1 = __importDefault(require("../models/planificacion"));
 const sequelize_1 = require("sequelize");
 const getPlanificacion = (id_campo) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,6 +32,21 @@ const getActividad = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getActividad = getActividad;
+const getActividadActual = (campo) => __awaiter(void 0, void 0, void 0, function* () {
+    const actividad = yield planificacion_1.default.findOne({
+        where: {
+            id_campo: campo,
+            activo: 1
+        }
+    });
+    if (actividad) {
+        return actividad;
+    }
+    else {
+        return null;
+    }
+});
+exports.getActividadActual = getActividadActual;
 const postPlanificacion = (req, _activo) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const planificacion = yield planificacion_1.default.create({

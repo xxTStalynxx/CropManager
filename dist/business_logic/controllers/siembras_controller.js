@@ -14,7 +14,6 @@ const siembras_dta_1 = require("../../data_access/siembras_dta");
 const campos_dta_1 = require("../../data_access/campos_dta");
 const cultivos_dta_1 = require("../../data_access/cultivos_dta");
 const date_controller_1 = require("../processes/date_controller");
-const estados_dta_1 = require("../../data_access/estados_dta");
 const configuracion_dta_1 = require("../../data_access/configuracion_dta");
 const listarSiembras = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const siembras = yield (0, siembras_dta_1.getSiembras)();
@@ -24,19 +23,15 @@ exports.listarSiembras = listarSiembras;
 const buscarSiembra = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const siembra = yield (0, siembras_dta_1.getSiembraByCampo)(id);
-    const campo = yield (0, campos_dta_1.getCampo)(id);
-    const estado = yield (0, estados_dta_1.getNombreEstado)(campo === null || campo === void 0 ? void 0 : campo.dataValues.estado);
     const cultivo = yield (0, cultivos_dta_1.getCultivo)(siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.id_cultivo);
-    const data = {
-        id: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.id,
-        campo: campo === null || campo === void 0 ? void 0 : campo.dataValues.nombre,
-        estado: estado,
-        cultivo: cultivo === null || cultivo === void 0 ? void 0 : cultivo.dataValues.nombre,
-        fecha_siembra: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.fecha_siembra,
-        produccion_estimada: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.produccion_estimada,
-        fecha_cosecha_est: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.fecha_cosecha_est
-    };
     if (siembra !== null) {
+        const data = {
+            id: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.id,
+            cultivo: cultivo === null || cultivo === void 0 ? void 0 : cultivo.dataValues.nombre,
+            fecha_siembra: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.fecha_siembra,
+            produccion_estimada: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.produccion_estimada,
+            fecha_cosecha_est: siembra === null || siembra === void 0 ? void 0 : siembra.dataValues.fecha_cosecha_est
+        };
         res.json(data);
     }
     else {

@@ -25,10 +25,10 @@
     <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css"/>
-    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
-    <link rel="stylesheet" href="/assets/css/demo.css"/>
-    <link rel="stylesheet" href="/assets/css/trazado.css"/>
+    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/assets/css/demo.css" />
+    <link rel="stylesheet" href="/assets/css/trazado.css" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -49,6 +49,7 @@
         #map {
             height: 100%;
         }
+
         html,
         body {
             height: 100%;
@@ -64,7 +65,6 @@
         height: 100%;
         width: 100%;
     }
-
 
     .gm-style-cc {
         display: none !important;
@@ -103,9 +103,9 @@
                     ]
                 },
                 polygonOptions: {
-                    fillColor: "#27AE60",
+                    fillColor: "#ECF0F1",
                     strokeOpacity: 0.8,
-                    fillOpacity: 0.4,
+                    fillOpacity: 0.6,
                     strokeWeight: 3,
                     clickable: false,
                     editable: true,
@@ -118,7 +118,6 @@
             google.maps.event.addListener(oDrawingManager, 'polygoncomplete', function (poligono) {
                 mListaCampo = []
 
-                console.log("***************************")
                 var lista = poligono.getPath().getArray()
 
                 for (var i = 0; i < lista.length; i++) {
@@ -127,40 +126,37 @@
                 }
 
                 if (mListaCampo.length > 0) {
-                    //oDrawingManager.setMap(null)
                     oPolygon = poligono
-                    oContainerAddCampo = document.getElementById("ContainerAddCampo");
-                    oContainerAddCampo.classList.remove("hideContainer");
+                    document.getElementById("btnNuevoCampo").click();
                 }
-
             })
-
             readAllCamposApi()
         }
         initMap()
 
         function saveCampo(idEncargado) {
-            let oIdtxtNombre = document.getElementById("idtxtNombre")
-            let oIdtxtDetalle = document.getElementById("idtxtDetalle")
-            let oIdtxtArea = document.getElementById("idtxtArea")
-            let StringCoordenadas = ""
+            let campoNombre = document.getElementById("idtxtNombre");
+            let campoDetalle = document.getElementById("idtxtDetalle");
+            let campoArea = document.getElementById("idtxtArea");
+            const vacio = document.getElementById("idVacio");
+            let stringCoordenadas = ""
             const txtError = document.getElementById("error");
 
             for (var i = 0; i < mListaCampo.length; i++) {
                 if (mListaCampo.length - 1 === i) {
-                    StringCoordenadas = StringCoordenadas + mListaCampo[i].lat + "," + mListaCampo[i].lng
+                    stringCoordenadas = stringCoordenadas + mListaCampo[i].lat + "," + mListaCampo[i].lng
                 } else {
-                    StringCoordenadas = StringCoordenadas + mListaCampo[i].lat + "," + mListaCampo[i].lng + ";"
+                    stringCoordenadas = stringCoordenadas + mListaCampo[i].lat + "," + mListaCampo[i].lng + ";"
                 }
             }
 
             var objCampo = {
                 encargado: idEncargado,
-                estado: 1,
-                nombre: oIdtxtNombre.value,
-                descripcion: oIdtxtDetalle.value,
-                area: oIdtxtArea.value,
-                posiciones: StringCoordenadas
+                estado: vacio.title,
+                nombre: campoNombre.value,
+                descripcion: campoDetalle.value,
+                area: campoArea.value,
+                posiciones: stringCoordenadas
             }
 
             $.ajax({
@@ -178,12 +174,7 @@
                 },
                 success: function (response) {
                     // La respuesta exitosa de la API
-                    oContainerAddCampo.classList.add("hideContainer")
-                    oIdtxtDetalle.value = ""
-                    oIdtxtArea.value = ""
-                    oIdtxtNombre.value = ""
-                    txtError.style.display = "none"
-                    oPolygon.setMap(null)
+                    document.getElementById("btnCancelarNC").click();
                     readAllCamposApi()
                 },
                 error: function (xhr, status, error) {
@@ -194,40 +185,12 @@
             });
         }
 
-        function saveSiembra() {
-            let txtCultivo = document.getElementById("selectedCultivo")
-            let txtFecha = document.getElementById("fechaSiembra")
-            let idCampo = document.getElementById("idCampo")
-
-            let objSiembra = {
-                id_campo: idCampo.title,
-                id_cultivo: txtCultivo.value,
-                fecha_siembra: txtFecha.value
-            }
-
-            console.log(objSiembra)
-
-            $.ajax({
-                url: '/siembras/add',
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    // Aquí se pasan los datos que se envian en el cuerpo de la solicitud
-                    id_campo: objSiembra.id_campo,
-                    id_cultivo: objSiembra.id_cultivo,
-                    fecha_siembra: objSiembra.fecha_siembra,
-                },
-                success: function (response) {
-                    // La respuesta exitosa de la API
-                    elemento.classList.add("hideContainerAddCultivo")
-                    oPolygon.setMap(null)
-                    readAllCamposApi()
-                },
-                error: function (xhr, status, error) {
-                    // Ocurrió un error al hacer la solicitud
-                    console.error(error);
-                }
-            });
+        function closeNuevoCampo() {
+            document.getElementById("idtxtNombre").value = "";
+            document.getElementById("idtxtDetalle").value = "";
+            document.getElementById("idtxtArea").value = "";
+            document.getElementById("error").style.display = "none";
+            oPolygon.setMap(null);
         }
     </script>
 
@@ -351,7 +314,7 @@
                                         <div data-i18n="Basic">Cultivos</div>
                                     </a>
                                 </li>
-                            <% } %>
+                                <% } %>
 
                                     <!-- Usuarios -->
                                     <% if (usuario.rol_usuario==1) {%>
@@ -502,88 +465,71 @@
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="card" id="map"></div>
                     </div>
-                    <div id="ContainerAddCampo" class="container_datos hideContainer">
-                        <h5 class="mb-2 py-2">Nuevo campo</h5>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Nombre</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-pencil"></i></span>
-                                <input type="text" class="form-control" id="idtxtNombre" placeholder="Nombre del campo"
-                                    name="nombre" aria-describedby="basic-icon-default-fullname2" required />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-fullname">Área (m<sup>2</sup>)</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                        class="bx bx-square"></i></span>
-                                <input type="number" class="form-control" id="idtxtArea" placeholder="Área del campo"
-                                    name="area" aria-describedby="basic-icon-default-fullname2" required />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-icon-default-message">Descripción</label>
-                            <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-message2" class="input-group-text"><i
-                                        class="bx bx-detail"></i></span>
-                                <textarea id="idtxtDetalle" class="form-control" placeholder="Describa el campo"
-                                    name="descripcion" aria-describedby="basic-icon-default-message2"></textarea>
-                            </div>
-                        </div>
-                        <button id="btnSaveCampo" onclick="saveCampo(<%= usuario.id %>)" class="btn btn-primary">
-                            <span class="tf-icons bx bx-save"></span> Guardar</button>
-                        <p id="error" class="mb-n1 py-2" style="color:#ff5c5c; font-size: small; display: none;">* El
-                            área del campo es muy pequeña</p>
-                    </div>
 
-                    <!-- Ventana Información de la Siembra -->
-                    <div id="ContainerSiembra" class="container_siembra hideContainerSiembra">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                            <h5 class="mb-n2 py-2 flex-shrink-0">Información</h5>
-                            <button id="btnCerrar2" onclick="cerrarDataSiembra()" class="btn" title="Cerrar">
-                                <span class="tf-icons bx bx-x-circle"></span></button>
+                    <!-- Ventada Nuevo Campo -->
+                    <button id="btnNuevoCampo" type="button" class="btn btn-outline-primary"
+                        data-bs-toggle="modal" data-bs-target="#modalCenter" style="display: none;"> <span
+                        class="tf-icons bx bx-plus-circle"></span>Nuevo campo</button>
+                    <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalCenterTitle">Nuevo campo</h5>
+                                    <button onclick="closeNuevoCampo()" type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close" title="Cancelar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-fullname">Nombre</label>
+                                        <div class="input-group input-group-merge">
+                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                    class="bx bx-pencil"></i></span>
+                                            <input type="text" class="form-control" id="idtxtNombre"
+                                                placeholder="Nombre del campo" name="nombre"
+                                                aria-describedby="basic-icon-default-fullname2" required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-fullname">Área
+                                            (m<sup>2</sup>)</label>
+                                        <div class="input-group input-group-merge">
+                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                                    class="bx bx-square"></i></span>
+                                            <input type="number" class="form-control" id="idtxtArea"
+                                                placeholder="Área del campo" name="area"
+                                                aria-describedby="basic-icon-default-fullname2" required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-icon-default-message">Descripción</label>
+                                        <div class="input-group input-group-merge">
+                                            <span id="basic-icon-default-message2" class="input-group-text"><i
+                                                    class="bx bx-detail"></i></span>
+                                            <textarea id="idtxtDetalle" class="form-control"
+                                                placeholder="Describa el campo" name="descripcion"
+                                                aria-describedby="basic-icon-default-message2"></textarea>
+                                        </div>
+                                    </div>
+                                    <p id="error" class="mb-n1 py-1"
+                                        style="color:#ff5c5c; font-size: small; display: none;">* El
+                                        área del campo es muy pequeña</p>
+                                        <div class="modal-footer my-1">
+                                            <button id="btnCancelarNC" onclick="closeNuevoCampo()" type="button" class="btn btn-outline-secondary"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            <button id="btnSaveCampo" onclick="saveCampo(<%= usuario.id %>)" class="btn btn-primary">
+                                                <span class="tf-icons bx bx-save"></span> Guardar</button>
+                                        </div>
+                                </div>
+                            </div>
                         </div>
-                        <small id="idSiembra"></small>
-                        <h5 class="mb-2 py-0">Campo</h5>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-pencil"></i><label class="px-2" for="basic-icon-default-fullname">Nombre:</label><small class="flex-shrink-0" id="nombre"></small></span>
-                        </div>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-collection"></i><label class="px-2" for="basic-icon-default-fullname">Estado:</label><small class="flex-shrink-0" id="estado"></small></span>
-                        </div>
-                        <h5 class="mb-2 py-1">Siembra</h5>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-spa"></i><label class="px-2" for="basic-icon-default-fullname">Cultivo:</label><small class="flex-shrink-0" id="cultivo"></small></span>
-                        </div>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-calendar"></i><label class="px-2" for="basic-icon-default-fullname">Fecha de sembrado:</label><small class="flex-shrink-0" id="fecha_siembra"></small></span>
-                        </div>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-stats"></i><label class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small class="flex-shrink-0" id="stock_estimado"></small></span>
-                        </div>
-                        <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-calendar"></i><label class="px-2" for="basic-icon-default-fullname">Fecha de cosecha estimada:</label><small class="flex-shrink-0" id="fecha_cosecha_est"></small></span>
-                        </div>
-                        <button id="btnSaveCampo" onclick="procesoCosecha()" class="btn btn-primary">
-                            <span class="tf-icons bx bx-check-circle"></span> Cosechar</button>
-                            <a class="btn btn-outline-danger" onclick="eliminarSiembra()"
-                                title="Cancelar siembra"><i
-                                    class="bx bx-trash idred"></i></a>
                     </div>
 
                     <!-- Ventana Cosechar Campo -->
-                    <div id="ContainerCosechar" class="container_cosechar hideContainerCosechar">
+                    <div id="containerCosechar" class="container_cosechar hideContainer">
                         <div class="card-title d-flex align-items-start justify-content-between">
-                            <h5 class="mb-n2 py-2 flex-shrink-0">Registro de la Cosecha</h5>
-                            <button id="btnCerrar2" onclick="cerrarCosecha()" class="btn" title="Cancelar">
-                                <span class="tf-icons bx bx-x-circle"></span></button>
+                            <h5 class="mb-1 py-0 flex-shrink-0">Registro de la cosecha</h5>
+                            <button id="btnCerrar" onclick="closeCosecha()" class="btn-close" title="Cancelar">
+                            </button>
                         </div>
                         <form action="/registros/add" method="post">
                             <div class="mb-2">
@@ -591,23 +537,26 @@
                                 <div class="input-group input-group-merge">
                                     <span id="basic-icon-default-fullname2" class="input-group-text"><i
                                             class="bx bxs-layout"></i></span>
-                                    <input type="number" class="form-control" id="identificadorSiembra"
-                                        name="id" aria-describedby="basic-icon-default-fullname2" readonly />
+                                    <input type="number" class="form-control" id="identificadorSiembra" name="id"
+                                        aria-describedby="basic-icon-default-fullname2" readonly />
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label" for="basic-icon-default-fullname">Producción obtenida (Kg)</label>
+                                <label class="form-label" for="basic-icon-default-fullname">Producción obtenida
+                                    (Kg)</label>
                                 <div class="input-group input-group-merge">
                                     <span id="basic-icon-default-fullname2" class="input-group-text"><i
                                             class="bx bx-stats"></i></span>
-                                    <input type="number" class="form-control" id="produccionObtenida" placeholder="Producción obtenida"
-                                        name="produccion" aria-describedby="basic-icon-default-fullname2" min="0" required />
+                                    <input type="number" class="form-control" id="produccionObtenida"
+                                        placeholder="Producción obtenida" name="produccion"
+                                        aria-describedby="basic-icon-default-fullname2" min="0" required />
                                 </div>
                             </div>
                             <div class="mb-2">
                                 <label for="html5-date-input" class="form-label">Fecha de cosecha</label>
                                 <div class="col-md-10" style="width: 100%">
-                                    <input class="form-control" name="fecha_cosecha" style="width: 100%;" type="date" min="<%= date %>" value="<%= date %>" required/>
+                                    <input class="form-control" name="fecha_cosecha" style="width: 100%;" type="date"
+                                        min="<%= date %>" value="<%= date %>" required />
                                 </div>
                             </div>
                             <div class="mb-2">
@@ -625,17 +574,18 @@
                     </div>
 
                     <!-- Ventana Sembrar cultivo -->
-                    <div id="ContainerCultivoAdd" class="container_datos_cultivo hideContainerAddCultivo">
+                    <div id="containerCultivoAdd" class="container_datos_cultivo hideContainer">
                         <div class="card-title d-flex align-items-start justify-content-between">
-                            <h5 class="mb-1 py-2 flex-shrink-0">Sembrar cultivo</h5>
-                            <button id="btnCerrar" onclick="cerrarSiembra()" class="btn" title="Cancelar">
-                                <span class="tf-icons bx bx-x-circle"></span></button>
+                            <h5 class="mb-1 py-0 flex-shrink-0">Sembrar cultivo</h5>
+                            <button id="btnCerrar" onclick="closeSiembra()" class="btn-close" title="Cancelar">
+                            </button>
                         </div>
                         <form>
                             <div class="mb-2">
                                 <small id="idCampo"></small>
                                 <label for="exampleFormControlSelect1" class="form-label">Cultivo</label>
-                                <select class="form-select" id="selectedCultivo" aria-label="Seleccionar el cultivo" onchange="doPrediccion()">
+                                <select class="form-select" id="selectedCultivo" aria-label="Seleccionar el cultivo"
+                                    onchange="doPrediccion()">
                                     <% if (cultivos) {%>
                                         <% for (var i=0; i < cultivos.length; i++) { %>
                                             <option value="<%= cultivos[i].id %>">
@@ -648,25 +598,142 @@
                             <div class="mb-2">
                                 <label for="html5-date-input" class="form-label">Fecha de siembra</label>
                                 <div class="col-md-10" style="width: 100%">
-                                    <input class="form-control" style="width: 100%;" type="date" id="fechaSiembra" min="<%= date %>" value="<%= date %>"/>
+                                    <input class="form-control" style="width: 100%;" type="date" id="fechaSiembra"
+                                        min="<%= date %>" value="<%= date %>" />
                                 </div>
                             </div>
-                            <button id="btnSaveCampo" onclick="saveSiembra()" class="btn btn-primary">
+                            <button onclick="saveSiembra()" class="btn btn-primary">
                                 <span class="tf-icons bx bx-plus-circle"></span> Sembrar</button>
                         </form>
                     </div>
 
-                    <div id="ContainerPrediccion" class="container_prediccion hideContainerPrediccion">
+                    <!-- Ventana Informacion -->
+                    <div id="containerOptions" class="container_options hideContainer">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 id="nombreCampo" class="mb-0 py-0 flex-shrink-0"></h5>
+                            <button id="btnCerrar" onclick="closeOptions()" class="btn-close" title="Cerrar">
+                            </button>
+                        </div>
+                        <small id="idVacio"></small>
+                        <div class="dropdown-divider"></div>
+                        <div class="card-body d-flex align-items-start justify-content-between">
+                            <h1 id="areaCampo" class="mb-0 text-primary"></h1>
+                            <span id="estadoCampo" class="pt-3"><label for="basic-icon-default-fullname"></label></span>
+                        </div>
+                        <div class="demo-inline-spacing mt-0">
+                            <div class="list-group list-group-horizontal-md text-md-center">
+                                <a class="list-group-item list-group-item-action active" id="home-list-item"
+                                    data-bs-toggle="list" href="#siembra">Siembra</a>
+                                <a class="list-group-item list-group-item-action" id="profile-list-item"
+                                    data-bs-toggle="list" href="#actividades">Actividades</a>
+                                <a class="list-group-item list-group-item-action" id="settings-list-item"
+                                    data-bs-toggle="list" href="#editar">Editar</a>
+                            </div>
+                            <div class="tab-content px-0">
+                                <div class="tab-pane fade show active" id="siembra">
+                                    <div id="contenedorSembrar" class="hideContainer">
+                                        <p>No hay siembras en este campo</p>
+                                        <button id="btnSaveSiembra" onclick="newSiembra()" class="btn btn-primary">
+                                            <span class="tf-icons bx bx-plus-circle"></span> Nueva siembra</button>
+                                    </div>
+                                    <div id="contenedorSiembra" class="hideContainer">
+                                        <small id="idSiembra"></small>
+                                        <h5 class="mb-2 py-1">Información de la siembra</h5>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-spa"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Cultivo:</label><small
+                                                    class="flex-shrink-0" id="cultivo"></small></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-calendar"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Fecha de sembrado:</label><small
+                                                    class="flex-shrink-0" id="fecha_siembra"></small></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-stats"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Producción estimada:</label><small
+                                                    class="flex-shrink-0" id="stock_estimado"></small></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-calendar"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Cosecha
+                                                    estimada:</label><small class="flex-shrink-0"
+                                                    id="fecha_cosecha_est"></small></span>
+                                        </div>
+                                        <button onclick="procesoCosecha()" class="btn btn-primary">
+                                            <span class="tf-icons bx bx-check-circle"></span> Cosechar</button>
+                                        <a class="btn btn-outline-danger" onclick="eliminarSiembra()"
+                                            title="Cancelar siembra"><i class="bx bx-trash idred"></i></a>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="actividades">
+                                    <div id="contenedorActividad" class="hideContainer">
+                                        <p>No se han planificado actividades en este campo</p>
+                                        <button onclick="locateActividad()" class="btn btn-primary">
+                                            <span class="tf-icons bx bx-plus-circle"></span> Planificar
+                                            actividad</button>
+                                    </div>
+                                    <div id="contenedorActividadActual" class="hideContainer">
+                                        <h5 class="mb-2 py-1">Actividad actual</h5>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-task"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Actividad:</label><small
+                                                    class="flex-shrink-0" id="actividad"></small></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-calendar"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Fecha de inicio:</label><small
+                                                    class="flex-shrink-0" id="fecha_inicio"></small></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span id="basic-icon-default-fullname2" class="py-2"><i
+                                                    class="bx bx-calendar"></i><label class="px-2"
+                                                    for="basic-icon-default-fullname">Fecha de
+                                                    finalización:</label><small class="flex-shrink-0"
+                                                    id="fecha_fin"></small></span>
+                                        </div>
+                                        <button onclick="locateActividad()" class="btn btn-primary">
+                                            <span class="tf-icons bx bx-plus-circle"></span> Nueva actividad</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="editar">
+                                    <div class="mt-1 mb-2">
+                                        <button id="editForma" onclick="" class="btn btn-outline-primary"
+                                            style="width: 100%;" disabled>
+                                            <span class="tf-icons bx bx-shape-polygon"></span> Editar forma del
+                                            campo</button>
+                                    </div>
+                                    <div class="mb-2">
+                                        <button id="editDatos" onclick="locateEdit()" class="btn btn-outline-primary"
+                                            style="width: 100%;" disabled>
+                                            <span class="tf-icons bx bx-edit-alt"></span> Editar datos del
+                                            campo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ventana de Prediccion -->
+                    <div id="containerPrediccion" class="container_prediccion hideContainer">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <h5 class="mb-n2 py-2 flex-shrink-0">Predicción</h5>
                         </div>
                         <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-spa"></i><label class="px-2" for="basic-icon-default-fullname">Cultivo:</label><small class="flex-shrink-0" id="nomcultivo"></small></span>
+                            <span id="basic-icon-default-fullname2" class="py-2"><i class="bx bx-spa"></i><label
+                                    class="px-2" for="basic-icon-default-fullname">Cultivo:</label><small
+                                    class="flex-shrink-0" id="nomcultivo"></small></span>
                         </div>
                         <div class="mb-2">
-                            <span id="basic-icon-default-fullname2" class="py-2"><i
-                                class="bx bx-stats"></i><label class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small class="flex-shrink-0" id="prediccion_estimada"></small></span>
+                            <span id="basic-icon-default-fullname2" class="py-2"><i class="bx bx-stats"></i><label
+                                    class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small
+                                    class="flex-shrink-0" id="prediccion_estimada"></small></span>
                         </div>
                     </div>
                 </div>
@@ -716,6 +783,7 @@
                 success: function (response) {
                     // Respuesta exitosa de la API
                     if (response.length > 0) {
+                        document.getElementById("idVacio").title = response[0].campoVacio;
                         for (var i = 0; i < response.length; i++) {
                             let list = response[i].coordenadas.split(';')
                             let listaPol = []
@@ -733,12 +801,16 @@
                                     fillColor: response[i].color,
                                     fillOpacity: 0.4,
                                     id: response[i].id,
-                                    estado: response[i].estado
+                                    estado: response[i].estado,
+                                    nombre: response[i].nombre,
+                                    area: response[i].area,
+                                    nombreEstado: response[i].nombreEstado,
+                                    campoSembrado: response[i].campoSembrado
                                 });
 
                                 newPolygon.setMap(oMapaGoogle);
                                 newPolygon.addListener("click", function () {
-                                    showPolygon(newPolygon.id, newPolygon.estado);
+                                    showOptions(newPolygon);
                                 });
                             }
                         }
@@ -751,29 +823,48 @@
             });
         }
 
-        function showPolygon(id, estado) {
-            if (estado == 1) {
-                elemento = document.getElementById('ContainerCultivoAdd')
-                elemento.classList.remove('hideContainerAddCultivo')
-                elemento = document.getElementById('ContainerPrediccion')
-                elemento.classList.remove('hideContainerPrediccion')
-                let idCampo = document.getElementById("idCampo")
-                idCampo.title = id
-                cerrarDataSiembra()
-                doPrediccion()
-                cerrarCosecha()
+        function showOptions(campo) {
+            let contenedor = document.getElementById("containerOptions");
+            const idCampo = document.getElementById("idCampo");
+            idCampo.title = campo.id;
+            const nombreCampo = document.getElementById("nombreCampo");
+            nombreCampo.textContent = campo.nombre;
+            const areaCampo = document.getElementById("areaCampo");
+            areaCampo.textContent = campo.area + " m²";
+            const estadoCampo = document.getElementById("estadoCampo");
+            estadoCampo.textContent = campo.nombreEstado;
+            showSiembra(campo.id);
+            contenedor.classList.remove('hideContainer');
+            if (campo.estado != campo.campoSembrado) {
+                document.getElementById('editForma').disabled = false;
+                document.getElementById('editDatos').disabled = false;
             } else {
-                showSiembra(id)
+                document.getElementById('editForma').disabled = true;
+                document.getElementById('editDatos').disabled = true;
             }
+            closeSiembra();
+            showActividad();
         }
 
-        function cerrarSiembra(){
-            elemento = document.getElementById('ContainerCultivoAdd')
-            elemento.classList.add('hideContainerAddCultivo')
-            elemento = document.getElementById('ContainerPrediccion')
-            elemento.classList.add('hideContainerPrediccion')
-            let idCampo = document.getElementById("idCampo")
-            idCampo.title = ""
+        function closeOptions() {
+            let contenedor = document.getElementById("containerOptions");
+            contenedor.classList.add('hideContainer');
+        }
+
+        function newSiembra() {
+            let contenedor = document.getElementById('containerCultivoAdd');
+            contenedor.classList.remove('hideContainer');
+            let contenedor2 = document.getElementById('containerPrediccion');
+            contenedor2.classList.remove('hideContainer');
+            closeOptions();
+            doPrediccion();
+        }
+
+        function closeSiembra() {
+            let contenedor = document.getElementById('containerCultivoAdd');
+            contenedor.classList.add('hideContainer');
+            let contenedor2 = document.getElementById('containerPrediccion');
+            contenedor2.classList.add('hideContainer');
         }
 
         function showSiembra(id) {
@@ -783,31 +874,62 @@
                 dataType: 'json',
                 success: function (response) {
                     // Respuesta exitosa de la API
-                    const campo = document.getElementById("nombre")
-                    const estado = document.getElementById("estado")
-                    const cultivo = document.getElementById("cultivo")
-                    const fecha_siembra = document.getElementById("fecha_siembra")
-                    const stock_estimado = document.getElementById("stock_estimado")
-                    const fecha_cosecha_est = document.getElementById("fecha_cosecha_est")
-                    const produccion = document.getElementById("produccionObtenida")
-                    const siembra = document.getElementById("idSiembra")
-                    const idsiembra = document.getElementById("identificadorSiembra")
-
+                    const cultivo = document.getElementById("cultivo");
+                    const fecha_siembra = document.getElementById("fecha_siembra");
+                    const stock_estimado = document.getElementById("stock_estimado");
+                    const fecha_cosecha_est = document.getElementById("fecha_cosecha_est");
+                    const produccion = document.getElementById("produccionObtenida");
+                    const siembra = document.getElementById("idSiembra");
+                    const idsiembra = document.getElementById("identificadorSiembra");
                     if (response != null) {
-                        siembra.title = response.id
-                        idsiembra.value = response.id
-                        campo.textContent = response.campo
-                        estado.textContent = response.estado
-                        cultivo.textContent = response.cultivo
-                        fecha_siembra.textContent = response.fecha_siembra
-                        stock_estimado.textContent = response.produccion_estimada + ' Kg'
-                        fecha_cosecha_est.textContent = response.fecha_cosecha_est
-                        produccion.value = response.produccion_estimada
+                        siembra.title = response.id;
+                        idsiembra.value = response.id;
+                        cultivo.textContent = response.cultivo;
+                        fecha_siembra.textContent = response.fecha_siembra;
+                        stock_estimado.textContent = response.produccion_estimada + ' Kg';
+                        fecha_cosecha_est.textContent = response.fecha_cosecha_est;
+                        produccion.value = response.produccion_estimada;
+                        let contenedor = document.getElementById("contenedorSiembra");
+                        contenedor.classList.remove('hideContainer');
+                        contenedor = document.getElementById("contenedorSembrar");
+                        contenedor.classList.add('hideContainer');
                     }
-                    elemento = document.getElementById('ContainerSiembra')
-                    elemento.classList.remove('hideContainerSiembra')
-                    cerrarSiembra()
-                    cerrarCosecha()
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    let contenedor = document.getElementById("contenedorSiembra");
+                    contenedor.classList.add('hideContainer');
+                    contenedor = document.getElementById("contenedorSembrar");
+                    contenedor.classList.remove('hideContainer');
+                }
+            });
+        }
+
+        function saveSiembra() {
+            let txtCultivo = document.getElementById("selectedCultivo");
+            let txtFecha = document.getElementById("fechaSiembra");
+            let idCampo = document.getElementById("idCampo");
+
+            let objSiembra = {
+                id_campo: idCampo.title,
+                id_cultivo: txtCultivo.value,
+                fecha_siembra: txtFecha.value
+            }
+
+            $.ajax({
+                url: '/siembras/add',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    id_campo: objSiembra.id_campo,
+                    id_cultivo: objSiembra.id_cultivo,
+                    fecha_siembra: objSiembra.fecha_siembra,
+                },
+                success: function (response) {
+                    // La respuesta exitosa de la API
+                    closeSiembra()
+                    oPolygon.setMap(null)
+                    readAllCamposApi()
                 },
                 error: function (xhr, status, error) {
                     // Ocurrió un error al hacer la solicitud
@@ -816,23 +938,7 @@
             });
         }
 
-        function cerrarDataSiembra(){
-            elemento = document.getElementById('ContainerSiembra');
-            elemento.classList.add('hideContainerSiembra');
-        }
-
-        function procesoCosecha(){
-            elemento = document.getElementById('ContainerCosechar');
-            elemento.classList.remove('hideContainerCosechar');
-            cerrarDataSiembra();
-        }
-
-        function cerrarCosecha(){
-            elemento = document.getElementById('ContainerCosechar')
-            elemento.classList.add('hideContainerCosechar')
-        }
-
-        function eliminarSiembra(){
+        function eliminarSiembra() {
             const siembra = document.getElementById("idSiembra").title
             Swal.fire({
                 title: '¿Desea cancelar la siembra de este campo?',
@@ -848,11 +954,22 @@
             })
         }
 
-        function doPrediccion(){
-            const id_cult= document.getElementById("selectedCultivo").value
-            const id_camp = document.getElementById("idCampo").title
+        function procesoCosecha() {
+            let contenedor = document.getElementById('containerCosechar');
+            contenedor.classList.remove('hideContainer');
+            closeOptions();
+        }
+
+        function closeCosecha() {
+            let contenedor = document.getElementById('containerCosechar');
+            contenedor.classList.add('hideContainer');
+        }
+
+        function doPrediccion() {
+            const id_cult = document.getElementById("selectedCultivo").value;
+            const id_camp = document.getElementById("idCampo").title;
             $.ajax({
-                url: '/trazado/'+id_camp +'/'+id_cult,
+                url: '/trazado/' + id_camp + '/' + id_cult,
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -867,6 +984,49 @@
                 },
                 error: function (xhr, status, error) {
                     // Ocurrió un error al hacer la solicitud
+                    console.error(error);
+                }
+            });
+        }
+
+        function locateEdit() {
+            const id_campo = document.getElementById("idCampo").title;
+            window.location = "/campos/" + id_campo;
+        }
+
+        function locateActividad() {
+            const id_campo = document.getElementById("idCampo").title;
+            window.location = "/actividades/" + id_campo;
+        }
+
+        function showActividad() {
+            const id_campo = document.getElementById("idCampo").title;
+            $.ajax({
+                url: '/getActividad/' + id_campo,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Respuesta exitosa de la API
+                    let contenedorA = document.getElementById("contenedorActividad");
+                    let contenedorAA = document.getElementById("contenedorActividadActual");
+                    const actividad = document.getElementById("actividad");
+                    const fecha_inicio = document.getElementById("fecha_inicio");
+                    const fecha_fin = document.getElementById("fecha_fin");
+                    if (response.actividad != undefined) {
+                        actividad.textContent = response.actividad;
+                        fecha_inicio.textContent = response.fecha_inicio;
+                        fecha_fin.textContent = response.fecha_fin;
+                        contenedorAA.classList.remove('hideContainer');
+                        contenedorA.classList.add('hideContainer');
+                    } else {
+                        contenedorAA.classList.add('hideContainer');
+                        contenedorA.classList.remove('hideContainer');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    contenedorAA.classList.add('hideContainer');
+                    contenedorA.classList.remove('hideContainer');
                     console.error(error);
                 }
             });

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelarEditarActividad = exports.eliminarActividad = exports.finalizarActividad = exports.editarActividad = exports.buscarActividad = exports.guardarActividad = exports.mostrarPlanificacion = void 0;
+exports.showActividadActual = exports.cancelarEditarActividad = exports.eliminarActividad = exports.finalizarActividad = exports.editarActividad = exports.buscarActividad = exports.guardarActividad = exports.mostrarPlanificacion = void 0;
 const roles_dta_1 = require("../../data_access/roles_dta");
 const date_controller_1 = require("../processes/date_controller");
 const usuarios_dta_1 = require("../../data_access/usuarios_dta");
@@ -216,6 +216,11 @@ const finalizarActividad = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const { id } = req.params;
     const actividad = yield (0, planificacion_dta_1.getActividad)(id);
     if (actividad !== null) {
+        const siembras = yield (0, siembras_dta_1.getSiembrasPorCampo)(actividad.dataValues.id_campo);
+        if (siembras.length <= 0) {
+            const config = yield (0, configuracion_dta_1.getConfig)();
+            yield (0, campos_dta_1.changeEstado)(actividad.dataValues.id_campo, config[0].dataValues.campo_vacio);
+        }
         yield (0, planificacion_dta_1.finishPlanificacion)(id);
         res.redirect('/actividades/' + actividad.dataValues.id_campo);
     }
@@ -241,4 +246,16 @@ const cancelarEditarActividad = (req, res) => {
     res.redirect('/actividades/' + campo);
 };
 exports.cancelarEditarActividad = cancelarEditarActividad;
+const showActividadActual = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_campo } = req.params;
+    const actividad = yield (0, planificacion_dta_1.getActividadActual)(id_campo);
+    const nombre = yield (0, estados_dta_1.getActividadEstado)(actividad === null || actividad === void 0 ? void 0 : actividad.dataValues.actividad);
+    const data = {
+        actividad: nombre,
+        fecha_inicio: actividad === null || actividad === void 0 ? void 0 : actividad.dataValues.fecha_inicio,
+        fecha_fin: actividad === null || actividad === void 0 ? void 0 : actividad.dataValues.fecha_fin
+    };
+    res.json(data);
+});
+exports.showActividadActual = showActividadActual;
 //# sourceMappingURL=planning_controller.js.map

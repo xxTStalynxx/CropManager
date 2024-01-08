@@ -6,27 +6,12 @@
     display: none;
 }
 
-.hideContainerSiembra {
-    display: none;
-}
-
-.hideContainerAddCultivo {
-    display: none;
-}
-
-.hideContainerPrediccion {
-    display: none;
-}
-
-.hideContainerCosechar {
-    display: none;
-}
-
-.container_datos {
-    width: 16rem;
+.container_options {
+    width: 19rem;
+    height: 79%;
     padding: 1rem;
-    margin-top: 1rem;
-    margin-right: 1rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
     border-style: solid;
     border-width: 0;
     border-radius: 10px;
@@ -37,24 +22,10 @@
 }
 
 .container_datos_cultivo {
-    width: 16rem;
+    width: 19rem;
     padding: 1rem;
-    margin-top: 1rem;
-    margin-right: 1rem;
-    border-style: solid;
-    border-width: 0;
-    border-radius: 10px;
-    background-color: white;
-    position: absolute;
-    right: 0;
-    z-index: 999;
-}
-
-.container_siembra {
-    width: 18rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    margin-right: 1rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
     border-style: solid;
     border-width: 0;
     border-radius: 10px;
@@ -65,9 +36,9 @@
 }
 
 .container_prediccion {
-    width: 18rem;
+    width: 19rem;
     padding: 1rem;
-    margin-right: 1rem;
+    margin-right: 2rem;
     margin-bottom: 2rem;
     border-style: solid;
     border-width: 0;
@@ -80,10 +51,11 @@
 }
 
 .container_cosechar {
-    width: 18rem;
+    width: 19rem;
+    height: 79%;
     padding: 1rem;
-    margin-right: 1rem;
-    margin-top: 1rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
     border-style: solid;
     border-width: 0;
     border-radius: 10px;
@@ -106,17 +78,6 @@
     position: absolute;
     right: 0;
     z-index: 999;
-}
-
-.container_usuario {
-    width: 24rem;
-    border-style: solid;
-    border-width: 0;
-    border-radius: 10px;
-    background-color: white;
-    position: absolute;
-    z-index: 99999;
-    left: 18%;
 }
 
 .fondo:before {

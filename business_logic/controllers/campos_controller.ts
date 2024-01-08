@@ -9,9 +9,13 @@ import { getConfig } from "../../data_access/configuracion_dta";
 
 export const mostrarCampos = async (req: Request, res: Response) => {
     let campos = await getCampos(req.session.user);
+    const config = await getConfig();
     for (let i=0; i<campos.length; i++){
         const estado = await getEstado(campos[i].dataValues.estado);
         campos[i].dataValues.color = estado?.dataValues.color;
+        campos[i].dataValues.nombreEstado = estado?.dataValues.nombre;
+        campos[i].dataValues.campoSembrado = config[0].dataValues.campo_sembrado;
+        campos[i].dataValues.campoVacio = config[0].dataValues.campo_vacio;
     }
     res.json(campos);
 }

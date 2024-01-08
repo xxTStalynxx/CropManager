@@ -5,7 +5,7 @@ import { getUsuario } from "../../data_access/usuarios_dta";
 import { changeEstado, getCampo, getCampos, getCamposParaActividades } from "../../data_access/campos_dta";
 import { getActividadEstado, getActividades } from "../../data_access/estados_dta";
 import { getConfig } from "../../data_access/configuracion_dta";
-import { deletePlanificacion, finishPlanificacion, getActividad, getPlanificacion, postPlanificacion, putPlanificacion, searchPlanificacion } from "../../data_access/planificacion_dta";
+import { deletePlanificacion, finishPlanificacion, getActividad, getActividadActual, getPlanificacion, postPlanificacion, putPlanificacion, searchPlanificacion } from "../../data_access/planificacion_dta";
 import { getSiembrasPorCampo } from "../../data_access/siembras_dta";
 import { getNombreCultivo } from "../../data_access/cultivos_dta";
 
@@ -209,6 +209,11 @@ export const finalizarActividad = async (req: Request, res: Response) => {
     const { id } = req.params;
     const actividad = await getActividad(id);
     if (actividad !== null) {
+        const siembras = await getSiembrasPorCampo(actividad.dataValues.id_campo);
+        if (siembras.length <= 0) {
+            const config = await getConfig();
+            await changeEstado(actividad.dataValues.id_campo, config[0].dataValues.campo_vacio);
+        }
         await finishPlanificacion(id);
         res.redirect('/actividades/' + actividad.dataValues.id_campo);
     } else {
@@ -231,3 +236,15 @@ export const cancelarEditarActividad = (req: Request, res: Response) => {
     const { campo } = req.params;
     res.redirect('/actividades/' + campo);
 };
+
+export const showActividadActual = async (req: Request, res: Response) => {
+    const { id_campo } = req.params;
+    const actividad = await getActividadActual(id_campo);
+    const nombre = await getActividadEstado(actividad?.dataValues.actividad);
+    const data = {
+        actividad: nombre,
+        fecha_inicio: actividad?.dataValues.fecha_inicio,
+        fecha_fin: actividad?.dataValues.fecha_fin
+    }
+    res.json(data);
+}

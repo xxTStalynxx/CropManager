@@ -3,7 +3,6 @@ import { deleteSiembra, getSiembra, getSiembraByCampo, getSiembras, postSiembra,
 import { changeEstado, getCampo } from "../../data_access/campos_dta";
 import { getCultivo } from "../../data_access/cultivos_dta";
 import { fechaEstimada } from "../processes/date_controller";
-import { getNombreEstado } from "../../data_access/estados_dta";
 import { getConfig } from "../../data_access/configuracion_dta";
 
 export const listarSiembras = async (req: Request, res: Response) => {
@@ -14,20 +13,15 @@ export const listarSiembras = async (req: Request, res: Response) => {
 export const buscarSiembra = async (req: Request, res: Response) => {
     const { id } = req.params;
     const siembra = await getSiembraByCampo(id);
-    const campo = await getCampo(id);
-    const estado = await getNombreEstado(campo?.dataValues.estado);
     const cultivo = await getCultivo(siembra?.dataValues.id_cultivo);
-    const data = {
-        id: siembra?.dataValues.id,
-        campo: campo?.dataValues.nombre,
-        estado: estado,
-        cultivo: cultivo?.dataValues.nombre,
-        fecha_siembra: siembra?.dataValues.fecha_siembra,
-        produccion_estimada: siembra?.dataValues.produccion_estimada,
-        fecha_cosecha_est: siembra?.dataValues.fecha_cosecha_est
-    }
-
     if (siembra !== null) {
+        const data = {
+            id: siembra?.dataValues.id,
+            cultivo: cultivo?.dataValues.nombre,
+            fecha_siembra: siembra?.dataValues.fecha_siembra,
+            produccion_estimada: siembra?.dataValues.produccion_estimada,
+            fecha_cosecha_est: siembra?.dataValues.fecha_cosecha_est
+        }
         res.json(data);
     } else {
         res.status(404).json({ message: 'No existe la siembra' });
