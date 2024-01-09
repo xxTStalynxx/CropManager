@@ -25,7 +25,6 @@ const mostrarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         campos[i].dataValues.color = estado === null || estado === void 0 ? void 0 : estado.dataValues.color;
         campos[i].dataValues.nombreEstado = estado === null || estado === void 0 ? void 0 : estado.dataValues.nombre;
         campos[i].dataValues.campoSembrado = config[0].dataValues.campo_sembrado;
-        campos[i].dataValues.campoVacio = config[0].dataValues.campo_vacio;
     }
     res.json(campos);
 });
@@ -138,7 +137,10 @@ const mostrarTrazado = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const cultivos = yield (0, cultivos_dta_1.getCultivosActivos)();
         const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
         const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
-        res.render('traced', { date, usuario, rol, cultivos });
+        const campos = yield (0, campos_dta_1.getCampos)(req.session.user);
+        const estados = yield (0, estados_dta_1.getEstadosActivos)();
+        const config = yield (0, configuracion_dta_1.getConfig)();
+        res.render('traced', { date, usuario, rol, cultivos, campos, estados, config });
     }
     else {
         res.render('login', { error: '' });

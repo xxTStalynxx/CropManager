@@ -467,16 +467,16 @@
                     </div>
 
                     <!-- Ventada Nuevo Campo -->
-                    <button id="btnNuevoCampo" type="button" class="btn btn-outline-primary"
-                        data-bs-toggle="modal" data-bs-target="#modalCenter" style="display: none;"> <span
-                        class="tf-icons bx bx-plus-circle"></span>Nuevo campo</button>
+                    <button id="btnNuevoCampo" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalCenter" style="display: none;"> <span
+                            class="tf-icons bx bx-plus-circle"></span>Nuevo campo</button>
                     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalCenterTitle">Nuevo campo</h5>
-                                    <button onclick="closeNuevoCampo()" type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close" title="Cancelar"></button>
+                                    <button onclick="closeNuevoCampo()" type="button" class="btn-close"
+                                        data-bs-dismiss="modal" aria-label="Close" title="Cancelar"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
@@ -513,12 +513,13 @@
                                     <p id="error" class="mb-n1 py-1"
                                         style="color:#ff5c5c; font-size: small; display: none;">* El
                                         área del campo es muy pequeña</p>
-                                        <div class="modal-footer my-1">
-                                            <button id="btnCancelarNC" onclick="closeNuevoCampo()" type="button" class="btn btn-outline-secondary"
-                                                data-bs-dismiss="modal">Cancelar</button>
-                                            <button id="btnSaveCampo" onclick="saveCampo(<%= usuario.id %>)" class="btn btn-primary">
-                                                <span class="tf-icons bx bx-save"></span> Guardar</button>
-                                        </div>
+                                    <div class="modal-footer my-1">
+                                        <button id="btnCancelarNC" onclick="closeNuevoCampo()" type="button"
+                                            class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button id="btnSaveCampo" onclick="saveCampo(<%= usuario.id %>)"
+                                            class="btn btn-primary">
+                                            <span class="tf-icons bx bx-save"></span> Guardar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -614,7 +615,7 @@
                             <button id="btnCerrar" onclick="closeOptions()" class="btn-close" title="Cerrar">
                             </button>
                         </div>
-                        <small id="idVacio"></small>
+                        <small id="idVacio" title="<%= config[0].campo_vacio %>"></small>
                         <div class="dropdown-divider"></div>
                         <div class="card-body d-flex align-items-start justify-content-between">
                             <h1 id="areaCampo" class="mb-0 text-primary"></h1>
@@ -736,6 +737,53 @@
                                     class="flex-shrink-0" id="prediccion_estimada"></small></span>
                         </div>
                     </div>
+
+                    <!-- Ventana de Buscador y Leyenda -->
+                    <div id="containerBuscador" class="container_buscador">
+                        <select class="form-select" id="selectedCampo" aria-label="Localizar campo"
+                            onchange="setCenterPosition(this.value)">
+                            <% if (campos.length> 0) {%>
+                                <% for (var i=0; i < campos.length; i++) { %>
+                                    <option value="<%= campos[i].id %>">
+                                        <%= campos[i].nombre %>
+                                    </option>
+                                    <% } %>
+                                        <% } else {%>
+                                            <option value="0">
+                                                No hay campos
+                                            </option>
+                                            <% } %>
+                        </select>
+                        <div class="accordion mt-1" id="accordionExample">
+                            <div class="card accordion-item active">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                        data-bs-target="#accordionOne" aria-expanded="true"
+                                        aria-controls="accordionOne">
+                                        Leyenda
+                                    </button>
+                                </h2>
+
+                                <div id="accordionOne" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <% if (estados) {%>
+                                            <% for (var i=0; i < estados.length; i++) { %>
+                                                <svg style="position: absolute;" version="1.1" xmlns="http://www.w3.org/2000/svg" width="15"
+                                                    height="28" viewBox="0 0 5 30">
+                                                    <rect x="3" y="1" width="30" height="20"
+                                                        fill="<%= estados[i].color %>"/>
+                                                </svg>
+                                                <p class="px-1 mb-1" style="margin-left: 15%;">
+                                                    <%= estados[i].nombre %>
+                                                </p>
+                                                <% } %>
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- / Contenido -->
@@ -783,7 +831,6 @@
                 success: function (response) {
                     // Respuesta exitosa de la API
                     if (response.length > 0) {
-                        document.getElementById("idVacio").title = response[0].campoVacio;
                         for (var i = 0; i < response.length; i++) {
                             let list = response[i].coordenadas.split(';')
                             let listaPol = []
@@ -1027,6 +1074,28 @@
                     // Ocurrió un error al hacer la solicitud
                     contenedorAA.classList.add('hideContainer');
                     contenedorA.classList.remove('hideContainer');
+                    console.error(error);
+                }
+            });
+        }
+
+        function setCenterPosition(campo) {
+            $.ajax({
+                url: '/rotacion/getCampo/' + campo,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // Respuesta exitosa de la API
+                    if (response != null) {
+                        const coordenadas = response.coordenadas.split(";");
+                        const lat_lng = coordenadas[0].split(',');
+                        const center = { lat: parseFloat(lat_lng[0]), lng: parseFloat(lat_lng[1]) };
+                        oMapaGoogle.setCenter(center);
+                        oMapaGoogle.zoom = 17;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
                     console.error(error);
                 }
             });
