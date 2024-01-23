@@ -1,28 +1,39 @@
 import { Request, Response } from "express";
-import { deleteCampo, getAllCampos, getCampo, getCampos, postCampo, putCampo } from "../../data_access/campos_dta";
+import { deleteCampo, getAllCampos, getCampo, getCampos, getCamposActivos, postCampo, putCampo } from "../../data_access/campos_dta";
 import { getDate } from "../processes/date_controller";
-import { getNombreUsuario, getUsuario } from "../../data_access/usuarios_dta";
+import { getNombreUsuario, getUsuario, getUsuariosActivos } from "../../data_access/usuarios_dta";
 import { getNombre } from "../../data_access/roles_dta";
 import { getCultivosActivos } from "../../data_access/cultivos_dta";
 import { getEstado, getEstadosActivos, getEstadosForCampos, getNombreEstado } from "../../data_access/estados_dta";
 import { getConfig } from "../../data_access/configuracion_dta";
 
 export const mostrarCampos = async (req: Request, res: Response) => {
-    let campos = await getCampos(req.session.user);
-    const config = await getConfig();
-    for (let i = 0; i < campos.length; i++) {
-        const estado = await getEstado(campos[i].dataValues.estado);
-        campos[i].dataValues.color = estado?.dataValues.color;
-        campos[i].dataValues.nombreEstado = estado?.dataValues.nombre;
-        campos[i].dataValues.campoSembrado = config[0].dataValues.campo_sembrado;
+    if (req.session.user) {
+        let campos;
+        const usuario = await getUsuario(req.session.user);
+        if (usuario?.dataValues.rol_usuario != 1) {
+            campos = await getCampos(req.session.user);
+        } else {
+            campos = await getCamposActivos();
+        }
+        const config = await getConfig();
+        for (let i = 0; i < campos.length; i++) {
+            const estado = await getEstado(campos[i].dataValues.estado);
+            campos[i].dataValues.color = estado?.dataValues.color;
+            campos[i].dataValues.nombreEstado = estado?.dataValues.nombre;
+            campos[i].dataValues.campoSembrado = config[0].dataValues.campo_sembrado;
+        }
+        res.json(campos);
+    } else {
+        res.render('login', { error: '' });
     }
-    res.json(campos);
 }
 
 export const listarCampos = async (req: Request, res: Response) => {
     if (req.session.user) {
         const usuario = await getUsuario(req.session.user);
         const rol = await getNombre(usuario?.dataValues.rol_usuario);
+        const config = await getConfig();
         let campos;
         let encargado;
         if (usuario?.dataValues.rol_usuario != 1) {
@@ -40,7 +51,7 @@ export const listarCampos = async (req: Request, res: Response) => {
             estado = await getNombreEstado(campos[i].dataValues.estado);
             campos[i].dataValues.nomEstado = estado;
         }
-        res.render('fields', { campos, date, usuario, rol });
+        res.render('fields', { campos, date, usuario, rol, config });
     } else {
         res.render('login', { error: '' });
     }
@@ -102,6 +113,17 @@ export const editarCampo = async (req: Request, res: Response) => {
     }
 }
 
+export const editarFormaCampo = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const campo = await getCampo(id);
+    if (campo !== null) {
+        await putCampo(req);
+        res.status(200).json({ message: 'Forma editada correctamente' });
+    } else {
+        res.status(404).json({ message: 'No existe el campo' });
+    }
+}
+
 export const eliminarCampo = async (req: Request, res: Response) => {
     const { id } = req.params;
     const campo = await getCampo(id);
@@ -115,14 +137,20 @@ export const eliminarCampo = async (req: Request, res: Response) => {
 
 export const mostrarTrazado = async (req: Request, res: Response) => {
     if (req.session.user) {
+        let campos;
         const date = getDate();
         const cultivos = await getCultivosActivos();
         const usuario = await getUsuario(req.session.user);
         const rol = await getNombre(usuario?.dataValues.rol_usuario);
-        const campos = await getCampos(req.session.user);
+        if (usuario?.dataValues.rol_usuario != 1) {
+            campos = await getCampos(req.session.user);
+        } else {
+            campos = await getCamposActivos();
+        }
         const estados = await getEstadosActivos();
         const config = await getConfig();
-        res.render('traced', { date, usuario, rol, cultivos, campos, estados, config });
+        const usuarios = await getUsuariosActivos();
+        res.render('traced', { date, usuario, rol, cultivos, campos, estados, usuarios, config });
     } else {
         res.render('login', { error: '' });
     }

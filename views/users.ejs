@@ -52,6 +52,29 @@
                         </a>
                     </li>
 
+                    <!-- Reportes -->
+                    <% if (usuario.rol_usuario==1) {%>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link menu-toggle">
+                                <i class="menu-icon tf-icons bx bxs-report"></i>
+                                <div data-i18n="Basic">Reportes</div>
+                            </a>
+    
+                            <ul class="menu-sub">
+                                <li class="menu-item">
+                                    <a href="/reportes/produccion" class="menu-link">
+                                        <div data-i18n="Without navbar">Producción por cultivo</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="/reportes/uso" class="menu-link">
+                                        <div data-i18n="Container">Uso de los campos</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+                        
                     <!-- Campos -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Campos</span></li>
                     <li class="menu-item">
@@ -252,12 +275,14 @@
                                             <span class="align-middle">Mi perfil</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="/configuracion">
-                                            <i class="bx bx-cog me-2"></i>
-                                            <span class="align-middle">Configuraciones</span>
-                                        </a>
-                                    </li>
+                                    <% if (usuario.rol_usuario == 1) {%>
+                                        <li>
+                                            <a class="dropdown-item" href="/configuracion">
+                                                <i class="bx bx-cog me-2"></i>
+                                                <span class="align-middle">Configuraciones</span>
+                                            </a>
+                                        </li>
+                                        <% } %>
                                     <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
@@ -396,16 +421,14 @@
                                                             <td>
                                                                 <%= usuarios[i].correo %>
                                                             </td>
-                                                            <% if (usuarios[i].activo==1) {%>
+                                                            <% if (usuarios[i].activo == 1) {%>
                                                                 <td><span class="badge bg-label-success">Activo</span>
                                                                 </td>
                                                                 <td>
-                                                                    <% if (usuarios[i].id !=1) {%>
+                                                                    <% if (usuarios[i].id != 1) {%>
                                                                         <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-outline-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                title="Cambiar rol">
+                                                                            <button type="button" class="btn btn-outline-primary"
+                                                                                data-bs-toggle="dropdown" title="Cambiar rol">
                                                                                 <i class="bx bx-edit"></i>
                                                                             </button>
                                                                             <div class="dropdown-menu">
@@ -424,6 +447,28 @@
                                                                                 href="/usuarios/delete/<%= usuarios[i].id %>"
                                                                                 title="Eliminar"><i
                                                                                     class="bx bx-trash"></i></a>
+                                                                            <% } else { %>
+                                                                                <div class="dropdown">
+                                                                                    <button type="button" class="btn btn-outline-primary"
+                                                                                        data-bs-toggle="dropdown" title="Cambiar rol" disabled>
+                                                                                        <i class="bx bx-edit"></i>
+                                                                                    </button>
+                                                                                    <div class="dropdown-menu">
+                                                                                        <% if (roles) {%>
+                                                                                            <% for (var j=0; j < roles.length;
+                                                                                                j++) { %>
+                                                                                                <a class="dropdown-item"
+                                                                                                    href="/usuarios/change/<%= usuarios[i].id %>/<%= roles[j].id %>"><i
+                                                                                                        class="bx me-1"></i>
+                                                                                                    <%= roles[j].nombre %>
+                                                                                                </a>
+                                                                                                <% } %>
+                                                                                                    <% } %>
+                                                                                    </div>
+                                                                                    <a class="btn btn-outline-danger disabled"
+                                                                                        href="/usuarios/delete/<%= usuarios[i].id %>"
+                                                                                        title="Eliminar"><i
+                                                                                            class="bx bx-trash"></i></a>
                                                                             <% } %>
                                                                 </td>
                                                                 <%} else {%>

@@ -51,6 +51,29 @@
                         </a>
                     </li>
 
+                    <!-- Reportes -->
+                    <% if (usuario.rol_usuario==1) {%>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link menu-toggle">
+                                <i class="menu-icon tf-icons bx bxs-report"></i>
+                                <div data-i18n="Basic">Reportes</div>
+                            </a>
+    
+                            <ul class="menu-sub">
+                                <li class="menu-item">
+                                    <a href="/reportes/produccion" class="menu-link">
+                                        <div data-i18n="Without navbar">Producción por cultivo</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="/reportes/uso" class="menu-link">
+                                        <div data-i18n="Container">Uso de los campos</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+                        
                     <!-- Campos -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Campos</span></li>
                     <li class="menu-item active open">
@@ -146,7 +169,7 @@
                                                         <div data-i18n="Analytics">Mi perfil</div>
                                                     </a>
                                                 </li>
-                                                <% if (usuario.rol_usuario==1) {%>
+                                                <% if (usuario.rol_usuario == 1) {%>
                                                     <li class="menu-item">
                                                         <a href="/usuarios" class="menu-link">
                                                             <i class="menu-icon tf-icons bx bx-group"></i>
@@ -251,12 +274,14 @@
                                             <span class="align-middle">Mi perfil</span>
                                         </a>
                                     </li>
+                                    <% if (usuario.rol_usuario == 1) {%>
                                     <li>
                                         <a class="dropdown-item" href="/configuracion">
                                             <i class="bx bx-cog me-2"></i>
                                             <span class="align-middle">Configuraciones</span>
                                         </a>
                                     </li>
+                                    <% } %>
                                     <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
@@ -322,7 +347,7 @@
                                                                         <%= campos[i].descripcion %>
                                                                     </td>
                                                                     <td>
-                                                                        <% if(campos[i].estado !=2) {%>
+                                                                        <% if(campos[i].estado != config[0].campo_sembrado) {%>
                                                                             <a class="btn btn-outline-primary"
                                                                                 href="/campos/<%= campos[i].id %>"
                                                                                 title="Editar"><i
@@ -332,7 +357,13 @@
                                                                                 onmouseenter="entra(<%= campos[i].id %>)" onmouseleave="sale(<%= campos[i].id %>)"
                                                                                 title="Eliminar"><i id="btnDelete<%= campos[i].id %>"
                                                                                     class="bx bx-trash idred"></i></a>
-                                                                            <% } %>
+                                                                        <% } else {%>
+                                                                            <a class="btn btn-outline-primary disabled"
+                                                                                href="" title="Editar"><i
+                                                                                    class="bx bx-edit-alt"></i></a>
+                                                                            <a class="btn btn-outline-danger disabled"
+                                                                                onclick="" title="Eliminar"><i class="bx bx-trash idred"></i></a>
+                                                                        <% } %>
                                                                     </td>
                                                         </tr>
                                                         <% } %>

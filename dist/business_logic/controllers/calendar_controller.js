@@ -35,7 +35,7 @@ const dataCalendar = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const campos = yield (0, campos_dta_1.getCampos)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.id);
         if (campos.length > 0) {
             for (let i = 0; i < campos.length; i++) {
-                const actividad = yield (0, siembras_dta_1.getSiembrasbyUsuario)(campos[i].dataValues.id);
+                const actividad = yield (0, siembras_dta_1.getSiembrasPorUsuario)(campos[i].dataValues.id);
                 actividades = actividades.concat(actividad);
             }
         }

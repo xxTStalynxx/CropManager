@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getDate } from "../processes/date_controller";
 import { getUsuario } from "../../data_access/usuarios_dta";
 import { getNombre } from "../../data_access/roles_dta";
-import { getSiembras, getSiembrasbyUsuario } from "../../data_access/siembras_dta";
+import { getSiembras, getSiembrasPorUsuario } from "../../data_access/siembras_dta";
 import { getCampos, getNombreCampo } from "../../data_access/campos_dta";
 import { getNombreCultivo } from "../../data_access/cultivos_dta";
 
@@ -24,7 +24,7 @@ export const dataCalendar = async (req: Request, res: Response) => {
         const campos = await getCampos(usuario?.dataValues.id);
         if (campos.length > 0) {
             for (let i = 0; i < campos.length; i++) {
-                const actividad = await getSiembrasbyUsuario(campos[i].dataValues.id);
+                const actividad = await getSiembrasPorUsuario(campos[i].dataValues.id);
                 actividades = actividades.concat(actividad);
             }
         }

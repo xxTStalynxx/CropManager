@@ -12,20 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembrasPorCampo = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembrasbyUsuario = exports.getSiembras = void 0;
+exports.getCamposDeSiembras = exports.getProduccionPorCultivo = exports.searchSiembra = exports.deleteSiembra = exports.postSiembra = exports.getSiembrasPorCampo = exports.getSiembraByCampo = exports.getSiembra = exports.getSiembrasPorUsuario = exports.getSiembras = void 0;
+const sequelize_1 = require("sequelize");
 const siembra_1 = __importDefault(require("../models/siembra"));
 const getSiembras = () => __awaiter(void 0, void 0, void 0, function* () {
     const siembras = yield siembra_1.default.findAll();
     return siembras;
 });
 exports.getSiembras = getSiembras;
-const getSiembrasbyUsuario = (id_camp) => __awaiter(void 0, void 0, void 0, function* () {
+const getSiembrasPorUsuario = (id_camp) => __awaiter(void 0, void 0, void 0, function* () {
     const siembras = yield siembra_1.default.findAll({
         where: { id_campo: id_camp }
     });
     return siembras;
 });
-exports.getSiembrasbyUsuario = getSiembrasbyUsuario;
+exports.getSiembrasPorUsuario = getSiembrasPorUsuario;
 const getSiembra = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const siembra = yield siembra_1.default.findByPk(id);
     if (siembra) {
@@ -86,4 +87,41 @@ const searchSiembra = (campo) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.searchSiembra = searchSiembra;
+const getProduccionPorCultivo = (id, year, month) => __awaiter(void 0, void 0, void 0, function* () {
+    const siembras = yield siembra_1.default.findAll({
+        attributes: [
+            'id_cultivo',
+            [sequelize_1.Sequelize.fn('SUM', sequelize_1.Sequelize.col('produccion_estimada')), 'total']
+        ],
+        where: {
+            id_cultivo: id,
+            [sequelize_1.Op.and]: sequelize_1.Sequelize.literal(`MONTH(fecha_cosecha_est) = ${month}`),
+            fecha_cosecha_est: {
+                [sequelize_1.Op.between]: [new Date(`${year}-01-01`), new Date(`${year}-12-31`)]
+            }
+        },
+        group: ['id_cultivo']
+    });
+    return siembras;
+});
+exports.getProduccionPorCultivo = getProduccionPorCultivo;
+const getCamposDeSiembras = (id, date) => __awaiter(void 0, void 0, void 0, function* () {
+    const siembras = yield siembra_1.default.findAll({
+        attributes: [
+            'id_campo',
+        ],
+        where: {
+            id_cultivo: id,
+            fecha_siembra: {
+                [sequelize_1.Op.lte]: date
+            },
+            fecha_cosecha_est: {
+                [sequelize_1.Op.gte]: date
+            }
+        },
+        group: ['id_campo']
+    });
+    return siembras;
+});
+exports.getCamposDeSiembras = getCamposDeSiembras;
 //# sourceMappingURL=siembras_dta.js.map

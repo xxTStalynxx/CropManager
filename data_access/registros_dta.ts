@@ -1,6 +1,5 @@
-import { Request } from "express";
 import Registro from "../models/registro";
-import { Op, where } from "sequelize";
+import { Op } from "sequelize";
 
 export const getAllRegistros = async () => {
     const registros = await Registro.findAll();

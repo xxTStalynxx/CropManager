@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import { agregarCampo, buscarCampo, cancelarEditarCampo, editarCampo, eliminarCampo, listarCampos, mostrarCampo, mostrarCampos, mostrarTrazado } from '../business_logic/controllers/campos_controller';
+import { agregarCampo, buscarCampo, cancelarEditarCampo, editarCampo, editarFormaCampo, eliminarCampo, listarCampos, mostrarCampo, mostrarCampos, mostrarTrazado } from '../business_logic/controllers/campos_controller';
 import { agregarRol, buscarRol, cancelarEditarRol, editarRol, eliminarRol, listarRoles, restaurarRol } from "../business_logic/controllers/roles_controller";
 import { agregarFamilia, buscarFamilia, cancelarEditarFamilia, editarFamilia, eliminarFamilia, listarFamilias, restaurarFamilia } from "../business_logic/controllers/familias_controller";
 import { agregarCultivo, buscarCultivo, cancelarEditarCultivo, editarCultivo, eliminarCultivo, listarCultivos, restaurarCultivo } from "../business_logic/controllers/cultivos_controller";
 import { agregarEstado, buscarEstado, cancelarEditarEstado, editarEstado, eliminarEstado, listarEstados, restaurarEstado } from "../business_logic/controllers/estados_controller";
 import { agregarRegistro, buscarRegistro, eliminarRegistro, listarRegistros } from "../business_logic/controllers/registros_controller";
-import { agregarSiembra, buscarSiembra, eliminarSiembra, listarSiembras } from "../business_logic/controllers/siembras_controller";
+import { agregarSiembra, buscarSiembra, dataUsoCampos, eliminarSiembra, listarSiembras, showProduccionPorCultivo, showUsoCampos } from "../business_logic/controllers/siembras_controller";
 import { agregarUsuario, buscarUsuario, cambiarRol, cancelarEditarUsuario, editarUsuario, eliminarUsuario, listarUsuarios, mostrarPerfil, restaurarUsuario } from "../business_logic/controllers/usuarios_controller";
 import { cerrarSesion, enviarEmail, iniciarSesion, inicioSesion, restaurarContrasena, showRestaurar } from "../business_logic/processes/login_controller";
 import { showCropManager, showForgot, showMain, showNosotros } from "../business_logic/processes/main_controller";
@@ -41,6 +41,11 @@ router.get('/produccionChart', getProduccionStats);
 //Rutas para el calendario
 router.get('/calendario', showCalendar);
 router.get('/dataCalendar', dataCalendar);
+
+//Rutas para reportes
+router.get('/reportes/produccion', showProduccionPorCultivo);
+router.get('/reportes/uso', showUsoCampos);
+router.get('/dataUso', dataUsoCampos);
 
 //Rutas para la configuracion
 router.get('/configuracion', mostrarConfig);
@@ -120,6 +125,7 @@ router.post('/campos/edit/:id', editarCampo);
 router.get('/campos/delete/:id', eliminarCampo);
 router.get('/trazado', mostrarTrazado);
 router.get('/trazado/:id_camp/:id_cult', doPrediccion);
+router.post('/campos/editForma/:id', editarFormaCampo);
 router.get('/cancelEditCampo', cancelarEditarCampo);
 router.get('/getActividad/:id_campo', showActividadActual);
 

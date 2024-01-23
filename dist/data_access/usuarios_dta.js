@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.countUsuarios = exports.changeRol = exports.getNombreUsuario = exports.searchByEmail = exports.restoreUsuario = exports.deleteUsuario = exports.putNombreUsuario = exports.putUsuario = exports.postUsuario = exports.getUsuario = exports.getUsuarios = void 0;
+exports.countUsuarios = exports.changeRol = exports.getNombreUsuario = exports.searchByEmail = exports.restoreUsuario = exports.deleteUsuario = exports.putNombreUsuario = exports.putUsuario = exports.postUsuario = exports.getUsuariosActivos = exports.getUsuario = exports.getUsuarios = void 0;
 const usuario_1 = __importDefault(require("../models/usuario"));
 const sequelize_1 = require("sequelize");
 const getUsuarios = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,6 +30,13 @@ const getUsuario = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUsuario = getUsuario;
+const getUsuariosActivos = () => __awaiter(void 0, void 0, void 0, function* () {
+    const usuarios = yield usuario_1.default.findAll({
+        where: { activo: true }
+    });
+    return usuarios;
+});
+exports.getUsuariosActivos = getUsuariosActivos;
 const postUsuario = (body) => __awaiter(void 0, void 0, void 0, function* () {
     const usuario = yield usuario_1.default.create({
         nombre: body.nombre,

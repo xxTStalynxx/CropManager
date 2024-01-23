@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNombreCampo = exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getAllCampos = exports.getCamposSembrados = exports.getCamposParaActividades = exports.getCampos = void 0;
+exports.getAreaCampo = exports.getAreaTotal = exports.getNombreCampo = exports.changeEstado = exports.getNumCamposByEstado = exports.getNumAllCamposByEstado = exports.countAllCampos = exports.countCampos = exports.deleteCampo = exports.putCampo = exports.postCampo = exports.getCampo = exports.getCamposActivos = exports.getAllCampos = exports.getCamposSembrados = exports.getAllCamposParaActividades = exports.getCamposParaActividades = exports.getCampos = void 0;
 const campo_1 = __importDefault(require("../models/campo"));
 const sequelize_1 = require("sequelize");
 const getCampos = (idencargado) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,6 +40,16 @@ const getCamposParaActividades = (idencargado, campo) => __awaiter(void 0, void 
     return campos;
 });
 exports.getCamposParaActividades = getCamposParaActividades;
+const getAllCamposParaActividades = (campo) => __awaiter(void 0, void 0, void 0, function* () {
+    const campos = yield campo_1.default.findAll({
+        where: {
+            id: { [sequelize_1.Op.ne]: campo },
+            activo: true
+        }
+    });
+    return campos;
+});
+exports.getAllCamposParaActividades = getAllCamposParaActividades;
 const getCamposSembrados = (idencargado, _estado) => __awaiter(void 0, void 0, void 0, function* () {
     const campos = yield campo_1.default.findAll({
         where: {
@@ -57,6 +67,13 @@ const getAllCampos = () => __awaiter(void 0, void 0, void 0, function* () {
     return campos;
 });
 exports.getAllCampos = getAllCampos;
+const getCamposActivos = () => __awaiter(void 0, void 0, void 0, function* () {
+    const campos = yield campo_1.default.findAll({
+        where: { activo: true }
+    });
+    return campos;
+});
+exports.getCamposActivos = getCamposActivos;
 const getCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const campo = yield campo_1.default.findByPk(id);
     if (campo) {
@@ -144,4 +161,23 @@ const getNombreCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getNombreCampo = getNombreCampo;
+const getAreaTotal = () => __awaiter(void 0, void 0, void 0, function* () {
+    const area = yield campo_1.default.findAll({
+        attributes: [
+            [sequelize_1.Sequelize.fn('SUM', sequelize_1.Sequelize.col('area')), 'total']
+        ],
+        where: {
+            activo: true
+        }
+    });
+    return area;
+});
+exports.getAreaTotal = getAreaTotal;
+const getAreaCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const campo = yield campo_1.default.findByPk(id);
+    if (campo) {
+        return campo.dataValues.area;
+    }
+});
+exports.getAreaCampo = getAreaCampo;
 //# sourceMappingURL=campos_dta.js.map

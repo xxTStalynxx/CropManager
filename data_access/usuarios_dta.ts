@@ -16,6 +16,13 @@ export const getUsuario = async (id: string) => {
     }
 }
 
+export const getUsuariosActivos = async () => {
+    const usuarios = await Usuario.findAll({
+        where: { activo: true }
+    });
+    return usuarios;
+}
+
 export const postUsuario = async (body: any) => {
     const usuario = await Usuario.create({
         nombre: body.nombre,

@@ -75,12 +75,8 @@
     <script>
         let oMapaGoogle;
         let oDrawingManager;
-        let mListaCampo = []
-        let oContainerAddCampo
-        let elemento
-        let oPolygon = null
-
-        let mListaPolygons = []
+        let mListaCampo = [];
+        let oPolygon = null;
 
         async function initMap() {
             //@ts-ignore
@@ -116,13 +112,16 @@
             oDrawingManager.setMap(oMapaGoogle)
 
             google.maps.event.addListener(oDrawingManager, 'polygoncomplete', function (poligono) {
-                mListaCampo = []
+                mListaCampo = [];
+                closeOptions();
+                if (oPolygon != null) {
+                    closeEditForma();
+                }
 
-                var lista = poligono.getPath().getArray()
-
+                let lista = poligono.getPath().getArray()
                 for (var i = 0; i < lista.length; i++) {
                     var obj = { lat: lista[i].lat(), lng: lista[i].lng() }
-                    mListaCampo.push(obj)
+                    mListaCampo.push(obj);
                 }
 
                 if (mListaCampo.length > 0) {
@@ -134,10 +133,11 @@
         }
         initMap()
 
-        function saveCampo(idEncargado) {
+        function saveCampo() {
             let campoNombre = document.getElementById("idtxtNombre");
             let campoDetalle = document.getElementById("idtxtDetalle");
             let campoArea = document.getElementById("idtxtArea");
+            let campoEncargado = document.getElementById("encargadoCampo");
             const vacio = document.getElementById("idVacio");
             let stringCoordenadas = ""
             const txtError = document.getElementById("error");
@@ -151,7 +151,7 @@
             }
 
             var objCampo = {
-                encargado: idEncargado,
+                encargado: campoEncargado.value,
                 estado: vacio.title,
                 nombre: campoNombre.value,
                 descripcion: campoDetalle.value,
@@ -236,6 +236,29 @@
                         </a>
                     </li>
 
+                    <!-- Reportes -->
+                    <% if (usuario.rol_usuario==1) {%>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link menu-toggle">
+                                <i class="menu-icon tf-icons bx bxs-report"></i>
+                                <div data-i18n="Basic">Reportes</div>
+                            </a>
+    
+                            <ul class="menu-sub">
+                                <li class="menu-item">
+                                    <a href="/reportes/produccion" class="menu-link">
+                                        <div data-i18n="Without navbar">Producción mensual</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="/reportes/uso" class="menu-link">
+                                        <div data-i18n="Container">Uso de los campos</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+                        
                     <!-- Campos -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Campos</span></li>
                     <li class="menu-item active open">
@@ -437,12 +460,14 @@
                                             <span class="align-middle">Mi perfil</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="/configuracion">
-                                            <i class="bx bx-cog me-2"></i>
-                                            <span class="align-middle">Configuraciones</span>
-                                        </a>
-                                    </li>
+                                    <% if (usuario.rol_usuario == 1) {%>
+                                        <li>
+                                            <a class="dropdown-item" href="/configuracion">
+                                                <i class="bx bx-cog me-2"></i>
+                                                <span class="align-middle">Configuraciones</span>
+                                            </a>
+                                        </li>
+                                        <% } %>
                                     <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
@@ -469,7 +494,7 @@
                     <!-- Ventada Nuevo Campo -->
                     <button id="btnNuevoCampo" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#modalCenter" style="display: none;"> <span
-                            class="tf-icons bx bx-plus-circle"></span>Nuevo campo</button>
+                            class="tf-icons bx bx-plus-circle"></span></button>
                     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -489,6 +514,29 @@
                                                 aria-describedby="basic-icon-default-fullname2" required />
                                         </div>
                                     </div>
+                                    <% if (usuario.rol_usuario != 1) {%>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlSelect1" class="form-label">Encargado</label>
+                                        <select class="form-select" id="encargadoCampo" aria-label="Seleccionar el encargado" disabled>
+                                            <option value="<%= usuario.id %>">
+                                                <%= usuario.nombre %>
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <% } else {%>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlSelect1" class="form-label">Encargado</label>
+                                            <select class="form-select" id="encargadoCampo" aria-label="Seleccionar el encargado" required>
+                                                <% if (usuarios) {%>
+                                                    <% for (var i=0; i < usuarios.length; i++) { %>
+                                                        <option value="<%= usuarios[i].id %>">
+                                                            <%= usuarios[i].nombre %>
+                                                        </option>
+                                                        <% } %>
+                                                    <% } %>
+                                            </select>
+                                        </div>
+                                    <% } %>
                                     <div class="mb-3">
                                         <label class="form-label" for="basic-icon-default-fullname">Área
                                             (m<sup>2</sup>)</label>
@@ -516,7 +564,7 @@
                                     <div class="modal-footer my-1">
                                         <button id="btnCancelarNC" onclick="closeNuevoCampo()" type="button"
                                             class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button id="btnSaveCampo" onclick="saveCampo(<%= usuario.id %>)"
+                                        <button id="btnSaveCampo" onclick="saveCampo()"
                                             class="btn btn-primary">
                                             <span class="tf-icons bx bx-save"></span> Guardar</button>
                                     </div>
@@ -668,7 +716,8 @@
                                         <button onclick="procesoCosecha()" class="btn btn-primary">
                                             <span class="tf-icons bx bx-check-circle"></span> Cosechar</button>
                                         <a class="btn btn-outline-danger" onclick="eliminarSiembra()"
-                                            title="Cancelar siembra"><i class="bx bx-trash idred"></i></a>
+                                            onmouseenter="entra()" onmouseleave="sale()"
+                                            title="Cancelar siembra"><i id="btnDelete" class="bx bx-trash idred"></i></a>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="actividades">
@@ -705,7 +754,7 @@
                                 </div>
                                 <div class="tab-pane fade" id="editar">
                                     <div class="mt-1 mb-2">
-                                        <button id="editForma" onclick="" class="btn btn-outline-primary"
+                                        <button id="editForma" onclick="editForma()" class="btn btn-outline-primary"
                                             style="width: 100%;" disabled>
                                             <span class="tf-icons bx bx-shape-polygon"></span> Editar forma del
                                             campo</button>
@@ -736,6 +785,22 @@
                                     class="px-2" for="basic-icon-default-fullname">Producción estimada:</label><small
                                     class="flex-shrink-0" id="prediccion_estimada"></small></span>
                         </div>
+                    </div>
+
+                    <!-- Ventana Editar forma -->
+                    <div id="containerEditForma" class="container_datos_cultivo hideContainer">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <h5 class="mb-1 py-0 flex-shrink-0">Editar forma</h5>
+                            <button onclick="closeEditForma()" class="btn-close" title="Cancelar">
+                            </button>
+                        </div>
+                        <div class="mb-2">
+                            <p><span class="tf-icons bx bx-info-circle text-primary" title="Información"></span> Mueva
+                                los puntos para editar la forma del campo, una vez finalizado presione Guardar.</p>
+
+                        </div>
+                        <button onclick="saveForma()" class="btn btn-primary">
+                            <span class="tf-icons bx bx-save"></span> Guardar</button>
                     </div>
 
                     <!-- Ventana de Buscador y Leyenda -->
@@ -769,16 +834,17 @@
                                     <div class="accordion-body">
                                         <% if (estados) {%>
                                             <% for (var i=0; i < estados.length; i++) { %>
-                                                <svg style="position: absolute;" version="1.1" xmlns="http://www.w3.org/2000/svg" width="15"
-                                                    height="28" viewBox="0 0 5 30">
+                                                <svg style="position: absolute;" version="1.1"
+                                                    xmlns="http://www.w3.org/2000/svg" width="15" height="28"
+                                                    viewBox="0 0 5 30">
                                                     <rect x="3" y="1" width="30" height="20"
-                                                        fill="<%= estados[i].color %>"/>
+                                                        fill="<%= estados[i].color %>" />
                                                 </svg>
                                                 <p class="px-1 mb-1" style="margin-left: 15%;">
                                                     <%= estados[i].nombre %>
                                                 </p>
                                                 <% } %>
-                                            <% } %>
+                                                    <% } %>
                                     </div>
                                 </div>
                             </div>
@@ -831,12 +897,12 @@
                 success: function (response) {
                     // Respuesta exitosa de la API
                     if (response.length > 0) {
-                        for (var i = 0; i < response.length; i++) {
+                        for (let i = 0; i < response.length; i++) {
                             let list = response[i].coordenadas.split(';')
                             let listaPol = []
-                            for (var j = 0; j < list.length; j++) {
-                                var list2 = list[j].split(',')
-                                var obj = { lat: parseFloat(list2[0]), lng: parseFloat(list2[1]) }
+                            for (let j = 0; j < list.length; j++) {
+                                let list2 = list[j].split(',')
+                                let obj = { lat: parseFloat(list2[0]), lng: parseFloat(list2[1]) }
                                 listaPol.push(obj)
                             }
 
@@ -871,6 +937,9 @@
         }
 
         function showOptions(campo) {
+            if (oPolygon != null) {
+                closeEditForma();
+            }
             let contenedor = document.getElementById("containerOptions");
             const idCampo = document.getElementById("idCampo");
             idCampo.title = campo.id;
@@ -891,6 +960,7 @@
             }
             closeSiembra();
             showActividad();
+            oPolygon = campo;
         }
 
         function closeOptions() {
@@ -1099,6 +1169,61 @@
                     console.error(error);
                 }
             });
+        }
+
+        function editForma() {
+            closeOptions();
+            oPolygon.setEditable(true);
+            let contenedor = document.getElementById("containerEditForma");
+            contenedor.classList.remove('hideContainer');
+        }
+
+        function closeEditForma() {
+            let contenedor = document.getElementById("containerEditForma");
+            contenedor.classList.add('hideContainer');
+            oPolygon.setEditable(false);
+        }
+
+        function saveForma() {
+            const id_campo = document.getElementById("idCampo").title;
+            let paths = oPolygon.getPath().getArray();
+            oPolygon.setEditable(false);
+            let stringCoordenadas = "";
+
+            for (var i = 0; i < paths.length; i++) {
+                if (paths.length - 1 === i) {
+                    stringCoordenadas = stringCoordenadas + paths[i].lat() + "," + paths[i].lng();
+                } else {
+                    stringCoordenadas = stringCoordenadas + paths[i].lat() + "," + paths[i].lng() + ";";
+                }
+            }
+
+            $.ajax({
+                url: '/campos/editForma/' + id_campo,
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    // Aquí puedes pasar los datos que deseas enviar en el cuerpo de la solicitud
+                    coordenadas: stringCoordenadas
+                },
+                success: function (response) {
+                    // La respuesta exitosa de la API
+                    closeEditForma();
+                    readAllCamposApi()
+                },
+                error: function (xhr, status, error) {
+                    // Ocurrió un error al hacer la solicitud
+                    console.error(error);
+                }
+            });
+        }
+
+        function entra(){
+            document.getElementById("btnDelete").style.color = 'white';
+        }
+
+        function sale(){
+            document.getElementById("btnDelete").style.color = '#ff3e1d';
         }
     </script>
 </body>

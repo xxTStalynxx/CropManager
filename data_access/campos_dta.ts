@@ -1,6 +1,6 @@
 import { Request } from "express";
 import Campo from "../models/campo";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 
 export const getCampos = async (idencargado: string) => {
     const campos = await Campo.findAll({
@@ -27,6 +27,16 @@ export const getCamposParaActividades = async (idencargado: string, campo: strin
     return campos;
 }
 
+export const getAllCamposParaActividades = async (campo: string) => {
+    const campos = await Campo.findAll({
+        where: {
+            id: { [Op.ne]: campo },
+            activo: true
+        }
+    });
+    return campos;
+}
+
 export const getCamposSembrados = async (idencargado: string, _estado: string) => {
     const campos = await Campo.findAll({
         where: {
@@ -41,6 +51,13 @@ export const getCamposSembrados = async (idencargado: string, _estado: string) =
 
 export const getAllCampos = async () => {
     const campos = await Campo.findAll();
+    return campos;
+}
+
+export const getCamposActivos = async () => {
+    const campos = await Campo.findAll({
+        where: { activo: true }
+    });
     return campos;
 }
 
@@ -127,5 +144,24 @@ export const getNombreCampo = async (id: string) => {
     const campo = await Campo.findByPk(id);
     if (campo) {
         return campo.dataValues.nombre;
+    }
+}
+
+export const getAreaTotal = async () => {
+    const area = await Campo.findAll({
+        attributes: [
+          [Sequelize.fn('SUM', Sequelize.col('area')), 'total']
+        ],
+        where: {
+          activo: true
+        }
+    });
+    return area;
+}
+
+export const getAreaCampo = async (id: string) => {
+    const campo = await Campo.findByPk(id);
+    if (campo) {
+        return campo.dataValues.area;
     }
 }

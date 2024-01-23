@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getNombre } from "../../data_access/roles_dta";
 import { getDate } from "../processes/date_controller";
 import { getUsuario } from "../../data_access/usuarios_dta";
-import { changeEstado, getCampo, getCampos, getCamposParaActividades } from "../../data_access/campos_dta";
+import { changeEstado, getAllCamposParaActividades, getCampo, getCampos, getCamposParaActividades } from "../../data_access/campos_dta";
 import { getActividadEstado, getActividades } from "../../data_access/estados_dta";
 import { getConfig } from "../../data_access/configuracion_dta";
 import { deletePlanificacion, finishPlanificacion, getActividad, getActividadActual, getPlanificacion, postPlanificacion, putPlanificacion, searchPlanificacion } from "../../data_access/planificacion_dta";
@@ -31,7 +31,12 @@ export const mostrarPlanificacion = async (req: Request, res: Response) => {
         }
         const usuario = await getUsuario(req.session.user);
         const rol = await getNombre(usuario?.dataValues.rol_usuario);
-        const campos = await getCamposParaActividades(req.session.user, campo);
+        let campos;
+        if (usuario?.dataValues.rol_usuario != 1) {
+            campos = await getCamposParaActividades(req.session.user, campo);
+        } else {
+            campos = await getAllCamposParaActividades(campo);
+        }
         const config = await getConfig();
         const estados = await getActividades(config[0].dataValues.campo_vacio, config[0].dataValues.campo_sembrado);
         const date = getDate();

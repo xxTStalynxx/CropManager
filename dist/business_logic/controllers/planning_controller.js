@@ -41,7 +41,13 @@ const mostrarPlanificacion = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
         const rol = yield (0, roles_dta_1.getNombre)(usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario);
-        const campos = yield (0, campos_dta_1.getCamposParaActividades)(req.session.user, campo);
+        let campos;
+        if ((usuario === null || usuario === void 0 ? void 0 : usuario.dataValues.rol_usuario) != 1) {
+            campos = yield (0, campos_dta_1.getCamposParaActividades)(req.session.user, campo);
+        }
+        else {
+            campos = yield (0, campos_dta_1.getAllCamposParaActividades)(campo);
+        }
         const config = yield (0, configuracion_dta_1.getConfig)();
         const estados = yield (0, estados_dta_1.getActividades)(config[0].dataValues.campo_vacio, config[0].dataValues.campo_sembrado);
         const date = (0, date_controller_1.getDate)();

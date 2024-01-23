@@ -37,6 +37,10 @@ router.get('/produccionChart', panel_controller_1.getProduccionStats);
 //Rutas para el calendario
 router.get('/calendario', calendar_controller_1.showCalendar);
 router.get('/dataCalendar', calendar_controller_1.dataCalendar);
+//Rutas para reportes
+router.get('/reportes/produccion', siembras_controller_1.showProduccionPorCultivo);
+router.get('/reportes/uso', siembras_controller_1.showUsoCampos);
+router.get('/dataUso', siembras_controller_1.dataUsoCampos);
 //Rutas para la configuracion
 router.get('/configuracion', config_controller_1.mostrarConfig);
 router.post('/configuracion', config_controller_1.guardarConfig);
@@ -107,6 +111,7 @@ router.post('/campos/edit/:id', campos_controller_1.editarCampo);
 router.get('/campos/delete/:id', campos_controller_1.eliminarCampo);
 router.get('/trazado', campos_controller_1.mostrarTrazado);
 router.get('/trazado/:id_camp/:id_cult', prediccion_controller_1.doPrediccion);
+router.post('/campos/editForma/:id', campos_controller_1.editarFormaCampo);
 router.get('/cancelEditCampo', campos_controller_1.cancelarEditarCampo);
 router.get('/getActividad/:id_campo', planning_controller_1.showActividadActual);
 //Rutas para siembras
