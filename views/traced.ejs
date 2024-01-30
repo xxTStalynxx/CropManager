@@ -117,6 +117,9 @@
                 if (oPolygon != null) {
                     closeEditForma();
                 }
+                let campoArea = document.getElementById("idtxtArea");
+                let area = google.maps.geometry.spherical.computeArea(poligono.getPath());
+                campoArea.value = Math.ceil(area);
 
                 let lista = poligono.getPath().getArray()
                 for (var i = 0; i < lista.length; i++) {
