@@ -5,7 +5,7 @@ import { getNombre } from "../../data_access/roles_dta";
 import { countCultivos, getCultivos } from "../../data_access/cultivos_dta";
 import { countAllCampos, countCampos, getCampos, getNumAllCamposByEstado, getNumCamposByEstado } from "../../data_access/campos_dta";
 import { countAllRegistros, countRegistros, getAllSumaProduccion, getSumaProduccion } from "../../data_access/registros_dta";
-import { getEstados } from "../../data_access/estados_dta";
+import { getEstados, getEstadosActivos } from "../../data_access/estados_dta";
 
 export const showDashboard = async (req: Request, res: Response) => {
     if (req.session.user){
@@ -53,7 +53,7 @@ async function getStats (id: string){
 }
 
 async function getCamposStats (id: string) {
-    let estados = await getEstados();
+    let estados = await getEstadosActivos();
     const usuario = await getUsuario(id);
     if (estados.length > 0){
         for (let i=0; i<estados.length; i++){
@@ -68,7 +68,7 @@ async function getCamposStats (id: string) {
 }
 
 export const getCamposStatsChart =async (req: Request, res: Response) => {
-    let estados = await getEstados();
+    let estados = await getEstadosActivos();
     const usuario = await getUsuario(req.session.user);
     if (estados.length > 0){
         for (let i=0; i<estados.length; i++){

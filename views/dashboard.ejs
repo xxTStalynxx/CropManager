@@ -89,11 +89,6 @@
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Container">Rendimiento</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
                                 <a href="/campos/list" class="menu-link">
                                     <div data-i18n="Container">Lista de campos</div>
                                 </a>
@@ -540,7 +535,7 @@
                             <!-- /Estadísticas de Campos  -->
 
                             <!-- Estadisticas de la produccion-->
-                            <div class="col-md-6 col-lg-5 order-1 mb-4">
+                            <div class="col-md-6 col-lg-8 order-1 mb-4">
                                 <div class="card h-auto">
                                     <div class="card-header d-flex align-items-center justify-content-between pb-0">
                                         <div class="card-title mb-0">
@@ -552,7 +547,7 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="">Ver rendimiento</a>
+                                                <a class="dropdown-item" href="/reportes/uso">Ver uso de los campos</a>
                                             </div>
                                         </div>
                                     </div>
@@ -629,9 +624,9 @@
                     method: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        let cardColor, headingColor, axisColor, shadeColor, borderColor;
+                        let headingColor, axisColor, borderColor;
 
-                        cardColor = config.colors.white;
+                        const colorWhite = '#f4f4f4';
                         headingColor = config.colors.headingColor;
                         axisColor = config.colors.axisColor;
                         borderColor = config.colors.borderColor;
@@ -647,7 +642,7 @@
                             }
                         }
 
-                        const chartOrderStatistics = document.querySelector('#camposStatisticsChart'),
+                        const chartOrderStatistic = document.querySelector('#camposStatisticsChart'),
                             orderChartConfig = {
                                 chart: {
                                     height: 165,
@@ -658,7 +653,7 @@
                                 series: series,
                                 stroke: {
                                     width: 5,
-                                    colors: cardColor
+                                    colors: colorWhite
                                 },
                                 dataLabels: {
                                     enabled: false,
@@ -709,8 +704,8 @@
                                     }
                                 }
                             };
-                        if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
-                            const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
+                        if (typeof chartOrderStatistic !== undefined && chartOrderStatistic !== null) {
+                            const statisticsChart = new ApexCharts(chartOrderStatistic, orderChartConfig);
                             statisticsChart.render();
                         }
                     },
@@ -751,7 +746,7 @@
                                     }
                                 ],
                                 chart: {
-                                    height: 215,
+                                    height: 280,
                                     parentHeightOffset: 0,
                                     parentWidthOffset: 0,
                                     toolbar: {

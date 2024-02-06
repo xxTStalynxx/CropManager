@@ -37,6 +37,7 @@ export const mostrarCultivosRecomendados = async (req: Request, res: Response) =
     const { campo } = req.params;
     const siembras = await getSiembrasPorCampo(campo);
     const cultivo = await getCultivo(siembras[siembras.length - 1].dataValues.id_cultivo);
+    console.log(cultivo);
     const familia = await getFamilia(cultivo?.dataValues.familia);
     let cultivos: any[] = [];
     if (familia?.dataValues.exigencia_organica != 1) {
@@ -45,31 +46,36 @@ export const mostrarCultivosRecomendados = async (req: Request, res: Response) =
             const familias = await getFamiliasPorExigencia(exigencia - 1);
             for (let i = 0; i < familias.length; i++) {
                 const _cultivos = await getCultivosRecomendados(cultivo?.dataValues.id, familias[i].dataValues.id);
-                _cultivos[i].dataValues.recomendado = 1;
-                cultivos = cultivos.concat(_cultivos);
+
+                for (let j = 0; j < _cultivos.length; j++) {
+                    _cultivos[j].dataValues.recomendado = 1;
+                    cultivos = cultivos.concat(_cultivos[j]);
+                }
             }
             exigencia--;
-        } while (cultivos.length < 1 && exigencia > 1);
+        } while (exigencia > 1 && cultivos.length < 1);
 
         if (cultivos.length < 1) {
             const _cultivos = await getCultivosActivos();
             for (let i = 0; i < cultivos.length; i++) {
                 _cultivos[i].dataValues.recomendado = 2;
-                cultivos = cultivos.concat(_cultivos);
+                cultivos = cultivos.concat(_cultivos[i]);
             }
         } else if (exigencia > 1) {
             const _familias = await getFamiliasMenorExigencia(exigencia - 1);
             for (let i = 0; i < _familias.length; i++) {
                 const _cultivos = await getCultivosRecomendados(cultivo?.dataValues.id, _familias[i].dataValues.id);
-                _cultivos[i].dataValues.recomendado = 0;
-                cultivos = cultivos.concat(_cultivos);
+                for (let j = 0; j < _cultivos.length; j++) {
+                    _cultivos[j].dataValues.recomendado = 0;
+                    cultivos = cultivos.concat(_cultivos[j]);
+                }
             }
         }
     } else {
         const _cultivos = await getCultivosActivos();
         for (let i = 0; i < cultivos.length; i++) {
             _cultivos[i].dataValues.recomendado = 2;
-            cultivos = cultivos.concat(_cultivos);
+            cultivos = cultivos.concat(_cultivos[i]);
         }
     }
     res.json(cultivos);
@@ -96,7 +102,7 @@ export const agregarRotacionDeSiembra = async (req: Request, res: Response) => {
     res.redirect('/rotacion');
 }
 
-async function produccionEstimada(id_cult: string, id_camp: string){
+async function produccionEstimada(id_cult: string, id_camp: string) {
     const cultivo = await getCultivo(id_cult);
     const campo = await getCampo(id_camp);
     return cultivo?.dataValues.productividad * campo?.dataValues.area;

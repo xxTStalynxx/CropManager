@@ -68,7 +68,7 @@ function getStats(id) {
 }
 function getCamposStats(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        let estados = yield (0, estados_dta_1.getEstados)();
+        let estados = yield (0, estados_dta_1.getEstadosActivos)();
         const usuario = yield (0, usuarios_dta_1.getUsuario)(id);
         if (estados.length > 0) {
             for (let i = 0; i < estados.length; i++) {
@@ -84,7 +84,7 @@ function getCamposStats(id) {
     });
 }
 const getCamposStatsChart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let estados = yield (0, estados_dta_1.getEstados)();
+    let estados = yield (0, estados_dta_1.getEstadosActivos)();
     const usuario = yield (0, usuarios_dta_1.getUsuario)(req.session.user);
     if (estados.length > 0) {
         for (let i = 0; i < estados.length; i++) {

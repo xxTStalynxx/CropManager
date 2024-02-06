@@ -23,8 +23,6 @@ router.get('/', main_controller_1.showMain);
 router.get('/login', login_controller_1.inicioSesion);
 router.post('/iniciarSesion', login_controller_1.iniciarSesion);
 router.get('/logout', login_controller_1.cerrarSesion);
-router.get('/nosotros', main_controller_1.showNosotros);
-router.get('/cropmanager', main_controller_1.showCropManager);
 //Rutas para recuperar contraseña
 router.get('/forgot', main_controller_1.showForgot);
 router.post('/enviarEmail', login_controller_1.enviarEmail);

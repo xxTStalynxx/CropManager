@@ -165,11 +165,6 @@
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <div data-i18n="Container">Rendimiento</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
                                 <a href="/campos/list" class="menu-link">
                                     <div data-i18n="Container">Lista de campos</div>
                                 </a>
@@ -550,14 +545,14 @@
                             }
                             let hay = 0;
                             for (let i = 0; i < response.length; i++) {
-                                if (response[0].recomendado == 0) {
+                                if (response[i].recomendado == 0) {
                                     hay = 1;
                                     i = response.length;
                                 }
                             }
                             if (hay != 0) {
                                 grupo2 = document.createElement("optgroup");
-                                grupo2.label = "Otro";
+                                grupo2.label = "Otros";
                                 cultivos.add(grupo2);
                             }
 
@@ -565,10 +560,10 @@
                                 let option = document.createElement("option");
                                 option.text = response[i].nombre;
                                 option.value = response[i].id;
-                                if (response[0].recomendado == 1) {
+                                if (response[i].recomendado == 1) {
                                     cultivos.add(option);
                                     grupo.appendChild(option);
-                                } else if (response[0].recomendado == 0) {
+                                } else if (response[i].recomendado == 0) {
                                     cultivos.add(option);
                                     grupo2.appendChild(option);
                                 } else {

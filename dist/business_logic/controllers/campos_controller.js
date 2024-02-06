@@ -52,7 +52,7 @@ const listarCampos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             campos = yield (0, campos_dta_1.getCampos)(req.session.user);
         }
         else {
-            campos = yield (0, campos_dta_1.getAllCampos)();
+            campos = yield (0, campos_dta_1.getCamposActivos)();
             for (let i = 0; i < campos.length; i++) {
                 encargado = yield (0, usuarios_dta_1.getNombreUsuario)(campos[i].dataValues.encargado);
                 campos[i].dataValues.nomEncargado = encargado;
@@ -105,7 +105,7 @@ const agregarCampo = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(200).json({ message: 'Campo agregado correctamente' });
     }
     else {
-        res.status(400).json({ error: 'El área del campo no cumple con los requisitos' });
+        res.status(400).json({ error: 'El área del campo es muy pequeña' });
     }
 });
 exports.agregarCampo = agregarCampo;

@@ -81,7 +81,7 @@ const enviarEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.redirect('/login');
     }
     else {
-        res.render('forgot', { error: '* El correo no está registrado' });
+        res.render('forgot', { error: '* Este correo no está registrado' });
     }
 });
 exports.enviarEmail = enviarEmail;

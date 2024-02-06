@@ -24,8 +24,6 @@ router.get('/', showMain);
 router.get('/login', inicioSesion);
 router.post('/iniciarSesion', iniciarSesion);
 router.get('/logout', cerrarSesion);
-router.get('/nosotros', showNosotros);
-router.get('/cropmanager', showCropManager);
 
 //Rutas para recuperar contraseña
 router.get('/forgot', showForgot);

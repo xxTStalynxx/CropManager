@@ -95,8 +95,8 @@ export const putCampo = async (req: Request) => {
 export const deleteCampo = async (id: string) => {
     const campo = await Campo.findByPk(id);
     if (campo) {
-        await campo.destroy();
-    }
+        await campo.update({ activo: false });
+    } 
 }
 
 export const countCampos = async (id: string) => {

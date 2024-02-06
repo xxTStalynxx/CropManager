@@ -39,7 +39,7 @@ export const listarCampos = async (req: Request, res: Response) => {
         if (usuario?.dataValues.rol_usuario != 1) {
             campos = await getCampos(req.session.user);
         } else {
-            campos = await getAllCampos();
+            campos = await getCamposActivos();
             for (let i = 0; i < campos.length; i++) {
                 encargado = await getNombreUsuario(campos[i].dataValues.encargado);
                 campos[i].dataValues.nomEncargado = encargado;
@@ -88,7 +88,7 @@ export const agregarCampo = async (req: Request, res: Response) => {
         await postCampo(req);
         res.status(200).json({ message: 'Campo agregado correctamente' });
     } else {
-        res.status(400).json({ error: 'El área del campo no cumple con los requisitos' });
+        res.status(400).json({ error: 'El área del campo es muy pequeña' });
     }
 }
 

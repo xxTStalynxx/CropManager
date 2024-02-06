@@ -62,7 +62,7 @@ export const enviarEmail = async (req: Request, res: Response) => {
         await sendEmail(body.correo, "Restaurar contraseña", htmlTemplate);
         res.redirect('/login');
     } else {
-        res.render('forgot', { error: '* El correo no está registrado' });
+        res.render('forgot', { error: '* Este correo no está registrado' });
     }
 }
 

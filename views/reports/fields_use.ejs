@@ -90,11 +90,6 @@
                                         </a>
                                     </li>
                                     <li class="menu-item">
-                                        <a href="#" class="menu-link">
-                                            <div data-i18n="Container">Rendimiento</div>
-                                        </a>
-                                    </li>
-                                    <li class="menu-item">
                                         <a href="/campos/list" class="menu-link">
                                             <div data-i18n="Container">Lista de campos</div>
                                         </a>
@@ -379,12 +374,7 @@
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
-                    let cardColor, headingColor, axisColor, shadeColor, borderColor;
-
-                    cardColor = config.colors.white;
-                    headingColor = config.colors.headingColor;
-                    axisColor = config.colors.axisColor;
-                    borderColor = config.colors.borderColor;
+                    const colorWhite = '#f4f4f4';
 
                     let labels = [];
                     let areas = [];
@@ -404,10 +394,7 @@
                             },
                             labels: labels,
                             series: areas,
-                            stroke: {
-                                width: 3,
-                                colors: cardColor
-                            },
+                            
                             dataLabels: {
                                 enabled: true,
                                 formatter: function (val, opt) {

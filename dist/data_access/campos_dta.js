@@ -109,7 +109,7 @@ exports.putCampo = putCampo;
 const deleteCampo = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const campo = yield campo_1.default.findByPk(id);
     if (campo) {
-        yield campo.destroy();
+        yield campo.update({ activo: false });
     }
 });
 exports.deleteCampo = deleteCampo;
